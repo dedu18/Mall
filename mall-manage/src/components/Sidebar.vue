@@ -3,7 +3,7 @@
       <el-menu
         router
         class="sidebar-el-menu"
-        background-color="#545c64"
+        background-color="#374255"
         text-color="#fff"
         active-text-color="#ffd04b">
         <el-menu-item index="home">

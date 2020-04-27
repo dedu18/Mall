@@ -13,7 +13,7 @@
           <a>个人信息</a>
         </el-dropdown-item>
         <el-dropdown-item>
-          <a href="https://github.com/MrZHLF" target="_blank">github</a>
+          <a href="https://github.com/dedu18" target="_blank">github</a>
         </el-dropdown-item>
         <el-dropdown-item command="loginout">退出登录</el-dropdown-item>
       </el-dropdown-menu>

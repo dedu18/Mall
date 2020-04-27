@@ -229,7 +229,7 @@
         }
       }
     },
-    mounted () {
+    beforeMount () {
       getCategoryList(null).then(response=>{
         this.categoryList = response
         this.loading = false

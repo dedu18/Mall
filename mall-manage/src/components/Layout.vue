@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper">
-        <app-header></app-header>
+        <m-header></m-header>
         <div style="display: flex;">
           <div class="left-container">
-            <sider-list></sider-list>
+            <m-sidebar></m-sidebar>
           </div>
           <div class="main-container">
               <router-view></router-view>
@@ -26,8 +26,8 @@ export default {
 
   },
   components: {
-      "app-header":Header,
-      "sider-list":Sidebar
+      "m-header":Header,
+      "m-sidebar":Sidebar
   }
 }
 </script>
@@ -42,7 +42,7 @@ export default {
 .left-container{
   width: 10%;
   /*height: 100%;*/
-  background-color: #545c64;
+  background-color: #374255;
   bottom: 0px;
   min-height: 1000px;
 }

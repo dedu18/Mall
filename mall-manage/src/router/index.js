@@ -12,7 +12,7 @@ export default new Router({
     },
     {
       path: '/login',
-      component: resolve => require(['../views/Login.vue'], resolve)
+      component: resolve => require(['../views/login/Login.vue'], resolve)
     },
     {
       path: '/home',
@@ -82,7 +82,7 @@ export default new Router({
     },
     {
       path: '/404',
-      component: resolve => require(['@/views/404.vue'], resolve)
+      component: resolve => require(['@/views/error/404.vue'], resolve)
     }
   ],
   model:history
