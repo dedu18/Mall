@@ -13,7 +13,7 @@
   export default {
     data() {
       return {
-        username: "默认用户"
+        username: localStorage.getItem('ms_username')
       }
     },
     // computed:{

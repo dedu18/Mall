@@ -1,7 +1,7 @@
 <template>
   <div class="header-user-icon">
     <div class="user-avator">
-      <img src="@/assets/img.png" alt="">
+      <img src="@/images/img.png" alt="">
     </div>
     <el-dropdown trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
@@ -26,7 +26,7 @@
       name: "User",
       data () {
         return {
-          username: "默认用户"
+          username: localStorage.getItem('ms_username')
         }
       },
       methods:{

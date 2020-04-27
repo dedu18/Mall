@@ -7,7 +7,7 @@
           <el-col>
             <el-card shadow="hover">
               <div class="user-info">
-                <img src="@/assets/img.png" class="user-avator">
+                <img src="@/images/img.png" class="user-avator">
                 <div class="user-info-text">
                   <div class="user-info-name">{{username}}，开心工作每一天！</div>
                 </div>
@@ -111,9 +111,10 @@ export default {
   },
 	methods: {
 		handleChange(val) {
-			console.log(val);
 		}
-	}
+	},
+  mounted() {
+  }
 }
 </script>
 

@@ -15,10 +15,24 @@ Vue.use(VueResource);
 Vue.use(breadCrumb)
 Vue.use(categoryTree)
 
+router.beforeEach(function (to, from, next) {
+  if (to.meta.needLogin) {
+    if (localStorage.getItem("ms_username")) {
+      next();
+    } else {
+      next({
+        name: "login"
+      });
+    }
+  } else {
+    next(); //继续往后走
+  }
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

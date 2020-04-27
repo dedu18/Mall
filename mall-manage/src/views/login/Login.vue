@@ -41,11 +41,11 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          if (this.ruleForm.username != "admin" || this.ruleForm.password != "admin") {
-            valid = false;
-          }
+          // if (this.ruleForm.username != "admin" || this.ruleForm.password != "admin") {
+          //   valid = false;
+          // }
           if (valid) {
-            localStorage.setItem('ms_username', this.ruleForm.username, this.ruleForm.password)
+            localStorage.setItem('ms_username', this.ruleForm.username)
             this.$notify({
               title: "成功",
               message: "登录成功",
