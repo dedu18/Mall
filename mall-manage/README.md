@@ -1,21 +1,29 @@
 # mall-manage
 
-> A Vue.js project
+> 这是一个基于VUE + ElementUI + SpringCloud的前后端分离运营后台管理
 
-## Build Setup
+## 项目初始化
 
-``` bash
-# install dependencies
+``` 
+# 安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# 开发模式
 npm run dev
 
-# build for production with minification
+# 打包
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 页面效果图
+
+#### 首页 
+
+#### 登录
+
+#### 商品类目
+
+#### 商品品牌
+
+#### 规格参数
+
