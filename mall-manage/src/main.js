@@ -12,8 +12,8 @@ import categoryTree from './components/CategoryTree.vue'
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueResource);
-Vue.use(breadCrumb)
 Vue.use(categoryTree)
+Vue.component("m-breadcrumb", breadCrumb)
 
 router.beforeEach(function (to, from, next) {
   if (to.meta.needLogin) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mBreadcrumb />
+    <m-breadcrumb />
     <el-card style="margin-top: 1%">
       <el-form style="display: flex; " ref="searchdata" :model="searchdata" label-width="100px">
         <el-form-item label="订单编号：">

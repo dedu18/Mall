@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <!-- 左列 -->
     <el-row :gutter="20">
       <el-col :span="8">
@@ -24,7 +24,7 @@
                 <span>语言详情</span>
               </div>
               Vue.js
-              <el-progress :percentage="60" ></el-progress>
+              <el-progress :percentage="60"></el-progress>
               JavaScript
               <el-progress :percentage="50" color="#8e71c7"></el-progress>
               CSS3
@@ -39,39 +39,39 @@
       <!-- 右列 -->
       <el-col :span="16">
         <el-row :gutter="20" class="mgb20">
-            <el-col :span="8">
-                <el-card shadow="hover" :body-style="{padding: '0px'}">
-                    <div class="grid-content grid-con-1">
-                        <i class="el-icon-view grid-con-icon"></i>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">1234</div>
-                            <div>用户访问量</div>
-                        </div>
-                    </div>
-                </el-card>
-            </el-col>
-            <el-col :span="8">
-                <el-card shadow="hover" :body-style="{padding: '0px'}">
-                    <div class="grid-content grid-con-2">
-                        <i class="el-icon-goods grid-con-icon"></i>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">321</div>
-                            <div>商品总数</div>
-                        </div>
-                    </div>
-                </el-card>
-            </el-col>
-            <el-col :span="8">
-                <el-card shadow="hover" :body-style="{padding: '0px'}">
-                    <div class="grid-content grid-con-3">
-                        <i class="el-icon-sold-out grid-con-icon"></i>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">5000</div>
-                            <div>订单数量</div>
-                        </div>
-                    </div>
-                </el-card>
-            </el-col>
+          <el-col :span="8">
+            <el-card shadow="hover" :body-style="{padding: '0px'}">
+              <div class="grid-content grid-con-1">
+                <i class="el-icon-view grid-con-icon"></i>
+                <div class="grid-cont-right">
+                  <div class="grid-num">1234</div>
+                  <div>用户访问量</div>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card shadow="hover" :body-style="{padding: '0px'}">
+              <div class="grid-content grid-con-2">
+                <i class="el-icon-goods grid-con-icon"></i>
+                <div class="grid-cont-right">
+                  <div class="grid-num">321</div>
+                  <div>商品总数</div>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card shadow="hover" :body-style="{padding: '0px'}">
+              <div class="grid-content grid-con-3">
+                <i class="el-icon-sold-out grid-con-icon"></i>
+                <div class="grid-cont-right">
+                  <div class="grid-num">5000</div>
+                  <div>订单数量</div>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
         </el-row>
       </el-col>
       <el-col :span="16">
@@ -100,106 +100,122 @@
 </template>
 
 <script>
-export default {
-  name: 'Dashboard',
-  data () {
-    return {
-      activeNames: ['1'],
-      username: localStorage.getItem('ms_username'),
-      lastlogintime: "2019-09-23 00:00:23"
+  export default {
+    name: 'Dashboard',
+    data() {
+      return {
+        activeNames: ['1'],
+        username: localStorage.getItem('ms_username'),
+        lastlogintime: "2019-09-23 00:00:23"
+      }
+    },
+    methods: {
+      handleChange(val) {
+      }
+    },
+    mounted() {
     }
-  },
-	methods: {
-		handleChange(val) {
-		}
-	},
-  mounted() {
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.user-info{
-	display: flex;
-	align-items: center;
-	padding-bottom: 20px;
-	margin-bottom: 20px;
-  border-bottom: 2px solid #ccc;
-}
-.user-info-text {
-	flex: 1;
-	padding-left: 20px;
-}
-/*开心工作每一天*/
-.user-info-text .user-info-name {
-	font-weight: bold;
-	font-size: 25px;
-}
-/* 头像*/
-.user-avator {
-	width: 120px;
-	height: 120px;
-	border-radius: 50%;
-}
-.user-info-list {
-	font-size: 16px;
-	color: #212121;
-	padding: 20px 0 0 0;
-}
-.user-info-list span {
-	font-size: 14px;
-	padding-left: 15px;
-}
-.grid-content {
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-align: center;
-	align-items: center;
-	height: 100px;
-}
-.grid-cont-right {
-	flex: 1;
-	text-align: center;
-	font-size: 12px;
-	color: #999;
-}
-.grid-con-1 .grid-num {
-	color: #2d8cf0;
-}
-.grid-con-2 .grid-num {
-	color: #2d8cf0;
-}
-.grid-con-3 .grid-num {
-	color: #f25e43;
-}
-.grid-num{
-	font-size: 30px;
-	font-weight: 700;
-}
-.grid-con-icon {
-	font-size: 50px;
-	width: 100px;
-	height: 100px;
-	text-align: center;
-	line-height: 100px;
-	color: #fff;
-}
-/*用户访问量*/
-.grid-con-1 .grid-con-icon {
-	background: #2d8cf0;
-}
-.grid-con-2 .grid-con-icon{
-	background: #64d572;
-}
-.grid-con-3 .grid-con-icon{
-	background: #f25e43;
-}
+  .user-info {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+  }
 
-.el-collapse-item >>> .el-collapse-item__header {
-	padding-left: 20px;
-}
-.el-collapse-item >>> .el-collapse-item__wrap >>> .el-collapse-item__content{
-	padding-left: 20px !important;
-}
+  .user-info-text {
+    flex: 1;
+    padding-left: 20px;
+  }
+
+  /*开心工作每一天*/
+  .user-info-text .user-info-name {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  /* 头像*/
+  .user-avator {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }
+
+  .user-info-list {
+    font-size: 16px;
+    color: #212121;
+    padding: 20px 0 0 0;
+  }
+
+  .user-info-list span {
+    font-size: 14px;
+    padding-left: 15px;
+  }
+
+  .grid-content {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100px;
+  }
+
+  .grid-cont-right {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .grid-con-1 .grid-num {
+    color: #2d8cf0;
+  }
+
+  .grid-con-2 .grid-num {
+    color: #2d8cf0;
+  }
+
+  .grid-con-3 .grid-num {
+    color: #f25e43;
+  }
+
+  .grid-num {
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  .grid-con-icon {
+    font-size: 50px;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    color: #fff;
+  }
+
+  /*用户访问量*/
+  .grid-con-1 .grid-con-icon {
+    background: #2d8cf0;
+  }
+
+  .grid-con-2 .grid-con-icon {
+    background: #64d572;
+  }
+
+  .grid-con-3 .grid-con-icon {
+    background: #f25e43;
+  }
+
+  .el-collapse-item >>> .el-collapse-item__header {
+    padding-left: 20px;
+  }
+
+  .el-collapse-item >>> .el-collapse-item__wrap >>> .el-collapse-item__content {
+    padding-left: 20px !important;
+  }
 </style>

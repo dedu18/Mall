@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mBreadcrumb />
+    <m-breadcrumb />
     <div>
       <el-card shadow="never" style="margin-top: 1%">
         <div class="operate-container">

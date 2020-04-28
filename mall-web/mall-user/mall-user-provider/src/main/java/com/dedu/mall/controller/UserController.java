@@ -47,4 +47,21 @@ public class UserController {
     public Result loginUserByUsernameAndPassword(@RequestBody @Valid LoginUserVo loginUser) throws Exception {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.loginUserByUsernameAndPassword(loginUser));
     }
+
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/manage")
+    @ApiOperation(value = "根据账号密码进行用户登录-dedu", notes = "用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "username", value = "账号", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "password", value = "账号", required = true),
+    })
+    public Result loginUserByUsernameAndPassword(@RequestParam @NotBlank String username, @RequestParam @NotBlank String password) throws Exception {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.loginUserByUsernameAndPassword(username, password));
+    }
 }

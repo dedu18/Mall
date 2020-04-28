@@ -9,4 +9,6 @@ public interface UserService {
    List<DeliveryAddress> queryUserAddressByUsernamAndPassword(String username, String password);
 
     Boolean loginUserByUsernameAndPassword(LoginUserVo loginUserVo);
+
+    Boolean loginUserByUsernameAndPassword(String username, String password);
 }

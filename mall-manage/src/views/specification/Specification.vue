@@ -1,6 +1,6 @@
 <template>
     <div>
-      <mBreadcrumb />
+      <m-breadcrumb />
       <div>
         <div class="left">
           <el-card class="left-box-card">

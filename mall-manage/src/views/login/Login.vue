@@ -20,6 +20,8 @@
 </template>
 
 <script>
+  import {login as login} from '@/api/user';
+
   export default {
     name: 'Login',
     data() {
@@ -41,24 +43,30 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          // if (this.ruleForm.username != "admin" || this.ruleForm.password != "admin") {
-          //   valid = false;
-          // }
           if (valid) {
-            localStorage.setItem('ms_username', this.ruleForm.username)
-            this.$notify({
-              title: "成功",
-              message: "登录成功",
-              type: 'success',
-              duration: 1000
-            })
-            this.$router.push('/home')
+            login({
+              username: this.ruleForm.username,
+              password: this.ruleForm.password
+            }).then(response => {
+              if (response) {
+                localStorage.setItem('ms_username', this.ruleForm.username)
+                this.$notify({
+                  title: "成功",
+                  message: "登录成功",
+                  type: 'success',
+                  duration: 1000
+                })
+                this.$router.push('/home')
+              } else {
+                this.$notify.error({
+                  title: "失败",
+                  message: "账号或密码错误",
+                  duration: 1000
+                })
+                return false
+              }
+            });
           } else {
-            this.$notify.error({
-              title: "失败",
-              message: "账号或密码不对",
-              duration: 1000
-            })
             return false
           }
         })

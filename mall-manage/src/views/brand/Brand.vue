@@ -1,78 +1,78 @@
 <template>
   <div>
-    <mBreadcrumb />
+    <m-breadcrumb/>
     <div style=" margin-top: 1%; height: 100%; border: 1px">
-    <el-row>
-      <el-card class="box-card">
-        <el-row :gutter="20">
-          <el-col :span="6">关键字搜索：</el-col>
-          <el-col :span="6">
-            <el-input
-              placeholder="请输入关键字"
-              prefix-icon="el-icon-search"
+      <el-row>
+        <el-card class="box-card">
+          <el-row :gutter="20">
+            <el-col :span="6">关键字搜索：</el-col>
+            <el-col :span="6">
+              <el-input
+                placeholder="请输入关键字"
+                prefix-icon="el-icon-search"
               >
-            </el-input>
-          </el-col>
-          <el-col :span="6">
-            <el-button type="primary">搜索</el-button>
-          </el-col>
-          <el-col :span="6">
-            <el-button type="primary" @click="brandDetailDialog = true">新增品牌</el-button>
-          </el-col>
-        </el-row>
-      </el-card>
-    </el-row>
-    <el-row>
-      <el-card class="box-card-main">
-        <el-table
-          :data="tableData"
-          border>
-          <el-table-column
-            prop="id"
-            label="编号"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="品牌名称"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            label="品牌图片">
-            <template slot-scope="scope">
-              <img :src="scope.row.image" alt="" style="width: 100px;height:36px">
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="letter"
-            label="品牌首字母">
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :page-sizes="[10, 20, 50]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-          </el-pagination>
-        </div>
-      </el-card>
-    </el-row>
+              </el-input>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="primary">搜索</el-button>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="primary" @click="brandDetailDialog = true">新增品牌</el-button>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-row>
+      <el-row>
+        <el-card class="box-card-main">
+          <el-table
+            :data="tableData"
+            border>
+            <el-table-column
+              prop="id"
+              label="编号"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="品牌名称"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              label="品牌图片">
+              <template slot-scope="scope">
+                <img :src="scope.row.image" alt="" style="width: 100px;height:36px">
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="letter"
+              label="品牌首字母">
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :page-sizes="[10, 20, 50]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
+          </div>
+        </el-card>
+      </el-row>
     </div>
     <el-dialog
       title="提示"
       :visible.sync="brandDetailDialog"
       width="30%"
-      >
-      <el-form  :model="brand"  label-width="100px" class="demo-ruleForm">
+    >
+      <el-form :model="brand" label-width="100px" class="demo-ruleForm">
         <el-form-item label="品牌名称">
           <el-input v-model="brand.name"></el-input>
         </el-form-item>
@@ -120,6 +120,8 @@
     name: "brand",
     data() {
       return {
+        tableData: [],
+        fileList: [],
         options: [],
         total: 0,
         currentPage: 1,
@@ -130,24 +132,24 @@
         brandDetailAdd: false,
         brand: {
           id: '',
-          name:'',
-          image:'',
-          letter:'',
-          category:[]
+          name: '',
+          image: '',
+          letter: '',
+          category: []
         },
         pictures: []
       };
     },
     methods: {
-      handleEdit: function(index, row) {
+      handleEdit: function (index, row) {
         this.brand.id = row.id
-        this.brand.name=row.name
-        this.brand.image=row.image
-        this.brand.category=['1']
-        this.brand.letter=row.letter
+        this.brand.name = row.name
+        this.brand.image = row.image
+        this.brand.category = ['1']
+        this.brand.letter = row.letter
         this.brandDetailDialog = true
       },
-      handleDelete: function(id) {
+      handleDelete: function (id) {
         deleteBrand(id).then(response => {
           this.$message({
             message: '删除成功！',
@@ -196,25 +198,25 @@
       },
       handleCategoryChange() {
       },
-      cancelBrandDetail(){
+      cancelBrandDetail() {
         this.brandDetailDialog = false
         this.clearBrandDetail()
       },
       clearBrandDetail() {
-        this.brand.name=''
-        this.brand.image=''
-        this.brand.category=[]
-        this.brand.letter=''
+        this.brand.name = ''
+        this.brand.image = ''
+        this.brand.category = []
+        this.brand.letter = ''
       },
       refreshData() {
         this.handlePageChange()
       }
     },
-    mounted () {
+    mounted() {
       this.handlePageChange()
       getCategoryTree({
         parentId: 0
-      }).then(response=>{
+      }).then(response => {
         this.options = response
       })
     }
@@ -222,10 +224,11 @@
 </script>
 
 <style scoped>
-  .main-container{
+  .main-container {
     margin-top: 10%;
   }
-  .el-header{
+
+  .el-header {
     background-color: #B3C0D1;
     color: #333;
     text-align: center;
@@ -242,6 +245,7 @@
   .el-row {
     margin-bottom: 20px;
   }
+
   body > .el-container {
     margin-bottom: 40px;
   }

@@ -35,4 +35,13 @@ public class UserSerImpl implements UserService {
             return Boolean.FALSE;
         }
     }
+
+    @Override
+    public Boolean loginUserByUsernameAndPassword(String username, String password) {
+        if (Objects.equals("dedu", username) && Objects.equals("dedu", password)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
 }

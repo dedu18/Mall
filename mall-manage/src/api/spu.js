@@ -1,5 +1,5 @@
 import http from '@/utils/http'
-const url = "http://localhost:8080"
+const url = "http://localhost:80"
 export function getAllGoods(params) {
   return http({
     baseURL: url,

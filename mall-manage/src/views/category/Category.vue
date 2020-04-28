@@ -1,16 +1,16 @@
 <template>
   <div>
-    <mBreadcrumb />
+    <m-breadcrumb/>
     <el-container style=" margin-top: 1%; height: 100%; border: 1px">
       <el-aside style="background-color: rgb(240,240,240)">
         <el-tree style="background-color: rgb(240,240,240)"
-          class="tree"
-          v-loading="loading"
-          :props="props"
-          :load="loadNode"
-          lazy
-          @check-change="handleCheckChange"
-          @node-click="handleNodeClick">
+                 class="tree"
+                 v-loading="loading"
+                 :props="props"
+                 :load="loadNode"
+                 lazy
+                 @check-change="handleCheckChange"
+                 @node-click="handleNodeClick">
         </el-tree>
       </el-aside>
       <el-container style="text-align: left;">
@@ -18,7 +18,7 @@
           <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onAddTopCate">添加顶级类目</el-button>
         </el-header>
         <el-main>
-          <el-form  :model="category" :rules="rules" ref="category" label-width="100px" class="demo-ruleForm">
+          <el-form :model="category" :rules="rules" ref="category" label-width="100px" class="demo-ruleForm">
             <el-form-item label="类目名称" prop="name">
               <el-input v-model="category.name"></el-input>
             </el-form-item>
@@ -26,7 +26,8 @@
               <el-switch v-model="category.isParent"></el-switch>
             </el-form-item>
             <el-form-item label="父级类目" prop="region">
-              <el-select v-model="category.parentId" placeholder="父级类目" :loading="loading" :change="handleSelectorChange">
+              <el-select v-model="category.parentId" placeholder="父级类目" :loading="loading"
+                         :change="handleSelectorChange">
                 <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -49,19 +50,19 @@
         :title="cateDetailTitle"
         :visible.sync="cateDetailDialog"
         width="30%">
-        <el-form  :model="cateDetail" :rules="rules"  label-width="100px" class="demo-ruleForm">
-            <el-form-item label="类目名称" prop="name">
-              <el-input v-model="cateDetail.name"></el-input>
-            </el-form-item>
-            <el-form-item label="是否父节点" prop="delivery">
-              <el-switch v-model="cateDetail.isParent"></el-switch>
-            </el-form-item>
-            <el-form-item label="排序" prop="name">
-              <el-input v-model="cateDetail.sort"></el-input>
-            </el-form-item>
-            <el-form-item label="是否启用" prop="delivery">
-              <el-switch v-model="cateDetail.isEnable"></el-switch>
-            </el-form-item>
+        <el-form :model="cateDetail" :rules="rules" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="类目名称" prop="name">
+            <el-input v-model="cateDetail.name"></el-input>
+          </el-form-item>
+          <el-form-item label="是否父节点" prop="delivery">
+            <el-switch v-model="cateDetail.isParent"></el-switch>
+          </el-form-item>
+          <el-form-item label="排序" prop="name">
+            <el-input v-model="cateDetail.sort"></el-input>
+          </el-form-item>
+          <el-form-item label="是否启用" prop="delivery">
+            <el-switch v-model="cateDetail.isEnable"></el-switch>
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="cancelDetail">取 消</el-button>
@@ -79,15 +80,16 @@
   import {modifyCategoryById as modifyCategory} from '@/api/category';
   import {deleteCategoryById as deleteCategory} from '@/api/category';
   import {addCategory} from '@/api/category';
+
   export default {
     name: "category",
     data() {
       return {
         cateDetailDialog: false,
         cateDetailTitle: '',
-        cateDetail:{
+        cateDetail: {
           id: '',
-          name:'',
+          name: '',
           isParent: true,
           parentId: '',
           sort: 0,
@@ -102,17 +104,16 @@
         loading: true,
         category: {
           id: '',
-          name:'',
+          name: '',
           isParent: true,
           parentId: 0,
           sort: 0,
           isEnable: true
         },
-        categoryList:[
-        ],
+        categoryList: [],
         rules: {
           name: [
-            { required: true, message: '请输入类目名称', trigger: 'blur' },
+            {required: true, message: '请输入类目名称', trigger: 'blur'},
           ]
         }
       };
@@ -122,16 +123,14 @@
         this.cateDetailDialog = false
         this.cateDetail = {
           id: '',
-            name:'',
-            isParent: true,
-            parentId: 0,
-            sort: 0,
-            isEnable: true
+          name: '',
+          isParent: true,
+          parentId: 0,
+          sort: 0,
+          isEnable: true
         }
       },
       handleCheckChange(data, checked, indeterminate) {
-        // console.log(data, checked, indeterminate);
-        console.log(111);
       },
       handleNodeClick(data) {
         this.category.id = data.id
@@ -146,15 +145,15 @@
         if (node.level === 0) {
           getCategoryTree({
             parentId: 0
-          }).then(response=>{
+          }).then(response => {
             return resolve(response)
           });
         } else {
           getCategoryTree({
-            parentId:node.data.id
-          }).then(response=>{
+            parentId: node.data.id
+          }).then(response => {
             if (Array.isArray(response)) {
-              for(var j = 0; j < response.length; j++) {
+              for (var j = 0; j < response.length; j++) {
                 if (!response[j]["isParent"]) {
                   response[j]["leaf"] = true
                 }
@@ -174,7 +173,7 @@
       add() {
         addCategory(
           this.cateDetail
-        ).then(response=>{
+        ).then(response => {
           this.$message({
             message: '添加成功！',
             type: 'success'
@@ -208,7 +207,7 @@
         } else {
           deleteCategory(
             this.category.id
-          ).then(response=>{
+          ).then(response => {
             this.$message({
               message: '删除成功！',
               type: 'success'
@@ -220,7 +219,7 @@
         if ('' != this.category.id) {
           this.cateDetail.parentId = this.category.id
           this.cateDetailDialog = true
-          this.cateDetailTitle = '添加【'+this.category.name+'】子集类目'
+          this.cateDetailTitle = '添加【' + this.category.name + '】子集类目'
         } else {
           this.$message({
             message: '请选中一个类目！',
@@ -229,8 +228,8 @@
         }
       }
     },
-    beforeMount () {
-      getCategoryList(null).then(response=>{
+    beforeMount() {
+      getCategoryList(null).then(response => {
         this.categoryList = response
         this.loading = false
       });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mBreadcrumb />
+    <m-breadcrumb />
     <!-- 查询面板 -->
     <el-row>
       <el-card class="box-card">
