@@ -27,7 +27,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="mall-common" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.1.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
@@ -173,5 +172,7 @@
     <orderEntry type="library" name="Maven: com.netflix.archaius:archaius-core:0.7.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.code.findbugs:jsr305:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.netflix.hystrix:hystrix-core:1.5.18" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:2.1.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.8.RELEASE" level="project" />
   </component>
 </module>
