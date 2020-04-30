@@ -12,7 +12,7 @@
     <!-- 侧边导航和轮播图-->
     <div class="nav-body">
       <!-- 侧边导航 -->
-      <div class="nav-side" ref="navSide">
+      <div class="nav-side">
         <ul>
           <li @mouseenter="showDetail(0)" >
             <span class="nav-side-item">家用电器</span>
