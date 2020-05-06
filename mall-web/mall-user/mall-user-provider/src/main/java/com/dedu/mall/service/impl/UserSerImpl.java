@@ -2,6 +2,7 @@ package com.dedu.mall.service.impl;
 
 import com.dedu.mall.model.DeliveryAddress;
 import com.dedu.mall.model.LoginUserVo;
+import com.dedu.mall.model.RegisterUserVo;
 import com.dedu.mall.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,16 @@ public class UserSerImpl implements UserService {
         } else {
             return Boolean.FALSE;
         }
+    }
+
+    @Override
+    public Boolean registerUser(RegisterUserVo registerUserVo) {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean sendVerificationCode(String phone) {
+        System.out.println("已发送验证码1234");
+        return Boolean.TRUE;
     }
 }

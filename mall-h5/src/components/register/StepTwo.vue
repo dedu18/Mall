@@ -22,7 +22,7 @@
 import store from '@/vuex/store';
 import { mapMutations, mapActions } from 'vuex';
 export default {
-  name: 'InputInfo',
+  name: 'StepTwo',
   data () {
     const validatePassCheck = (rule, value, callback) => {
       if (value === '') {
@@ -74,7 +74,7 @@ export default {
           };
           this.addSignUpUser(userinfo);
           father.SET_SIGN_UP_SETP(2);
-          this.$router.push({ path: '/Register/RegisterDone' });
+          this.$router.push({ path: '/Register/stepThree' });
         } else {
           this.$Message.error('注册失败');
         }

@@ -7,8 +7,6 @@
       <i-col span="12" class="box">
         <div class="sign-up-title">
           <h1>欢迎注册账号</h1>
-          <br>
-          <h2>MALL, 天天低价品质保证, 让消费者钱更值钱</h2>
         </div>
         <div class="sing-up-step-box">
           <Steps :current="signUpStep">
@@ -72,7 +70,7 @@ export default {
 .sign-up-title {
   width: 430px;
   margin: 15px auto;
-  height: 80px;
+  height: 50px;
 }
 .sing-up-step-box {
   margin: 15px auto;

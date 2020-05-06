@@ -2,10 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Index from '@/components/Index';
 const Login = resolve => require(['@/components/login/Login'], resolve);
-const SignUp = resolve => require(['@/components/register/Register'], resolve);
-const CheckPhone = resolve => require(['@/components/register/CheckPhone'], resolve);
-const InputInfo = resolve => require(['@/components/register/InputInfo'], resolve);
-const SignUpDone = resolve => require(['@/components/register/RegisterDone'], resolve);
+const Register = resolve => require(['@/components/register/Register'], resolve);
+const StepOne = resolve => require(['@/components/register/StepOne'], resolve);
+const StepTwo = resolve => require(['@/components/register/StepTwo'], resolve);
+const StepThree = resolve => require(['@/components/register/StepThree'], resolve);
 const GoodsList = resolve => require(['@/components/goods/GoodsList'], resolve);
 const GoodsDetail = resolve => require(['@/components/goods/GoodsDetail'], resolve);
 const ShoppingCart = resolve => require(['@/components/cart/ShopCart'], resolve);
@@ -36,29 +36,29 @@ export default new Router({
       component: Login
     },
     {
-      path: '/SignUp', // 注册
-      name: 'SignUp',
-      component: SignUp,
+      path: '/Register', // 注册
+      name: 'Register',
+      component: Register,
       children: [
         {
           path: '/',
           name: 'index',
-          component: CheckPhone
+          component: StepOne
         },
         {
-          path: 'checkPhone',
-          name: 'CheckPhone',
-          component: CheckPhone
+          path: 'stepOne',
+          name: 'StepOne',
+          component: StepOne
         },
         {
-          path: 'inputInfo',
-          name: 'InputInfo',
-          component: InputInfo
+          path: 'stepTwo',
+          name: 'StepTwo',
+          component: StepTwo
         },
         {
-          path: 'signUpDone',
-          name: 'SignUpDone',
-          component: SignUpDone
+          path: 'stepThree',
+          name: 'StepThree',
+          component: StepThree
         }
       ]
     },

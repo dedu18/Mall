@@ -27,3 +27,29 @@ export function loginUser(datas) {
     data:datas
   })
 }
+
+/**
+ * 用户注册
+ * @param datas
+ */
+export function registerUser(datas) {
+  return http({
+    baseURL: url,
+    url:'/api/user/register',
+    method:'post',
+    data:datas
+  })
+}
+
+/**
+ * 发送验证码
+ * @param datas
+ */
+export function sendVerificationCode(params) {
+  return http({
+    baseURL: url,
+    url:'/api/user/code',
+    method:'get',
+    params: params
+  })
+}
