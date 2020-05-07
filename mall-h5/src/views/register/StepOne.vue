@@ -45,7 +45,7 @@
       };
     },
     methods: {
-      ...mapMutations(['SET_SIGN_UP_SETP']),
+      ...mapMutations(['SET_REGISTER_SETP']),
       sendVerificationCode() {
         if (this.formValidate.phone.length === 11) {
           sendVerificationCode({
@@ -81,7 +81,7 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.$router.push({path: '/Register/stepTwo', query: {phone: this.formValidate.phone}});
-            this.SET_SIGN_UP_SETP(1);
+            this.SET_REGISTER_SETP(1);
           } else {
             this.$Message.error({
               content: '请填写正确的信息',

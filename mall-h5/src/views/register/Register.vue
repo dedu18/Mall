@@ -9,7 +9,7 @@
           <h1>欢迎注册账号</h1>
         </div>
         <div class="sing-up-step-box">
-          <Steps :current="signUpStep">
+          <Steps :current="registerStep">
               <Step title="验证手机号" icon="iphone"></Step>
               <Step title="填写账号信息" icon="person-add"></Step>
               <Step title="注册成功" icon="ios-checkmark-outline"></Step>
@@ -38,14 +38,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(['signUpStep'])
+    ...mapState(['registerStep'])
   },
   methods: {
-    ...mapMutations(['SET_SIGN_UP_SETP'])
+    ...mapMutations(['SET_REGISTER_SETP'])
   },
   store,
   mounted () {
-    this.SET_SIGN_UP_SETP(0);
+    this.SET_REGISTER_SETP(0);
   }
 };
 </script>

@@ -48,6 +48,7 @@ public class UserSerImpl implements UserService {
 
     @Override
     public Boolean registerUser(RegisterUserVo registerUserVo) {
+        System.out.println("注册成功");
         return Boolean.TRUE;
     }
 

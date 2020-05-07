@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import Search from '@/components/search/Search';
-import GoodsDetailNav from '@/components/goods/GoodsDetailNav';
-import ShopHeader from '@/components/shop/ShopHeader';
-import GoodsSku from '@/components/goods/GoodsSku';
-import GoodsSpec from '@/components/goods/GoodsSpec';
+import Search from '../search/Search';
+import GoodsDetailNav from '../goods/GoodsDetailNav';
+import ShopHeader from '../shop/ShopHeader';
+import GoodsSku from '../goods/GoodsSku';
+import GoodsSpec from '../goods/GoodsSpec';
 import store from '@/vuex/store';
 import { mapState, mapActions } from 'vuex';
 export default {

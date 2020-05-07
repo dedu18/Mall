@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import IndexHeader from '@/components/index/IndexHeader';
-import Footer from '@/components/footer/Footer';
+import IndexHeader from './views/index/IndexHeader';
+import Footer from './views/footer/Footer';
 export default {
   name: 'App',
   data () {

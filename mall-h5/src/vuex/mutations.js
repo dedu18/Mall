@@ -1,6 +1,6 @@
 // 设置注册步骤
-export const SET_SIGN_UP_SETP = (state, step) => {
-  state.signUpStep = step;
+export const SET_REGISTER_SETP = (state, step) => {
+  state.registerStep = step;
 };
 
 // 设置用户登录信息

@@ -26,7 +26,7 @@ export default new Vuex.Store({
     userInfo: { // 用户信息
       username: ''
     },
-    signUpStep: 0, // 登陆步骤
+    registerStep: 0, // 注册步骤
     marketing: { // 营销
       CarouselItems: [], // 轮播图
       activity: [] // 活动

@@ -1,11 +1,11 @@
-import {getAllNavigationPictureList} from '@/api/category';
-import {getGoodsListByCategoryId, getGoodsById, getRecommendGoods} from '@/api/goods';
-import {getSeckillInfoList, getSpecialByType} from '@/api/market';
-import {getUserDeliverAddress, loginUser} from '@/api/user';
-import {getUserShopCartByUserId} from '@/api/cart';
+import {getAllNavigationPictureList} from '../api/category';
+import {getGoodsListByCategoryId, getGoodsById, getRecommendGoods} from '../api/goods';
+import {getSeckillInfoList, getSpecialByType} from '../api/market';
+import {getUserDeliverAddress, loginUser} from '../api/user';
+import {getUserShopCartByUserId} from '../api/cart';
 
 // 获取轮播(营销)图片
-export const loadCarouselItems = ({ commit }) => {
+export const loadCarouselItems = ({commit}) => {
   return new Promise((resolve, reject) => {
     const data = {
       carouselItems: [],
@@ -20,7 +20,7 @@ export const loadCarouselItems = ({ commit }) => {
 };
 
 // 获取秒杀数据
-export const loadSeckillsInfo = ({ commit }) => {
+export const loadSeckillsInfo = ({commit}) => {
   return new Promise((resolve, reject) => {
     getSeckillInfoList(null).then(response => {
       const data = response.info;
@@ -37,7 +37,7 @@ export const loadSeckillsInfo = ({ commit }) => {
 
 
 // 加载电脑专栏数据
-export const loadComputer = ({ commit }) => {
+export const loadComputer = ({commit}) => {
   return new Promise((resolve, reject) => {
     getSpecialByType(1).then(response => {
       const computer = response;
@@ -47,7 +47,7 @@ export const loadComputer = ({ commit }) => {
 };
 
 // 加载爱吃专栏数据
-export const loadEat = ({ commit }) => {
+export const loadEat = ({commit}) => {
   return new Promise((resolve, reject) => {
     getSpecialByType(2).then(response => {
       const eat = response;
@@ -57,7 +57,7 @@ export const loadEat = ({ commit }) => {
 };
 
 // 请求获得商品详细信息
-export const loadGoodsInfo = ({ commit }) => {
+export const loadGoodsInfo = ({commit}) => {
   commit('SET_LOAD_STATUS', true);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -71,7 +71,7 @@ export const loadGoodsInfo = ({ commit }) => {
 };
 
 // 获取商品列表
-export const loadGoodsList = ({ commit }) => {
+export const loadGoodsList = ({commit}) => {
   commit('SET_LOAD_STATUS', true);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -85,14 +85,14 @@ export const loadGoodsList = ({ commit }) => {
 };
 
 // 添加购物车
-export const addShoppingCart = ({ commit }, data) => {
+export const addShoppingCart = ({commit}, data) => {
   return new Promise((resolve, reject) => {
     commit('ADD_SHOPPING_CART', data);
   });
 };
 
 // 获取用户推荐
-export const loadRecommend = ({ commit }) => {
+export const loadRecommend = ({commit}) => {
   return new Promise((resolve, reject) => {
     getRecommendGoods().then(response => {
       const data = response;
@@ -101,9 +101,9 @@ export const loadRecommend = ({ commit }) => {
   });
 };
 
-export const loadAddress = ({ commit }) => {
+export const loadAddress = ({commit}) => {
   return new Promise((resolve, reject) => {
-    getUserDeliverAddress({username:1, password:1}).then(response => {
+    getUserDeliverAddress({username: 1, password: 1}).then(response => {
       const address = response;
       commit('SET_USER_ADDRESS', address);
     });
@@ -115,7 +115,7 @@ export const loadAddress = ({ commit }) => {
  * @param commit
  * @returns {Promise<any>}
  */
-export const loadShoppingCart = ({ commit }) => {
+export const loadShoppingCart = ({commit}) => {
   return new Promise((resolve, reject) => {
     getUserShopCartByUserId(1).then(response => {
       const data = response;
@@ -125,7 +125,7 @@ export const loadShoppingCart = ({ commit }) => {
 };
 
 // 添加注册用户
-export const addSignUpUser = ({ commit }, data) => {
+export const registerUser = ({commit}, data) => {
   return new Promise((resolve, reject) => {
     const userArr = localStorage.getItem('users');
     let users = [];
@@ -138,44 +138,29 @@ export const addSignUpUser = ({ commit }, data) => {
 };
 
 // 用户登录
-export const login = ({ commit }, data) => {
+export const login = ({commit}, data) => {
   return new Promise((resolve, reject) => {
-    //  login
-
-    loginUser({username:data.username, password:data.password}).then(response => {
+    loginUser({username: data.username, password: data.password}).then(response => {
       if (response) {
         localStorage.setItem('loginInfo', JSON.stringify(data));
         commit('SET_USER_LOGIN_INFO', data);
         resolve(true);
         return true;
       } else {
-        const userArr = localStorage.getItem('users');
-        if (userArr) {
-          const users = JSON.parse(userArr);
-          for (const item of users) {
-            if (item.username === data.username) {
-              localStorage.setItem('loginInfo', JSON.stringify(item));
-              commit('SET_USER_LOGIN_INFO', item);
-              resolve(true);
-              break;
-            }
-          }
-        } else {
-          resolve(false);
-        }
+        resolve(false);
       }
     });
   });
 };
 
 // 退出登陆
-export const signOut = ({ commit }) => {
+export const signOut = ({commit}) => {
   localStorage.removeItem('loginInfo');
   commit('SET_USER_LOGIN_INFO', {});
 };
 
 // 判断是否登陆
-export const isLogin = ({ commit }) => {
+export const isLogin = ({commit}) => {
   const user = localStorage.getItem('loginInfo');
   if (user) {
     commit('SET_USER_LOGIN_INFO', JSON.parse(user));

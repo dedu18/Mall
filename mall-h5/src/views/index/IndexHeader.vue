@@ -144,7 +144,7 @@ export default {
     },
     signOutFun () {
       this.signOut();
-      this.$router.push('/');
+      this.$router.push('/').catch(err => err);
     }
   },
   store

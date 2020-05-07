@@ -137,9 +137,9 @@
 </template>
 
 <script>
-import Search from '@/components/search/Search';
-import IndexNav from '@/components/index/IndexNav';
-import store from '@/vuex/store';
+import Search from '../search/Search';
+import IndexNav from '../index/IndexNav';
+import store from '../../vuex/store';
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'Index',

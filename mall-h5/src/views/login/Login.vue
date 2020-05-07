@@ -11,7 +11,7 @@
             <p>账户登录</p>
           </div>
           <div class="form-box">
-            <Form ref="formInline" :model="formDate" :rules="ruleInline">
+            <Form ref="form" :model="formDate" :rules="ruleInline">
               <FormItem prop="username">
                 <i-input type="text" v-model="formDate.username" clearable size="large" placeholder="邮箱/用户名/登录手机">
                   <Icon type="person" slot="prepend"></Icon>
@@ -23,7 +23,10 @@
                 </i-input>
               </FormItem>
               <FormItem>
-                <Button type="error" size="large" style="background: #e4393c;font-size: 20px;font-family: 'Microsoft YaHei';" @click="handleSubmit('formInline')" long>登&nbsp;&nbsp;&nbsp;&nbsp;录</Button>
+                <Button type="error" size="large"
+                        style="background: #e4393c;font-size: 20px;font-family: 'Microsoft YaHei';"
+                        @click="handleSubmit('form')" long>登&nbsp;&nbsp;&nbsp;&nbsp;录
+                </Button>
               </FormItem>
             </Form>
           </div>
@@ -35,7 +38,7 @@
 
 <script>
   import store from '@/vuex/store';
-  import {mapMutations, mapActions} from 'vuex';
+  import {mapActions} from 'vuex';
 
   export default {
     name: 'Login',
@@ -57,16 +60,15 @@
       };
     },
     methods: {
-      ...mapMutations(['SET_USER_LOGIN_INFO']),
       ...mapActions(['login']),
-      handleSubmit(name) {
+      handleSubmit(form) {
         const father = this;
-        this.$refs[name].validate((valid) => {
+        this.$refs[form].validate((valid) => {
           if (valid) {
             this.login(father.formDate).then(result => {
               if (result) {
                 this.$Message.success('登录成功');
-                father.$router.push('/');
+                father.$router.push('/').catch(error => error);
               } else {
                 this.$Message.error('账户名与密码不匹配，请重新输入');
               }

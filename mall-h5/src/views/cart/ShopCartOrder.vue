@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import Search from '@/components/search/Search';
-import GoodsListNav from '@/components/goods/GoodsListNav';
+import Search from '../search/Search';
+import GoodsListNav from '../goods/GoodsListNav';
 import store from '@/vuex/store';
 import { mapState, mapActions } from 'vuex';
 export default {

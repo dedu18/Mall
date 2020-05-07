@@ -98,9 +98,9 @@
 </template>
 
 <script>
-  import Search from '@/components/search/Search';
-  import GoodsListNav from '@/components/goods/GoodsListNav';
-  import GoodsCategoryNav from '@/components/goods/GoodsCategoryNav';
+  import Search from '../search/Search';
+  import GoodsListNav from '../goods/GoodsListNav';
+  import GoodsCategoryNav from '../goods/GoodsCategoryNav';
   import store from '@/vuex/store';
   import {mapState, mapActions, mapGetters, mapMutations} from 'vuex';
 

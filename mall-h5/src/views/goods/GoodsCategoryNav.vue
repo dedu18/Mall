@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import {getGoodsNavByCategoryId} from '@/api/goods';
+  import {getGoodsNavByCategoryId} from '../../api/goods';
 
   export default {
   name: 'GoodsCategoryNav',
