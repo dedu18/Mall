@@ -1,9 +1,8 @@
 <template>
-  <!-- 登录页面 -->
   <div>
     <Row class="container">
       <i-col span="13" offset="2" class="login-img-box">
-        <img src="static/img/sale.jpg" alt="">
+        <img src="static/img/login/login.jpg" alt="">
       </i-col>
       <i-col span="7" class="login-box">
         <div class="login-container">
@@ -85,7 +84,7 @@
   .container {
     margin-top: 30px;
     height: 485px;
-    background-color: #fff;
+    background: #e93854;
   }
 
   .login-img-box {
@@ -110,7 +109,7 @@
   .login-container {
     width: 80%;
     height: 280px;
-    border: #ED3F14 solid 1px;
+    background: #fff;
   }
 
   .login-header {

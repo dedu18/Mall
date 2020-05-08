@@ -30,7 +30,7 @@ public class UserSerImpl implements UserService {
 
     @Override
     public Boolean loginUserByUsernameAndPassword(LoginUserVo loginUser) {
-        if (Objects.equals("Dedu", loginUser.getUsername()) && Objects.equals("Aa123456", loginUser.getPassword())) {
+        if (Objects.equals("dedu", loginUser.getUsername()) && Objects.equals("Aa123456", loginUser.getPassword())) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;

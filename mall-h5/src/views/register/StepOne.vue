@@ -1,16 +1,17 @@
 <template>
-  <div class="info-form">
-    <Form ref="formValidate" :model="formValidate" :label-width="80" :rules="ruleValidate">
+  <div class="form">
+    <Form ref="form" :model="form" :label-width="80" :rules="ruleValidate">
       <FormItem label="手机号" prop="phone">
-        <i-input v-model="formValidate.phone" clearable size="large" placeholder="建议使用常用手机号"/>
+        <i-input v-model="form.phone" clearable size="large" placeholder="建议使用常用手机号"/>
       </FormItem>
       <FormItem label="验证码" prop="checkNum">
-        <i-input v-model="formValidate.checkNum" size="large" placeholder="输入验证码">
-          <Button slot="append" :disabled="isDisabledSendCode" style="width: 100px;" @click="sendVerificationCode">{{sendCodeCount === '' ? '发送验证码': sendCodeCount + 's后重新获取'}}
+        <i-input v-model="form.checkNum" size="large" placeholder="输入验证码">
+          <Button slot="append" :disabled="isDisabledSendCode" style="width: 100px;" @click="sendVerificationCode">
+            {{sendCodeCount === '' ? '发送验证码': sendCodeCount + 's后重新获取'}}
           </Button>
         </i-input>
       </FormItem>
-      <Button type="error" size="large" long @click="handleSubmit('formValidate')">验证手机号</Button>
+      <Button type="error" size="large" long @click="handleSubmit('form')">验证手机号</Button>
     </Form>
   </div>
 </template>
@@ -24,7 +25,7 @@
     name: 'StepOne',
     data() {
       return {
-        formValidate: {
+        form: {
           phone: '',
           checkNum: ''
         },
@@ -47,9 +48,9 @@
     methods: {
       ...mapMutations(['SET_REGISTER_SETP']),
       sendVerificationCode() {
-        if (this.formValidate.phone.length === 11) {
+        if (this.form.phone.length === 11) {
           sendVerificationCode({
-            phone: this.formValidate.phone
+            phone: this.form.phone
           }).then(result => {
             if (result) {
               const TIME_COUNT = 120;
@@ -80,7 +81,7 @@
       handleSubmit(name) { // 提交验证
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$router.push({path: '/Register/stepTwo', query: {phone: this.formValidate.phone}});
+            this.$router.push({path: '/Register/stepTwo', query: {phone: this.form.phone}});
             this.SET_REGISTER_SETP(1);
           } else {
             this.$Message.error({
@@ -100,7 +101,7 @@
 </script>
 
 <style scoped>
-  .info-form {
+  .form {
     width: 90% !important;
   }
 </style>

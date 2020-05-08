@@ -116,7 +116,7 @@ export default {
   },
   data () {
     return {
-      city: '珠海',
+      city: '四川',
       cityArr: [
         ['北京', '上海', '天津', '重庆', '河北'],
         ['山西', '河南', '辽宁', '吉林', '黑龙江'],
@@ -172,7 +172,6 @@ export default {
 }
 .nav a {
   text-decoration: none;
-  /*color: #999999;*/
   padding-left: 15px;
   border-left: 1px solid #ccc;
   cursor: pointer;

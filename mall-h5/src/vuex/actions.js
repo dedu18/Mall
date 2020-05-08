@@ -142,6 +142,7 @@ export const login = ({commit}, data) => {
   return new Promise((resolve, reject) => {
     loginUser({username: data.username, password: data.password}).then(response => {
       if (response) {
+        data.password = '';
         localStorage.setItem('loginInfo', JSON.stringify(data));
         commit('SET_USER_LOGIN_INFO', data);
         resolve(true);

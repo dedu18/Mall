@@ -23,7 +23,7 @@
 
   .container p {
     font-size: 90px;
-    color: #2d8cf0;
+    color: #19be6b;
     text-align: center;
   }
 
