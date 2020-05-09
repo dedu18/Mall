@@ -60,9 +60,9 @@ export default {
         address: '',
         phone: '',
         postalcode: '',
-        province: '广东省',
-        city: '广州市',
-        area: '天河区'
+        province: '四川省',
+        city: '成都市',
+        area: '成都区'
       },
       ruleInline: {
         name: [

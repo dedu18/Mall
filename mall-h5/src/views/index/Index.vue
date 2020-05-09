@@ -1,10 +1,11 @@
 <template>
   <div>
-    <!-- 搜索 -->
+    <!-- 上面搜索 -->
     <Search></Search>
+    <!--下面菜单与展示-->
     <div>
+      <!-- 导航菜单和轮播图 -->
       <div class="container">
-        <!-- 导航菜单和轮播图 -->
         <IndexNav></IndexNav>
       </div>
       <!-- 商品活动显示区域 -->

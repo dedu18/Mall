@@ -15,7 +15,7 @@
             <Icon type="ios-home-outline"></Icon>
             首页
           </BreadcrumbItem>
-          <BreadcrumbItem to="/goodsList?sreachData=">
+          <BreadcrumbItem to="/goodsList?searchData=">
             <Icon type="bag"></Icon>
             {{searchItem}}
           </BreadcrumbItem>
@@ -166,8 +166,6 @@
     margin-top: 15px;
     margin-left: 15%;
     margin-right: 15%;
-    /*width: 80%;*/
-    /*min-width: 1000px;*/
   }
 
   .text-danger {
@@ -277,12 +275,6 @@
 
   .goods-list-tool i:hover {
     color: #E4393C;
-  }
-
-  .goods-list-tool-active {
-    color: #fff;
-    border-left: 1px solid #ccc;
-    background-color: #E4393C !important;
   }
 
   .goods-list {

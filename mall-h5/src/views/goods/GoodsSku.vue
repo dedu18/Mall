@@ -86,7 +86,7 @@
         <div class="add-buy-car-box">
           <div class="add-buy-car">
             <InputNumber style="border: 1px solid #b8b8b8;" :min="1" v-model="count" size="large"></InputNumber>
-            <Button type="error" size="large" @click="addShoppingCartBtn()">加入购物车</Button>
+            <Button style="background-color: #E4393C;" type="error" size="large" @click="addShoppingCartBtn()">加入购物车</Button>
           </div>
         </div>
       </div>

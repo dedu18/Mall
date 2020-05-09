@@ -21,7 +21,7 @@ export const SET_SECKILLS_INFO = (state, seckills) => {
 
 // 设置轮播(营销)图
 export const SET_CAROUSELITEMS_INFO = (state, { carouselItems, activity }) => {
-  state.marketing.CarouselItems = carouselItems;
+  state.marketing.carouselItems = carouselItems;
   state.marketing.activity = activity;
 };
 

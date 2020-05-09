@@ -109,10 +109,9 @@ export default {
   },
   methods: {
     changeHeight () {
-      let heightCss = window.getComputedStyle(this.$refs.itemIntroGoods).height;
-      console.log(heightCss);
-      heightCss = parseInt(heightCss.substr(0, heightCss.length - 2)) + 89;
-      this.$refs.itemIntroDetail.style.height = heightCss + 'px';
+      // let heightCss = window.getComputedStyle(this.$refs.itemIntroGoods).height;
+      // heightCss = parseInt(heightCss.substr(0, heightCss.length - 2)) + 89;
+      // this.$refs.itemIntroDetail.style.height = heightCss + 'px';
     }
   },
   updated () {

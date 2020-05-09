@@ -21,14 +21,18 @@ export default new Vuex.Store({
       hot: [],
       goodsDetail: [],
       param: [],
-      remarks: []
+      remarks: [{
+        goodAnalyse: '',
+        remarksTags: [],
+        remarksNumDetail:[]
+      }]
     },
     userInfo: { // 用户信息
       username: ''
     },
     registerStep: 0, // 注册步骤
     marketing: { // 营销
-      CarouselItems: [], // 轮播图
+      carouselItems: [], // 轮播图
       activity: [] // 活动
     },
     seckills: { // 秒杀

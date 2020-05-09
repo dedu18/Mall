@@ -18,6 +18,7 @@
     <!-- 商品Sku信息展示 -->
     <GoodsSku></GoodsSku>
     <!-- 商品Intro详细展示 -->
+    <br/>
     <GoodsSpec></GoodsSpec>
     <Spin size="large" fix v-if="isLoading"></Spin>
   </div>

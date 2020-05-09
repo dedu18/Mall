@@ -6,68 +6,68 @@
       <!-- 侧边导航 -->
       <div class="nav-side">
         <ul>
-          <li @mouseenter="showDetail(0)">
+          <li @mouseenter="showDetail(0)" @mouseleave="hideDetail()">
             <span class="nav-side-item">家用电器</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail()">
             <span class="nav-side-item">手机</span> /
             <span class="nav-side-item">运营商</span> /
             <span class="nav-side-item">数码</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(2)" @mouseleave="hideDetail()">
             <span class="nav-side-item">电脑</span> /
             <span class="nav-side-item">办公</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(3)" @mouseleave="hideDetail()">
             <span class="nav-side-item">家居</span> /
             <span class="nav-side-item">家具</span> /
             <span class="nav-side-item">家装</span> /
             <span class="nav-side-item">厨具</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(4)" @mouseleave="hideDetail()">
             <span class="nav-side-item">男装</span> /
             <span class="nav-side-item">女装</span> /
             <span class="nav-side-item">童装</span> /
             <span class="nav-side-item">内衣</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(5)" @mouseleave="hideDetail()">
             <span class="nav-side-item">美妆个护</span> /
             <span class="nav-side-item">宠物</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(6)" @mouseleave="hideDetail()">
             <span class="nav-side-item">女鞋</span> /
             <span class="nav-side-item">箱包</span> /
             <span class="nav-side-item">钟表</span> /
             <span class="nav-side-item">珠宝</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(7)" @mouseleave="hideDetail()">
             <span class="nav-side-item">男鞋</span> /
             <span class="nav-side-item">运动</span> /
             <span class="nav-side-item">户外</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(8)" @mouseleave="hideDetail()">
             <span class="nav-side-item">汽车</span> /
             <span class="nav-side-item">汽车用品</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(9)" @mouseleave="hideDetail()">
             <span class="nav-side-item">母婴</span> /
             <span class="nav-side-item">玩具乐器</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(10)" @mouseleave="hideDetail()">
             <span class="nav-side-item">食品</span> /
             <span class="nav-side-item">酒类</span> /
             <span class="nav-side-item">生鲜</span> /
             <span class="nav-side-item">特产</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(11)" @mouseleave="hideDetail()">
             <span class="nav-side-item">礼品鲜花</span> /
             <span class="nav-side-item">农资绿植</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(12)" @mouseleave="hideDetail()">
             <span class="nav-side-item">医药保健</span> /
             <span class="nav-side-item">计生情趣</span>
           </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail(1)">
+          <li @mouseenter="showDetail(13)" @mouseleave="hideDetail()">
             <span class="nav-side-item">图书</span> /
             <span class="nav-side-item">音像</span> /
             <span class="nav-side-item">电子书</span>
@@ -79,7 +79,7 @@
         <!-- 幻灯图 -->
         <div>
           <Carousel autoplay loop>
-            <CarouselItem v-for="(item, index) in marketing.CarouselItems" :key="index">
+            <CarouselItem v-for="(item, index) in marketing.carouselItems" :key="index">
               <router-link to="/goodsList">
                 <img :src="item">
               </router-link>
@@ -97,17 +97,14 @@
       </div>
     </div>
     <!-- 导航伸展-->
-    <transition name="fade">
-      <div class="detail-item-panel panel-1" :duration="{ enter: 100, leave: 100 }" v-show="panel"
-           @mouseenter="showDetail(1)" ref="itemPanel1" @mouseleave="hideDetail(1)">
+    <transition>
+      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel" @mouseenter="showDetail(1)" @mouseleave="hideDetail()">
         <div class="nav-detail-item">
           <span v-for="(item, index) in panelData.navTags" :key="index">{{item}} > </span>
         </div>
         <ul>
-          <li v-for="(items, index) in panelData.navItems" :key="index" class="detail-item-row">
-            <span class="detail-item-title">{{items.title}}
-              <span class="glyphicon glyphicon-menu-right"></span>
-            </span>
+          <li class="detail-item-row" v-for="(items, index) in panelData.navItems" :key="index">
+            <span class="detail-item-title">{{items.title}}</span>
             <router-link to="/goodsList" v-for="(item, subIndex) in items.tags" :key="subIndex">
               <span class="detail-item">{{item}}</span>
             </router-link>
@@ -129,7 +126,10 @@
       return {
         panel: false,
         navItems: [],
-        panelData: {},
+        panelData: {
+          navTags: [],
+          navItems: []
+        },
         panelDatas: []
       };
     },
@@ -143,87 +143,23 @@
           this.panelData = this.panelDatas[index];
         }
       },
-      hideDetail(index) {
+      hideDetail() {
         this.panel = false;
-        this.panelData = {};
+        // this.panelData = {};
       }
     },
     mounted() {
       this.navItems = ['秒杀', '优惠券', 'PLUS会员', '品牌闪购', '拍卖', '时尚', '超市', '生鲜', '全球购'];
-
       getAllCategoryNavList(null).then(response => {
         this.panelDatas = response;
       });
-      // {
-      //   navTags: [ '清洁用品', '美妆商城', '美妆馆', '妆比社', '全球购美妆', '宠物馆' ],
-      //   navItems: [
-      //     {
-      //       title: '面部护肤',
-      //       tags: [ '补水保湿', '卸妆', '洁面', '爽肤水', '乳液面霜', '精华', '眼霜', '防晒', '面膜', '剃须', '套装' ]
-      //     },
-      //     {
-      //       title: '洗发护发',
-      //       tags: [ '洗发', '护发', '染发', '造型', '假发', '美发工具', '套装' ]
-      //     },
-      //     {
-      //       title: '身体护理',
-      //       tags: [ '补水保湿', '沐浴', '润肤', '精油', '颈部', '手足', '纤体塑形', '美胸', '套装' ]
-      //     },
-      //     {
-      //       title: '口腔护理',
-      //       tags: [ '牙膏/牙粉', '牙刷/牙线', '漱口水', '套装' ]
-      //     },
-      //     {
-      //       title: '女性护理',
-      //       tags: [ '卫生巾', '卫生护垫', '私密护理', '脱毛膏' ]
-      //     },
-      //     {
-      //       title: '香水彩妆',
-      //       tags: [ 'BB霜', '化妆棉', '女士香水', '男士香水', '底妆', '眉笔', '睫毛膏', '眼线', '眼影', '唇膏/彩' ]
-      //     },
-      //     {
-      //       title: '清洁用品',
-      //       tags: [ '纸品湿巾', '衣物清洁', '清洁工具', '家庭清洁', '一次性用品', '驱虫用品', '皮具护理' ]
-      //     },
-      //     {
-      //       title: '宠物生活',
-      //       tags: [ '水族世界', '狗粮', '猫粮', '猫狗罐头', '狗零食', '猫零食', '医疗保健', '宠物玩具', '宠物服饰' ]
-      //     },
-      //     {
-      //       title: '香水彩妆',
-      //       tags: [ 'BB霜', '化妆棉', '女士香水', '男士香水', '底妆', '眉笔', '睫毛膏', '眼线', '眼影', '唇膏/彩' ]
-      //     },
-      //     {
-      //       title: '清洁用品',
-      //       tags: [ '纸品湿巾', '衣物清洁', '清洁工具', '家庭清洁', '一次性用品', '驱虫用品', '皮具护理' ]
-      //     },
-      //     {
-      //       title: '宠物生活',
-      //       tags: [ '水族世界', '狗粮', '猫粮', '猫狗罐头', '狗零食', '猫零食', '医疗保健', '宠物玩具', '宠物服饰' ]
-      //     }
-      //   ]
-      // });
-      // this.$refs.itemPanel1.style.left =
-      //   this.$refs.navSide.offsetLeft + this.$refs.navSide.offsetWidth + 'px';
-      // this.$refs.itemPanel2.style.left =
-      //   this.$refs.navSide.offsetLeft + this.$refs.navSide.offsetWidth + 'px';
-      // this.$refs.itemPanel1.style.top = this.$refs.navSide.offsetTop + 'px';
-      // this.$refs.itemPanel2.style.top = this.$refs.navSide.offsetTop + 'px';
-    },
-    updated() {
-      // this.$refs.itemPanel1.style.left =
-      //   this.$refs.navSide.offsetLeft + this.$refs.navSide.offsetWidth + 'px';
-      // this.$refs.itemPanel2.style.left =
-      //   this.$refs.navSide.offsetLeft + this.$refs.navSide.offsetWidth + 'px';
-      // this.$refs.itemPanel1.style.top = this.$refs.navSide.offsetTop + 'px';
-      // this.$refs.itemPanel2.style.top = this.$refs.navSide.offsetTop + 'px';
     },
     store
   };
 </script>
 
 <style scoped>
-  .container{
+  .container {
     margin-top: 10px;
   }
 
@@ -302,8 +238,9 @@
   .detail-item-panel {
     width: 815px;
     height: 490px;
-    margin-left: 14%;
+    margin-left: 13%;
     background-color: #fff;
+    box-shadow: darkgrey 5px 5px 15px 3px;
     position: absolute;
     top: 162px;
     left: 389px;
