@@ -1,7 +1,6 @@
 <template>
   <div>
     <Search></Search>
-    <GoodsListNav></GoodsListNav>
     <div class="goods-list-container">
       <Alert show-icon class="tips-box">
         小提示
@@ -163,6 +162,7 @@ export default {
 
 <style scoped>
 .goods-list-container {
+  margin-top: 0.5%;
   margin-left: 15%;
   margin-right: 15%;
 }

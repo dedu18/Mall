@@ -3,7 +3,6 @@
     <Search></Search>
     <!-- 店铺头-->
     <ShopHeader></ShopHeader>
-
     <GoodsDetailNav></GoodsDetailNav>
     <!-- 商品面包屑-->
     <div class="shop-item-path">

@@ -13,7 +13,7 @@
       <div class="nav-item">
         <ul>
           <li v-for="(item,index) in navItems" :key="index">
-            <a href="#">{{item}}</a>
+            <a href="/">{{item}}</a>
           </li>
         </ul>
       </div>

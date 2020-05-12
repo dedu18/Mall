@@ -153,7 +153,6 @@ export default {
 
 <style scoped>
 .nav {
-  margin: 0% auto;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -183,8 +182,12 @@ export default {
   color: #d9534f;
 }
 .nl {
-  margin-left: 20%;
+  margin-left: 15%;
   color: #999999;
+}
+
+.nr {
+  margin-right: 15%;
 }
 .icon {
   color: #d9534f;

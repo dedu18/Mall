@@ -4,14 +4,12 @@
       <!-- 搜索 -->
       <Search></Search>
     </div>
-    <!-- 商品列表导航头 -->
-    <GoodsListNav></GoodsListNav>
     <!-- 商品列表-->
     <div class="container">
       <!-- 面包屑-->
       <div class="bread-crumb">
         <Breadcrumb>
-          <BreadcrumbItem to="/">
+          <BreadcrumbItem to="/" style="color: #666;font-size: 18px;font-weight: 700;font-family: 'microsoft yahei';">
             <Icon type="ios-home-outline"></Icon>
             首页
           </BreadcrumbItem>
@@ -156,10 +154,8 @@
 
 <style scoped>
   .search-container {
-    padding-top: 15px;
     margin: 0px auto;
     margin-bottom: 15px;
-    width: 500px;
   }
 
   .container {
