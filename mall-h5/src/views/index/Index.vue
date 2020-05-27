@@ -23,11 +23,11 @@
             </div>
             <div class="count-down">
               <span class="count-down-text">当前场次</span>
-              <span class="count-down-num count-down-hour">{{ seckillsHours }}</span>
+              <span class="count-down-num">{{ seckillsHours }}</span>
               <span class="count-down-point">:</span>
-              <span class="count-down-num count-down-minute">{{ seckillsMinutes }}</span>
+              <span class="count-down-num">{{ seckillsMinutes }}</span>
               <span class="count-down-point">:</span>
-              <span class="count-down-num count-down-seconds">{{ seckillsSeconds }}</span>
+              <span class="count-down-num">{{ seckillsSeconds }}</span>
               <span class="count-down-text">后结束抢购</span>
             </div>
           </div>

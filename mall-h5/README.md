@@ -17,6 +17,7 @@ npm run build
 ## 页面效果图
 
 #### 首页 
+![image](https://github.com/dedu18/Mall/blob/master/mall-h5/h5.png)
 
 #### 商品搜索页面
 

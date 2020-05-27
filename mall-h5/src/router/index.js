@@ -22,6 +22,14 @@ const Merchant = resolve => require(['../views/shop/Shop'], resolve);
 
 Vue.use(Router);
 
+/**
+ * 重写路由的push方法，解决当前页面路由到当前页面
+ */
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
+
 export default new Router({
   mode: 'history',
   routes: [

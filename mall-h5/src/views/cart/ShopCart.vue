@@ -1,7 +1,6 @@
 <template>
   <div>
     <Search></Search>
-    <GoodsListNav></GoodsListNav>
     <!-- 添加成功提示 -->
     <div class="add-info-box">
       <!-- 商品列表-->

@@ -24,5 +24,5 @@ export const seckillsMinutes = state => {
 
 // 获取秒杀的秒
 export const seckillsSeconds = state => {
-  return state.seckills.deadline.seconds < 10 ? `0${state.seckills.deadline.seconds}` : state.seckills.deadline.seconds;
+  return state.seckills.deadline.seconds < 10 ? '0' + state.seckills.deadline.seconds : state.seckills.deadline.seconds;
 };

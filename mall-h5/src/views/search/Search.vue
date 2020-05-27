@@ -3,7 +3,7 @@
     <div class="logo"/>
     <div class="container">
       <div class="search">
-        <input class="searchIpt" v-model="searchData" size="large" placeholder="输入你想查找的商品"/>
+        <input class="searchIpt" v-model="searchData" placeholder="输入你想查找的商品"/>
         <button class="searchBtn" @click="search">搜索</button>
       </div>
       <div class="hotwords">
@@ -98,7 +98,7 @@
     width: 520px;
     height: 32px;
     border: 2px solid #e2231a;
-    background: #fff;
+    /*background: #fff;*/
   }
 
   .searchIpt {
@@ -107,6 +107,7 @@
     padding: 2px 44px 2px 10px;
     border: 1px solid transparent;
     line-height: 26px;
+    outline-color: transparent;
     font-size: 12px;
   }
 
@@ -120,10 +121,11 @@
     font-size: 18px;
     font-weight: 700;
     color: #fff;
+    outline-color: transparent;
+    cursor: pointer; /*移入时手型指针*/
   }
 
   .hotwords {
-    /*left: 300px;*/
     top: 85px;
     width: 550px;
     height: 20px;
