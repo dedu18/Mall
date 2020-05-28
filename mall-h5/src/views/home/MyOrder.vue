@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Table border :columns="columns" :data="order" size="large" no-data-text="你还有订单，快点去购物吧"></Table>
+    <Table border :columns="columns" :data="order" size="large" no-data-text="你还没有订单，快点去购物吧" />
     <div class="page-size">
-      <Page :total="100" show-sizer></Page>
+      <Page :total="100" show-sizer />
     </div>
   </div>
 </template>
@@ -16,7 +16,52 @@ export default {
         order_id: 1529931938150,
         goods_id: 1529931938150,
         count: 1,
-        img: 'static/img/goodsDetail/pack/1.jpg',
+        img: '/static/img/goodsDetail/pack/1.jpg',
+        package: '4.7英寸-深邃蓝',
+        price: 28,
+        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+        createAt: '2018-06-06 20:06:08'
+      },{
+        order_id: 1529931938150,
+        goods_id: 1529931938150,
+        count: 1,
+        img: '/static/img/goodsDetail/pack/1.jpg',
+        package: '4.7英寸-深邃蓝',
+        price: 28,
+        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+        createAt: '2018-06-06 20:06:08'
+      },{
+        order_id: 1529931938150,
+        goods_id: 1529931938150,
+        count: 1,
+        img: '/static/img/goodsDetail/pack/1.jpg',
+        package: '4.7英寸-深邃蓝',
+        price: 28,
+        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+        createAt: '2018-06-06 20:06:08'
+      },{
+        order_id: 1529931938150,
+        goods_id: 1529931938150,
+        count: 1,
+        img: '/static/img/goodsDetail/pack/1.jpg',
+        package: '4.7英寸-深邃蓝',
+        price: 28,
+        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+        createAt: '2018-06-06 20:06:08'
+      },{
+        order_id: 1529931938150,
+        goods_id: 1529931938150,
+        count: 1,
+        img: '/static/img/goodsDetail/pack/1.jpg',
+        package: '4.7英寸-深邃蓝',
+        price: 28,
+        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+        createAt: '2018-06-06 20:06:08'
+      },{
+        order_id: 1529931938150,
+        goods_id: 1529931938150,
+        count: 1,
+        img: '/static/img/goodsDetail/pack/1.jpg',
         package: '4.7英寸-深邃蓝',
         price: 28,
         title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
@@ -84,6 +129,5 @@ export default {
   margin: 15px 0px;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
 }
 </style>

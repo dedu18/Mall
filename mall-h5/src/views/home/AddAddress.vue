@@ -64,6 +64,7 @@ export default {
   },
   methods: {
     getProvince (data) {
+      console.log(22)
       this.formData.province = data.value;
     },
     getCity (data) {

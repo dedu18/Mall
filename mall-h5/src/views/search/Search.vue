@@ -51,7 +51,7 @@
 <style scoped>
   .logo {
     position: absolute;
-    left: 23%;
+    left: 15%;
     top: 35px;
     background-image: url('../../../static/img/index/logo.jpg');
     width: 150px;

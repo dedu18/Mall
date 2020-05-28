@@ -17,7 +17,7 @@ public class CartSerImpl implements CartService {
         result.add(ShopCartVo.builder()
                 .goodsId(1529931938150L)
                 .count(1)
-                .img("static/img/goodsDetail/pack/1.jpg")
+                .img("/static/img/goodsDetail/pack/1.jpg")
                 .packages("4.7英寸-深邃蓝")
                 .price(new BigDecimal(28.0))
                 .title("苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳")

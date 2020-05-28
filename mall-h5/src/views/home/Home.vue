@@ -10,40 +10,40 @@
             <div class="user-img">
               <img src="/static/img/head.png">
             </div>
-            <p>Dedu</p>
+            <p style="margin-top:10px; font: 700 18px/20px Arial;">Dedu</p>
           </div>
-          <Icon type="location"/>
-          <span style="font-size: 16px;font-weight: bold;">收货地址</span>
-          <div style="margin-left: 10px;font-size: 14px;margin-top: 5px;" name="myAddress">我的收货地址</div>
-          <div style="margin-left: 10px;font-size: 14px;margin-top: 5px;" name="addAddress">添加收货地址</div>
+          <div class="container-menu">
+            <span class="container-left-menu">收货地址</span>
+            <div class="container-left-submenu"  @click="onSelect('myAddress')">我的收货地址</div>
+            <div class="container-left-submenu" @click="onSelect('addAddress')">添加收货地址</div>
+          </div>
 
-          <Icon style="margin-top: 15px;" type="clipboard"/>
-          <span style="font-size: 16px;font-weight: bold;">购物订单</span>
-          <br/>
-          <div style="margin-left: 10px;font-size: 14px;margin-top: 5px;" name="myOrder">我的订单</div>
-
-          <Icon style="margin-top: 15px;" type="ios-cart"/>
-          <span style="font-size: 16px;font-weight: bold;">购物车</span>
-          <div style="margin-left: 10px;font-size: 14px;margin-top: 5px;" name="myShoppingCart">我的购物车</div>
+          <div class="container-menu">
+            <span class="container-left-menu">购物订单</span>
+            <div class="container-left-submenu" @click="onSelect('myOrder')">我的订单</div>
+          </div>
+          <div class="container-menu">
+            <span class="container-left-menu">购物车</span>
+            <div class="container-left-submenu" @click="onSelect('myShoppingCart')">我的购物车</div>
+          </div>
         </div>
       </div>
       <!--右边部分-->
-      <Layout style="margin-top: 1%;margin-left: 2%;">
-        <Header style="background: #fff;">
-          <h2>{{activeTitle}}</h2>
-        </Header>
+      <div class="container-right">
+        <div class="container-right-title">
+          <h3 style="font-size: 16px;color: #333;">{{activeTitle}}</h3>
+        </div>
         <div class="content">
           <transition mode="out-in">
             <router-view></router-view>
           </transition>
         </div>
-      </Layout>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
   import Search from '../search/Search';
 
   export default {
@@ -69,16 +69,13 @@
       Search
     },
     created() {
-      this.onSelect("myAddress");
+      this.onSelect("myOrder");
     }
   };
 </script>
 
 <style scoped>
   .container {
-    margin-top: 1%;
-    margin-left: 15%;
-    margin-right: 15%;
     display: flex;
     flex-direction: row;
     background-color: #F5F5F5;
@@ -89,10 +86,42 @@
     display: flex;
     flex-direction: column;
     width: 15%;
+    margin-left: 3%;
   }
 
-  .side-bar a {
-    color: #232323;
+  .container-menu {
+    background-color: #fff;
+    border-bottom: 1px solid #f3f3f3;
+    padding: 15px 20px;
+  }
+
+  .container-left-menu {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .container-left-submenu {
+    margin-left: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+    line-height: 32px;
+    color: #333;
+  }
+
+  .container-right {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 3%;
+    width: 100%;
+  }
+
+  .container-right-title {
+    background: #fff;
+    border-bottom: 1px solid #f0f3ef;
+    padding: 20px 20px 20px;
   }
 
   .user-icon {
@@ -101,10 +130,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-
-  .user-icon span {
-    font-size: 96px;
+    background-color: #fff;
+    border-bottom: 1px solid #f3f3f3;
   }
 
   .user-img {
@@ -119,7 +146,6 @@
   }
 
   .content {
-    margin: 15px;
-    background-color: #fff;
+    margin-top: 15px;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: #fff;">
     <div class="address-box" v-for="(item, index) in address" :key="index">
       <div class="address-header">
         <span>{{item.name}}</span>
@@ -26,7 +26,7 @@
                 <i-input v-model="formData.name" size="large"></i-input>
               </FormItem>
               <FormItem label="收件地区" prop="address">
-                <Distpicker :province="formData.province" :city="formData.city" :area="formData.area" @province="getProvince" @city="getCity" @area="getArea"></Distpicker>
+                <Distpicker :province="formData.province" :city="formData.city" :area="formData.area" @province="this.getProvince" @city="getCity" @area="getArea"></Distpicker>
               </FormItem>
               <FormItem label="收件地址" prop="address">
                 <i-input v-model="formData.address" size="large"></i-input>
@@ -126,9 +126,8 @@ export default {
 <style scoped>
 .address-box {
   padding: 15px;
-  margin: 15px;
   border-radius: 5px;
-  box-shadow: 0px 0px 5px #ccc;
+  border: 2px solid #e6e6e6;
 }
 .address-header {
   height: 35px;
