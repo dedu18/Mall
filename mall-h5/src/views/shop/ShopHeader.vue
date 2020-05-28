@@ -3,13 +3,10 @@
     <div class="shop-container">
       <div class="shop-title">
         <div class="shop-title-icon">
-          <!--<Icon type="fireball"></Icon>-->
-          <!--<i class="fa fa-fire"></i>-->
-          <img :src="shopIntro.shopImg"/>
+          <img style="width: 100%;height: 100%;background-color: #fff;" :src="shopIntro.shopImg"/>
         </div>
         <div class="shop-title-content">
           <p><router-link to="/merchant">{{ shopIntro.shopName }}</router-link></p>
-          <p><router-link to="/merchant">{{ shopIntro.slogen }}</router-link></p>
         </div>
       </div>
       <div class="shop-another-item">
@@ -34,8 +31,7 @@ export default {
     return {
       shopIntro: {
         shopName: 'Apple 产品京东自营旗舰店',
-        slogen: 'Authorized Reseller 授权经销商',
-        shopImg: 'static/img/shop/1.jpg',
+        shopImg: 'static/img/shop/1.png',
         showGoods: [
           {
             img: 'static/img/goodsList/item-show-1.jpg',
@@ -65,7 +61,6 @@ export default {
 }
 
 .shop-container {
-  /*width: 80%;*/
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -81,7 +76,7 @@ export default {
 }
 
 .shop-title-icon {
-  font-size: 46px;
+  width: 180px;
 }
 
 .shop-title-content {

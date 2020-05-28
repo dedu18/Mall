@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ShopHeader></ShopHeader>
+    <ShopHeader />
     <div class="goods-container">
       <div class="goods-list">
         <div class="goods-show-info" v-for="(item, index) in orderGoodsList" :key="index">

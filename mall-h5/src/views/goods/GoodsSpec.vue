@@ -60,10 +60,10 @@
                   </div>
                 </div>
                 <div class="remarks-bar">
-                  <span>追评({{goodsInfo.remarks.remarksNumDetail[0]}})</span>
-                  <span>好评({{goodsInfo.remarks.remarksNumDetail[1]}})</span>
-                  <span>中评({{goodsInfo.remarks.remarksNumDetail[2]}})</span>
-                  <span>差评({{goodsInfo.remarks.remarksNumDetail[3]}})</span>
+                  <span v-if="goodsInfo.remarks.remarksNumDetail">好评({{goodsInfo.remarks.remarksNumDetail[1]}})</span>
+                  <span v-if="goodsInfo.remarks.remarksNumDetail">中评({{goodsInfo.remarks.remarksNumDetail[2]}})</span>
+                  <span v-if="goodsInfo.remarks.remarksNumDetail">差评({{goodsInfo.remarks.remarksNumDetail[3]}})</span>
+                  <span v-if="goodsInfo.remarks.remarksNumDetail">追评({{goodsInfo.remarks.remarksNumDetail[0]}})</span>
                 </div>
                 <div class="remarks-box" v-for="(item,index) in goodsInfo.remarks.detail" :key="index">
                   <div class="remarks-user">
@@ -315,6 +315,7 @@ export default {
 }
 .remarks-time {
   margin-left: 15px;
+  color: #999;
 }
 .remarks-page {
   margin: 15px;

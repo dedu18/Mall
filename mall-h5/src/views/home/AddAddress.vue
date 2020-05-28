@@ -81,9 +81,9 @@ export default {
 
 <style scoped>
 .add-container {
-  margin: 15px auto;
-  width: 60%;
-  min-width: 600px;
+  /*margin: 15px auto;*/
+  /*width: 60%;*/
+  /*min-width: 600px;*/
 }
 .add-title {
   margin-bottom: 15px;

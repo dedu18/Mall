@@ -29,12 +29,10 @@
           <DropdownMenu slot="list">
               <div class="my-page">
                 <div class="my-info" @click="myInfo">
-                  <Icon type="home"></Icon>
-                  <p>我的主页</p>
+                  我的主页
                 </div>
                 <div class="sign-out" @click="signOutFun">
-                  <Icon type="log-out"></Icon>
-                  <p>退出登录</p>
+                  退出登录
                 </div>
               </div>
           </DropdownMenu>
@@ -289,9 +287,10 @@ export default {
 }
 .my-page {
   padding: 3px 5px;
-  width: 180px;
+  width: 150px;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -306,6 +305,7 @@ export default {
   height: 100%;
   text-align: center;
   cursor: pointer;
+  color: #999;
 }
 .my-info:hover {
   box-shadow: 0px 0px 5px #ccc;
@@ -322,6 +322,7 @@ export default {
   height: 100%;
   text-align: center;
   cursor: pointer;
+  color: #999;
 }
 .sign-out:hover {
   box-shadow: 0px 0px 5px #ccc;
