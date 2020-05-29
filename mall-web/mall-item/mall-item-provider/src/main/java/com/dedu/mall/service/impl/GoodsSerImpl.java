@@ -1,6 +1,5 @@
 package com.dedu.mall.service.impl;
 
-import com.dedu.mall.model.Result;
 import com.dedu.mall.model.h5.CommentInfoVo;
 import com.dedu.mall.model.h5.CommentVo;
 import com.dedu.mall.model.h5.GoodsDetailRspVo;
@@ -199,11 +198,11 @@ public class GoodsSerImpl implements GoodsService {
         List<Integer> remarksNumDetail = CollectionUtils.arrayToList(remarksNumDetailArr);
             // 评价列表
         List<CommentVo> detail = new ArrayList<>();
-        detail.add(CommentVo.builder().username("p****1").values(3.5).content("颜色很好看，质量也不错！，还送了个指环，想不到哦！").goods("4.7英寸-深邃蓝").create_at(LocalDateTime.of(2019,10,24,10,24)).build());
-        detail.add(CommentVo.builder().username("14****1").values(5.0).content("手感没的说，是硬壳，后背带有磨砂手感。很不错，很喜欢，还加送了钢化膜，支架环，物超所值，准备再买一个。").goods("4.7英寸-玫瑰金").create_at(LocalDateTime.of(2019,10,24,10,24)).build());
-        detail.add(CommentVo.builder().username("3****z").values(7.0).content("相当轻薄，店家还送了一大堆配件，*元非常值得！").goods("4.7英寸-深邃蓝").create_at(LocalDateTime.of(2019,10,24,10,24)).build());
-        detail.add(CommentVo.builder().username("gd****c").values(8.0).content("就是我想要的手机壳，壳子很薄，手感不错，就像没装手机壳一样，想要裸机手感的赶快下手了。").goods("4.7英寸-中国红").create_at(LocalDateTime.of(2019,10,24,10,24)).build());
-        detail.add(CommentVo.builder().username("r****b").values(10.0).content("磨砂的，相当漂亮，尺寸非常合适！精工细作！").goods("5.5英寸-星空黑").create_at(LocalDateTime.of(2019,10,24,10,24)).build());
+        detail.add(CommentVo.builder().username("p****1").values(3.5).content("颜色很好看，质量也不错！，还送了个指环，想不到哦！").goods("4.7英寸-深邃蓝").time(LocalDateTime.of(2019,10,24,10,24)).build());
+        detail.add(CommentVo.builder().username("14****1").values(5.0).content("手感没的说，是硬壳，后背带有磨砂手感。很不错，很喜欢，还加送了钢化膜，支架环，物超所值，准备再买一个。").goods("4.7英寸-玫瑰金").time(LocalDateTime.of(2019,10,24,10,24)).build());
+        detail.add(CommentVo.builder().username("3****z").values(7.0).content("相当轻薄，店家还送了一大堆配件，*元非常值得！").goods("4.7英寸-深邃蓝").time(LocalDateTime.of(2019,10,24,10,24)).build());
+        detail.add(CommentVo.builder().username("gd****c").values(8.0).content("就是我想要的手机壳，壳子很薄，手感不错，就像没装手机壳一样，想要裸机手感的赶快下手了。").goods("4.7英寸-中国红").time(LocalDateTime.of(2019,10,24,10,24)).build());
+        detail.add(CommentVo.builder().username("r****b").values(10.0).content("磨砂的，相当漂亮，尺寸非常合适！精工细作！").goods("5.5英寸-星空黑").time(LocalDateTime.of(2019,10,24,10,24)).build());
         CommentInfoVo commentInfo = CommentInfoVo.builder()
                 .goodAnalyse(goodAnalyse)
                 .remarksTags(remarkTags)

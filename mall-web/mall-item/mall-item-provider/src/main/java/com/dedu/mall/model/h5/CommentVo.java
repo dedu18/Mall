@@ -21,6 +21,6 @@ public class CommentVo {
     // 购买商品名
     private String goods;
     // 评价时间
-    private LocalDateTime create_at;
+    private LocalDateTime time;
 
 }

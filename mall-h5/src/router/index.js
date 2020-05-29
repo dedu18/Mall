@@ -15,7 +15,6 @@ const PayDone = resolve => require(['../views/pay/PayDone'], resolve);
 const Freeback = resolve => require(['../views/freeback/Freeback'], resolve);
 const Home = resolve => require(['../views/home/Home'], resolve);
 const MyAddress = resolve => require(['../views/home/MyAddress'], resolve);
-const AddAddress = resolve => require(['../views/home/AddAddress'], resolve);
 const MyOrder = resolve => require(['../views/home/MyOrder'], resolve);
 const MyShoppingCart = resolve => require(['../views/home/MyShoppingCart'], resolve);
 const Merchant = resolve => require(['../views/shop/Shop'], resolve);
@@ -119,11 +118,6 @@ export default new Router({
           path: 'myAddress',
           name: 'MyAddress',
           component: MyAddress
-        },
-        {
-          path: 'addAddress',
-          name: 'AddAddress',
-          component: AddAddress
         },
         {
           path: 'myOrder',

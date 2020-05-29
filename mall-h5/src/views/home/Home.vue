@@ -14,8 +14,7 @@
           </div>
           <div class="container-menu">
             <span class="container-left-menu">收货地址</span>
-            <div class="container-left-submenu"  @click="onSelect('myAddress')">我的收货地址</div>
-            <div class="container-left-submenu" @click="onSelect('addAddress')">添加收货地址</div>
+            <div class="container-left-submenu" @click="onSelect('myAddress')">我的收货地址</div>
           </div>
 
           <div class="container-menu">
@@ -30,14 +29,9 @@
       </div>
       <!--右边部分-->
       <div class="container-right">
-        <div class="container-right-title">
-          <h3 style="font-size: 16px;color: #333;">{{activeTitle}}</h3>
-        </div>
-        <div class="content">
-          <transition mode="out-in">
-            <router-view></router-view>
-          </transition>
-        </div>
+        <transition mode="out-in">
+          <router-view></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -53,7 +47,6 @@
         activeTitle: '我的订单',
         bar: {
           'myAddress': '我的收货地址',
-          'addAddress': '添加收货地址',
           'myOrder': '我的订单',
           'myShoppingCart': '我的购物车'
         }
@@ -69,7 +62,7 @@
       Search
     },
     created() {
-      this.onSelect("myOrder");
+      this.onSelect("myAddress");
     }
   };
 </script>
@@ -110,18 +103,10 @@
   }
 
   .container-right {
-    display: flex;
-    flex-direction: column;
     margin-top: 15px;
     margin-left: 15px;
     margin-right: 3%;
     width: 100%;
-  }
-
-  .container-right-title {
-    background: #fff;
-    border-bottom: 1px solid #f0f3ef;
-    padding: 20px 20px 20px;
   }
 
   .user-icon {
@@ -143,9 +128,5 @@
 
   .user-img img {
     width: 100%;
-  }
-
-  .content {
-    margin-top: 15px;
   }
 </style>

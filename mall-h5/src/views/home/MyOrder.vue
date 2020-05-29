@@ -1,133 +1,146 @@
 <template>
   <div>
-    <Table border :columns="columns" :data="order" size="large" no-data-text="你还没有订单，快点去购物吧" />
+    <div class="container-right-title">
+      <h3 style="font-size: 16px;color: #333;">我的订单</h3>
+    </div>
+    <Table border :columns="columns" :data="order" size="large" no-data-text="你还没有订单，快点去购物吧"/>
     <div class="page-size">
-      <Page :total="100" show-sizer />
+      <Page :total="100" show-sizer/>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'MyOrder',
-  data () {
-    return {
-      order: [{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: '/static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      },{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: '/static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      },{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: '/static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      },{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: '/static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      },{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: '/static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      },{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: '/static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      }],
-      columns: [
-        {
-          title: '订单号',
-          key: 'order_id',
-          width: 180,
-          align: 'center'
-        },
-        {
-          title: '图片',
-          key: 'img',
-          width: 86,
-          render: (h, params) => {
-            return h('div', [
-              h('img', {
-                attrs: {
-                  src: params.row.img
-                }
-              })
-            ]);
+  export default {
+    name: 'MyOrder',
+    data() {
+      return {
+        order: [{
+          order_id: 1529931938150,
+          goods_id: 1529931938150,
+          count: 1,
+          img: '/static/img/goodsDetail/pack/1.jpg',
+          package: '4.7英寸-深邃蓝',
+          price: 28,
+          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+          createAt: '2018-06-06 20:06:08'
+        }, {
+          order_id: 1529931938150,
+          goods_id: 1529931938150,
+          count: 1,
+          img: '/static/img/goodsDetail/pack/1.jpg',
+          package: '4.7英寸-深邃蓝',
+          price: 28,
+          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+          createAt: '2018-06-06 20:06:08'
+        }, {
+          order_id: 1529931938150,
+          goods_id: 1529931938150,
+          count: 1,
+          img: '/static/img/goodsDetail/pack/1.jpg',
+          package: '4.7英寸-深邃蓝',
+          price: 28,
+          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+          createAt: '2018-06-06 20:06:08'
+        }, {
+          order_id: 1529931938150,
+          goods_id: 1529931938150,
+          count: 1,
+          img: '/static/img/goodsDetail/pack/1.jpg',
+          package: '4.7英寸-深邃蓝',
+          price: 28,
+          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+          createAt: '2018-06-06 20:06:08'
+        }, {
+          order_id: 1529931938150,
+          goods_id: 1529931938150,
+          count: 1,
+          img: '/static/img/goodsDetail/pack/1.jpg',
+          package: '4.7英寸-深邃蓝',
+          price: 28,
+          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+          createAt: '2018-06-06 20:06:08'
+        }, {
+          order_id: 1529931938150,
+          goods_id: 1529931938150,
+          count: 1,
+          img: '/static/img/goodsDetail/pack/1.jpg',
+          package: '4.7英寸-深邃蓝',
+          price: 28,
+          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+          createAt: '2018-06-06 20:06:08'
+        }],
+        columns: [
+          {
+            title: '订单号',
+            key: 'order_id',
+            width: 180,
+            align: 'center'
           },
-          align: 'center'
-        },
-        {
-          title: '标题',
-          key: 'title',
-          align: 'center'
-        },
-        {
-          title: '套餐',
-          width: 198,
-          key: 'package',
-          align: 'center'
-        },
-        {
-          title: '数量',
-          key: 'count',
-          width: 68,
-          align: 'center'
-        },
-        {
-          title: '价格',
-          width: 68,
-          key: 'price',
-          align: 'center'
-        },
-        {
-          title: '购买时间',
-          width: 120,
-          key: 'createAt',
-          align: 'center'
-        }
-      ]
-    };
-  }
-};
+          {
+            title: '图片',
+            key: 'img',
+            width: 86,
+            render: (h, params) => {
+              return h('div', [
+                h('img', {
+                  attrs: {
+                    src: params.row.img
+                  }
+                })
+              ]);
+            },
+            align: 'center'
+          },
+          {
+            title: '标题',
+            key: 'title',
+            align: 'center'
+          },
+          {
+            title: '套餐',
+            width: 198,
+            key: 'package',
+            align: 'center'
+          },
+          {
+            title: '数量',
+            key: 'count',
+            width: 68,
+            align: 'center'
+          },
+          {
+            title: '价格',
+            width: 68,
+            key: 'price',
+            align: 'center'
+          },
+          {
+            title: '购买时间',
+            width: 120,
+            key: 'createAt',
+            align: 'center'
+          }
+        ]
+      };
+    }
+  };
 </script>
 
 <style scoped>
-.page-size {
-  margin: 15px 0px;
-  display: flex;
-  justify-content: flex-end;
-}
+
+  .container-right-title {
+    background: #fff;
+    border-bottom: 1px solid #f0f3ef;
+    padding: 20px 20px 20px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+  }
+
+  .page-size {
+    margin: 15px 0px;
+    display: flex;
+    justify-content: flex-end;
+  }
 </style>

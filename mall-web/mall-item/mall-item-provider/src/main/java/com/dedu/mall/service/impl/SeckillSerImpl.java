@@ -50,7 +50,7 @@ public class SeckillSerImpl implements SeckillService {
         result.setInfo(seckillInfoList);
         result.setHours(10);
         result.setMinute(10);
-        result.setSeconds(10);
+        result.setSeconds(19);
         return result;
     }
 }
