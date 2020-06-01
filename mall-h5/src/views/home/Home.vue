@@ -10,7 +10,7 @@
             <div class="user-img">
               <img src="/static/img/head.png">
             </div>
-            <p style="margin-top:10px; font: 700 18px/20px Arial;">Dedu</p>
+            <p style="margin-top:10px; font: 700 14px/25px Arial;">{{userInfo.nackname}}</p>
           </div>
           <div class="container-menu">
             <span class="container-left-menu">收货地址</span>
@@ -39,6 +39,7 @@
 
 <script>
   import Search from '../search/Search';
+  import {mapState} from 'vuex';
 
   export default {
     name: 'Home',
@@ -58,11 +59,14 @@
         this.$router.push(`/home/${name}`);
       }
     },
+    computed: {
+      ...mapState(['userInfo'])
+    },
     components: {
       Search
     },
-    created() {
-      this.onSelect("myAddress");
+    mounted() {
+      this.onSelect('myOrder');
     }
   };
 </script>

@@ -28,7 +28,9 @@ export default new Vuex.Store({
       }]
     },
     userInfo: { // 用户信息
-      username: ''
+      username: '',
+      nackname: '',
+      sessionId: ''
     },
     registerStep: 0, // 注册步骤
     marketing: { // 营销

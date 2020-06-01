@@ -141,12 +141,14 @@ export const registerUser = ({commit}, data) => {
 export const login = ({commit}, data) => {
   return new Promise((resolve, reject) => {
     loginUser({username: data.username, password: data.password}).then(response => {
-      if (response) {
+      console.log(response)
+      if (response && response.isLegal) {
         data.password = '';
+        data.sessionId = response.sessionId;
+        data.nackname = response.nackname;
         localStorage.setItem('loginInfo', JSON.stringify(data));
         commit('SET_USER_LOGIN_INFO', data);
         resolve(true);
-        return true;
       } else {
         resolve(false);
       }

@@ -1,4 +1,4 @@
-package com.dedu.mall.model;
+package com.dedu.mall.model.vo;
 
 import lombok.Builder;
 import lombok.Data;

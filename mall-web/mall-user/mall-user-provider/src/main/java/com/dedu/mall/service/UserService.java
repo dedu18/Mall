@@ -1,17 +1,18 @@
 package com.dedu.mall.service;
 
-import com.dedu.mall.model.DeliveryAddress;
-import com.dedu.mall.model.LoginUserVo;
-import com.dedu.mall.model.RegisterUserVo;
+import com.dedu.mall.model.vo.DeliveryAddress;
+import com.dedu.mall.model.vo.LoginUserResultVo;
+import com.dedu.mall.model.vo.LoginUserVo;
+import com.dedu.mall.model.vo.RegisterUserVo;
 
 import java.util.List;
 
 public interface UserService {
    List<DeliveryAddress> queryUserAddressByUsernamAndPassword(String username, String password);
 
-    Boolean loginUserByUsernameAndPassword(LoginUserVo loginUserVo);
+    LoginUserResultVo userLoginByUsernameAndPassword(LoginUserVo loginUserVo);
 
-    Boolean loginUserByUsernameAndPassword(String username, String password);
+    Boolean userLoginByUsernameAndPassword(String username, String password);
 
     Boolean registerUser(RegisterUserVo registerUserVo);
 

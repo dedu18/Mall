@@ -9,8 +9,8 @@ const url = "http://localhost:9001";
 export function getUserDeliverAddress(params) {
   return http({
     baseURL: url,
-    url:'/api/user/',
-    method:'get',
+    url: '/api/user/addresses',
+    method: 'get',
     params: params
   })
 }
@@ -22,9 +22,9 @@ export function getUserDeliverAddress(params) {
 export function loginUser(datas) {
   return http({
     baseURL: url,
-    url:'/api/user/',
-    method:'post',
-    data:datas
+    url: '/api/user/session',
+    method: 'post',
+    data: datas
   })
 }
 
@@ -35,9 +35,9 @@ export function loginUser(datas) {
 export function registerUser(datas) {
   return http({
     baseURL: url,
-    url:'/api/user/register',
-    method:'post',
-    data:datas
+    url: '/api/user/',
+    method: 'post',
+    data: datas
   })
 }
 
@@ -48,8 +48,8 @@ export function registerUser(datas) {
 export function sendVerificationCode(params) {
   return http({
     baseURL: url,
-    url:'/api/user/code',
-    method:'get',
+    url: '/api/user/code',
+    method: 'get',
     params: params
   })
 }

@@ -1,7 +1,7 @@
 package com.dedu.mall.controller;
 
-import com.dedu.mall.model.LoginUserVo;
-import com.dedu.mall.model.RegisterUserVo;
+import com.dedu.mall.model.vo.LoginUserVo;
+import com.dedu.mall.model.vo.RegisterUserVo;
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.ResultCode;
 import com.dedu.mall.service.UserService;
@@ -23,47 +23,40 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //**********************************分割线，以下为H5前台接口********************************************
-    @GetMapping("/")
-    @ApiOperation(value = "根据用户名密码查询用户地址信息-dedu", notes = "用户")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "string", name = "username", value = "账号", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "string", name = "password", value = "密码", required = true)
-    })
-    public Result queryUserAddressByUsernamAndPassword(@RequestParam @NotBlank String username, @RequestParam @NotBlank String password) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressByUsernamAndPassword(username, password));
-    }
-
-    /**
-     * 用户登录
-     * @param loginUser
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/")
-    @ApiOperation(value = "根据账号密码进行用户登录-dedu", notes = "用户")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "body", dataType = "LoginUserVo", name = "loginUser", value = "账号", required = true),
-    })
-    public Result loginUserByUsernameAndPassword(@RequestBody @Valid LoginUserVo loginUser) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.loginUserByUsernameAndPassword(loginUser));
-    }
-
     /**
      * 用户注册
      * @param registerUserVo
      * @return
      * @throws Exception
      */
-    @PostMapping("/register")
+    @PostMapping("/")
+    @ApiOperation(value = "用户注册-dedu", notes = "用户注册")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", dataType = "LoginUserVo", name = "loginUser", value = "账号", required = true),
+    })
+    public Result registerUser(@RequestBody @Valid RegisterUserVo registerUserVo) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.registerUser(registerUserVo));
+    }
+    /**
+     * 用户登录
+     * @param loginUser
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/session")
     @ApiOperation(value = "根据账号密码进行用户登录-dedu", notes = "用户")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "body", dataType = "LoginUserVo", name = "loginUser", value = "账号", required = true),
     })
-    public Result registerUser(@RequestBody @Valid RegisterUserVo registerUserVo) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.registerUser(registerUserVo));
+    public Result userLoginByUsernameAndPassword(@RequestBody @Valid LoginUserVo loginUser) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.userLoginByUsernameAndPassword(loginUser));
     }
 
+    /**
+     * 获取验证码
+     * @param phone
+     * @return
+     */
     @GetMapping("/code")
     @ApiOperation(value = "根据手机号获取验证码-dedu", notes = "用户")
     @ApiImplicitParams({
@@ -74,19 +67,35 @@ public class UserController {
     }
 
     /**
-     * 用户登录
+     * 获取用户地址信息
+     * @param username
+     * @param password
+     * @return
+     */
+    @GetMapping("/addresses")
+    @ApiOperation(value = "根据用户名密码查询用户地址信息-dedu", notes = "用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "username", value = "账号", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "password", value = "密码", required = true)
+    })
+    public Result queryUserAddressByUsernamAndPassword(@RequestParam @NotBlank String username, @RequestParam @NotBlank String password) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressByUsernamAndPassword(username, password));
+    }
+
+    /**
+     * 后台用户登录
      * @param username
      * @param password
      * @return
      * @throws Exception
      */
-    @GetMapping("/manage")
+    @PostMapping("/manage/session")
     @ApiOperation(value = "根据账号密码进行用户登录-dedu", notes = "用户")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "string", name = "username", value = "账号", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "string", name = "password", value = "账号", required = true),
     })
     public Result loginUserByUsernameAndPassword(@RequestParam @NotBlank String username, @RequestParam @NotBlank String password) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.loginUserByUsernameAndPassword(username, password));
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.userLoginByUsernameAndPassword(username, password));
     }
 }

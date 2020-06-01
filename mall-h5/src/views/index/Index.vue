@@ -188,8 +188,7 @@
 
 <style scoped>
   .container {
-    background: url('../../../static/img/index/indexbgimg.png');
-    background-color: #F6F6F6;
+    background: #F6F6F6 url('../../../static/img/index/indexbgimg.png');
     height: 480px;
   }
 
