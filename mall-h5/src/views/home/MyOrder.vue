@@ -3,77 +3,27 @@
     <div class="container-right-title">
       <h3 style="font-size: 16px;color: #333;">我的订单</h3>
     </div>
-    <Table border :columns="columns" :data="order" size="large" no-data-text="你还没有订单，快点去购物吧"/>
+    <Table border :columns="columns" :data="orders.records" size="large" no-data-text="你还没有订单，快点去购物吧"/>
     <div class="page-size">
-      <Page :total="100" show-sizer/>
+      <Page :total="orders.total" show-sizer/>
     </div>
   </div>
 </template>
 
 <script>
+  import {getAllOrderByPage} from '@/api/order';
   export default {
     name: 'MyOrder',
     data() {
       return {
-        order: [{
-          order_id: 1529931938150,
-          goods_id: 1529931938150,
-          count: 1,
-          img: '/static/img/goodsDetail/pack/1.jpg',
-          package: '4.7英寸-深邃蓝',
-          price: 28,
-          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-          createAt: '2018-06-06 20:06:08'
-        }, {
-          order_id: 1529931938150,
-          goods_id: 1529931938150,
-          count: 1,
-          img: '/static/img/goodsDetail/pack/1.jpg',
-          package: '4.7英寸-深邃蓝',
-          price: 28,
-          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-          createAt: '2018-06-06 20:06:08'
-        }, {
-          order_id: 1529931938150,
-          goods_id: 1529931938150,
-          count: 1,
-          img: '/static/img/goodsDetail/pack/1.jpg',
-          package: '4.7英寸-深邃蓝',
-          price: 28,
-          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-          createAt: '2018-06-06 20:06:08'
-        }, {
-          order_id: 1529931938150,
-          goods_id: 1529931938150,
-          count: 1,
-          img: '/static/img/goodsDetail/pack/1.jpg',
-          package: '4.7英寸-深邃蓝',
-          price: 28,
-          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-          createAt: '2018-06-06 20:06:08'
-        }, {
-          order_id: 1529931938150,
-          goods_id: 1529931938150,
-          count: 1,
-          img: '/static/img/goodsDetail/pack/1.jpg',
-          package: '4.7英寸-深邃蓝',
-          price: 28,
-          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-          createAt: '2018-06-06 20:06:08'
-        }, {
-          order_id: 1529931938150,
-          goods_id: 1529931938150,
-          count: 1,
-          img: '/static/img/goodsDetail/pack/1.jpg',
-          package: '4.7英寸-深邃蓝',
-          price: 28,
-          title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-          createAt: '2018-06-06 20:06:08'
-        }],
+        orders: {
+          total: 0,
+          records: []
+        },
         columns: [
           {
             title: '订单号',
-            key: 'order_id',
+            key: 'id',
             width: 180,
             align: 'center'
           },
@@ -98,31 +48,53 @@
             align: 'center'
           },
           {
-            title: '套餐',
+            title: '订单状态',
             width: 198,
-            key: 'package',
+            key: 'status',
             align: 'center'
           },
           {
-            title: '数量',
-            key: 'count',
+            title: '支付类型',
+            key: 'payType',
             width: 68,
             align: 'center'
           },
           {
-            title: '价格',
-            width: 68,
-            key: 'price',
+            title: '支付金额（元）',
+            key: 'totalPay',
             align: 'center'
           },
           {
             title: '购买时间',
             width: 120,
-            key: 'createAt',
+            key: 'createTime',
             align: 'center'
           }
         ]
       };
+    },
+    methods: {
+      handleSizeChange(size) {
+        this.pageSize = size
+        this.handlePageChange()
+      },
+      handleCurrentChange(currentPage) {
+        this.pageNum = currentPage
+        this.handlePageChange()
+      },
+      handlePageChange: function () {
+        // 分页查询品牌
+        getAllOrderByPage({
+          pageSize: this.pageSize,
+          pageNum: this.pageNum
+        }).then(response => {
+          this.orders.total = response.total
+          this.orders.records = response.records
+        });
+      },
+    },
+    mounted () {
+      this.handlePageChange()
     }
   };
 </script>

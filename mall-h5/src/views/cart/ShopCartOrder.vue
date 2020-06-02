@@ -45,7 +45,7 @@
         <div class="pay-box">
           <p><span>提交订单应付总额：</span> <span class="money"><Icon type="social-yen"></Icon> {{totalPrice.toFixed(2)}}</span></p>
           <div class="pay-btn">
-            <router-link to="/pay"><Button style="background-color: #E4393C;" type="error" size="large">支付订单</Button></router-link>
+            <Button style="background-color: #E4393C;" type="error" size="large" @click="submitOrder">支付订单</Button>
           </div>
         </div>
       </div>
@@ -136,6 +136,9 @@ export default {
     ...mapActions(['loadAddress']),
     select (selection, row) {
       this.goodsCheckList = selection;
+    },
+    submitOrder(data) {
+      this.$router.push('/pay');
     },
     changeAddress (data) {
       const father = this;

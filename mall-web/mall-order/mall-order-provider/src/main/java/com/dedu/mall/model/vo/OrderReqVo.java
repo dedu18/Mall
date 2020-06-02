@@ -1,4 +1,4 @@
-package com.dedu.mall.model.mysql;
+package com.dedu.mall.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderVo {
+public class OrderReqVo {
     private Long id;
     private Long skuId;
     private Long buyerId;

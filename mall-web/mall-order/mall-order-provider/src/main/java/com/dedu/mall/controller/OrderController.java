@@ -2,6 +2,7 @@ package com.dedu.mall.controller;
 
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.ResultCode;
+import com.dedu.mall.model.vo.OrderReqVo;
 import com.dedu.mall.service.OrderService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,7 +20,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     @ApiOperation(value = "分页查询订单-dedu", notes = "订单")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页数"),
@@ -35,7 +36,16 @@ public class OrderController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "订单主键id", required = true)
     })
-    public Result getOrderDetailById(@PathVariable Long id) throws Exception {
+    public Result getOrderDetailById(@PathVariable Long id) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.queryOrderDetailById(id));
+    }
+
+    @PostMapping("/")
+    @ApiOperation(value = "创建订单-dedu", notes = "创建订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", dataType = "OrderVo", name = "orderVo", value = "订单信息", required = true)
+    })
+    public Result createOrderDetailById(@RequestBody OrderReqVo orderReqVo) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.createOrder(orderReqVo));
     }
 }
