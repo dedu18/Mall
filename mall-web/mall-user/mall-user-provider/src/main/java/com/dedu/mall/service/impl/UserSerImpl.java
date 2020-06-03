@@ -1,6 +1,7 @@
 package com.dedu.mall.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dedu.mall.dao.UserDao;
 import com.dedu.mall.enums.UserEnum;
 import com.dedu.mall.model.ServiceException;
@@ -11,15 +12,21 @@ import com.dedu.mall.model.vo.LoginUserVo;
 import com.dedu.mall.model.vo.RegisterUserVo;
 import com.dedu.mall.service.UserService;
 import com.dedu.mall.util.StringUtil;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class UserSerImpl implements UserService {
@@ -105,9 +112,71 @@ public class UserSerImpl implements UserService {
                 .build();
     }
 
+    // 验证单元key
+    public  final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
+    // 验证单元id
+    public  final String Vid = "5ed75a0b206810709d86c00a";
+
+    public  final String Url = "http://0.vaptcha.com/verify";
+
     @Override
-    public Boolean sendVerificationCode(String phone) {
-        System.out.println("已发送验证码1234");
-        return Boolean.TRUE;
+    public Boolean sendVerificationCode(String phone, String token) {
+        Map<String, String> data = buildVaptchaData(token);
+        String result = "";
+        try {
+            result = post(Url, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> map = JSONObject.parseObject(result, Map.class);
+        Integer success = (Integer) map.get("success");
+        Integer score = (Integer) map.get("score");
+        return success == 1 && score >= 50;
+    }
+
+    private Map<String,String> buildVaptchaData(String token) {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("id", Vid);
+        result.put("secretkey", SecretKey);
+        result.put("scene", "0");
+        result.put("token", token);
+        result.put("ip", "127.0.0.1");
+        return result;
+    }
+
+    public String post(String url, Map<String, String> data) throws Exception {
+        // 创建Httpclient对象
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        // 创建http POST请求，访问开源中国
+        HttpPost httpPost = new HttpPost(url);
+
+        // 根据开源中国的请求需要，设置post请求参数
+        List<NameValuePair> parameters = new ArrayList<NameValuePair>(0);
+        data.entrySet().forEach(s -> {
+            parameters.add(new BasicNameValuePair(s.getKey(), s.getValue()));
+        });
+        // 构造一个form表单式的实体
+        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(parameters);
+        // 将请求实体设置到httpPost对象中
+        httpPost.setEntity(formEntity);
+
+        CloseableHttpResponse response = null;
+        String content = "";
+        try {
+            // 执行请求
+            response = httpclient.execute(httpPost);
+            // 判断返回状态是否为200
+            if (response.getStatusLine().getStatusCode() == 200) {
+                // 解析响应体
+                content = EntityUtils.toString(response.getEntity(), "UTF-8");
+            }
+        } finally {
+            if (response != null) {
+                response.close();
+            }
+            // 关闭浏览器
+            httpclient.close();
+        }
+        return content;
     }
 }

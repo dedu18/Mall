@@ -16,5 +16,5 @@ public interface UserService {
 
     Boolean registerUser(RegisterUserVo registerUserVo);
 
-    Boolean sendVerificationCode(String phone);
+    Boolean sendVerificationCode(String phone, String token);
 }

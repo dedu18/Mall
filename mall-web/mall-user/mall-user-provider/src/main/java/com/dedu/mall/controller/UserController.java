@@ -62,8 +62,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "string", name = "phone", value = "手机号", required = true),
     })
-    public Result sendVerificationCode(@RequestParam @NotEmpty String phone) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.sendVerificationCode(phone));
+    public Result sendVerificationCode(@RequestParam @NotEmpty String phone, @RequestParam @NotEmpty String token) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.sendVerificationCode(phone, token));
     }
 
     /**
