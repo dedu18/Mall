@@ -91,6 +91,9 @@ public class UserSerImpl implements UserService {
 
     @Override
     public Boolean registerUser(RegisterUserVo registerUserVo) {
+        if (registerUserVo.getCheckNum() != "1234") {
+            throw new ServiceException(UserEnum.USER_CHECKNUM_ERROR.getCode(), UserEnum.USER_CHECKNUM_ERROR.getMsg());
+        }
         UserEntity userEntityExited = userDao.getUserByUsername(registerUserVo.getUsername());
         if (null != userEntityExited) {
             throw new ServiceException(UserEnum.USER_EXITED.getCode(), UserEnum.USER_EXITED.getMsg());

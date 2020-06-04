@@ -15,7 +15,6 @@
         <module>mall-order</module>
         <module>mall-upload</module>
         <module>mall-user</module>
-        <module>mall-test</module>
     </modules>
 
 

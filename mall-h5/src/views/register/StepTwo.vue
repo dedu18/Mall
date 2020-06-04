@@ -72,14 +72,13 @@
               username: this.formValidate.name,
               password: this.formValidate.password,
               mail: this.formValidate.mail,
-              phone: this.$route.query.phone
+              phone: this.$route.query.phone,
+              checkNum: this.$route.query.checkNum
             };
-            console.log(11)
             registerUserAPI(userinfo).then(result => {
               if (result) {
                 this.registerUser(userinfo);
                 this.$router.push({path: '/Register/stepThree'});
-                current.SET_REGISTER_SETP(2);
               } else {
                 this.$Message.error({
                   content: '请稍后重试',
@@ -87,9 +86,15 @@
                   closable: true
                 });
               }
+            }).catch(result => {
+              this.$Message.error({
+                content: result,
+                duration: 3 * 1000,
+                closable: true
+              });
+              current.$router.push({path: '/Register/stepOne'});
+              current.SET_REGISTER_SETP(0);
             });
-          } else {
-            this.$Message.error('注册失败');
           }
         });
       }

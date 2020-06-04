@@ -75,7 +75,10 @@
       handleSubmit(name) { // 提交验证
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$router.push({path: '/Register/stepTwo', query: {phone: this.form.phone}});
+            this.$router.push({
+              path: '/Register/stepTwo',
+              query: {phone: this.form.phone, checkNum: this.form.checkNum}
+            });
             this.SET_REGISTER_SETP(1);
           } else {
             this.$Message.error({
@@ -156,14 +159,6 @@
     background-color: #eeeeee;
   }
 
-  ​
-  .vaptcha-init-loading {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-
-  ​
   .vaptcha-init-loading > a {
     display: inline-block;
     width: 18px;
@@ -171,12 +166,10 @@
     border: none;
   }
 
-  ​
   .vaptcha-init-loading > a img {
     vertical-align: middle;
   }
 
-  ​
   .vaptcha-init-loading .vaptcha-text {
     font-family: sans-serif;
     font-size: 12px;

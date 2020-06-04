@@ -21,4 +21,6 @@ public class RegisterUserVo {
     private String mail;
     @NotBlank
     private String phone;
+    @NotBlank
+    private String checkNum;
 }
