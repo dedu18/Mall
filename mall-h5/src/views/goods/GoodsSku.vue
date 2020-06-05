@@ -109,6 +109,7 @@ export default {
   },
   computed: {
     ...mapState(['goodsInfo']),
+    ...mapState(['userInfo']),
     hirePurchase () {
       const three = this.price * this.count / 3;
       const sex = this.price * this.count / 6;
@@ -152,11 +153,14 @@ export default {
       const index2 = this.selectBoxIndex % 3;
       const date = new Date();
       const goodsId = date.getTime();
+      console.log(this.userInfo)
       const data = {
-        goods_id: goodsId,
+        sessionId: this.userInfo.sessionId,
+        goodsId: goodsId,
         title: this.goodsInfo.title,
         count: this.count,
-        package: this.goodsInfo.setMeal[index1][index2]
+        img: this.goodsInfo.goodsImg[this.imgIndex],
+        package: "this.goodsInfo.setMeal[index1][index2]"
       };
       this.addShoppingCart(data);
       this.$router.push('/shoppingCart');

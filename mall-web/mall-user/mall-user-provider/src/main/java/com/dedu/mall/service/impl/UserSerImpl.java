@@ -12,6 +12,7 @@ import com.dedu.mall.model.vo.LoginUserVo;
 import com.dedu.mall.model.vo.RegisterUserVo;
 import com.dedu.mall.service.UserService;
 import com.dedu.mall.util.StringUtil;
+import com.dedu.mall.util.UrlUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserSerImpl implements UserService {
@@ -36,6 +38,13 @@ public class UserSerImpl implements UserService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    // 验证单元key
+    public  final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
+    // 验证单元id
+    public  final String Vid = "5ed75a0b206810709d86c00a";
+
+    public  final String Url = "http://0.vaptcha.com/verify";
 
     @Override
     public List<DeliveryAddress> queryUserAddressByUsernamAndPassword(String username, String password) {
@@ -91,7 +100,8 @@ public class UserSerImpl implements UserService {
 
     @Override
     public Boolean registerUser(RegisterUserVo registerUserVo) {
-        if (registerUserVo.getCheckNum() != "1234") {
+        String checkNumCached = stringRedisTemplate.opsForValue().get(registerUserVo.getPhone());
+        if (!Objects.equals(checkNumCached, registerUserVo.getCheckNum())) {
             throw new ServiceException(UserEnum.USER_CHECKNUM_ERROR.getCode(), UserEnum.USER_CHECKNUM_ERROR.getMsg());
         }
         UserEntity userEntityExited = userDao.getUserByUsername(registerUserVo.getUsername());
@@ -115,26 +125,23 @@ public class UserSerImpl implements UserService {
                 .build();
     }
 
-    // 验证单元key
-    public  final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
-    // 验证单元id
-    public  final String Vid = "5ed75a0b206810709d86c00a";
-
-    public  final String Url = "http://0.vaptcha.com/verify";
-
     @Override
     public Boolean sendVerificationCode(String phone, String token) {
         Map<String, String> data = buildVaptchaData(token);
-        String result = "";
+        String postResult = "";
         try {
-            result = post(Url, data);
+            postResult = UrlUtil.post(Url, data);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Map<String, Object> map = JSONObject.parseObject(result, Map.class);
+        Map<String, Object> map = JSONObject.parseObject(postResult, Map.class);
         Integer success = (Integer) map.get("success");
         Integer score = (Integer) map.get("score");
-        return success == 1 && score >= 50;
+        boolean result = success == 1 && score >= 50;
+        if (result) {
+            stringRedisTemplate.opsForValue().set(phone, "1234", 5, TimeUnit.MINUTES);
+        }
+        return result;
     }
 
     private Map<String,String> buildVaptchaData(String token) {
@@ -147,39 +154,5 @@ public class UserSerImpl implements UserService {
         return result;
     }
 
-    public String post(String url, Map<String, String> data) throws Exception {
-        // 创建Httpclient对象
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        // 创建http POST请求，访问开源中国
-        HttpPost httpPost = new HttpPost(url);
 
-        // 根据开源中国的请求需要，设置post请求参数
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>(0);
-        data.entrySet().forEach(s -> {
-            parameters.add(new BasicNameValuePair(s.getKey(), s.getValue()));
-        });
-        // 构造一个form表单式的实体
-        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(parameters);
-        // 将请求实体设置到httpPost对象中
-        httpPost.setEntity(formEntity);
-
-        CloseableHttpResponse response = null;
-        String content = "";
-        try {
-            // 执行请求
-            response = httpclient.execute(httpPost);
-            // 判断返回状态是否为200
-            if (response.getStatusLine().getStatusCode() == 200) {
-                // 解析响应体
-                content = EntityUtils.toString(response.getEntity(), "UTF-8");
-            }
-        } finally {
-            if (response != null) {
-                response.close();
-            }
-            // 关闭浏览器
-            httpclient.close();
-        }
-        return content;
-    }
 }

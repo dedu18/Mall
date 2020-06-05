@@ -3,6 +3,7 @@ import {getGoodsListByCategoryId, getGoodsById, getRecommendGoods} from '../api/
 import {getSeckillInfoList, getSpecialByType} from '../api/market';
 import {getUserDeliverAddress, loginUser} from '../api/user';
 import {getUserShopCartByUserId} from '../api/cart';
+import {addGoodsToShopCart} from '../api/cart';
 
 // 获取轮播(营销)图片
 export const loadCarouselItems = ({commit}) => {
@@ -87,7 +88,9 @@ export const loadGoodsList = ({commit}) => {
 // 添加购物车
 export const addShoppingCart = ({commit}, data) => {
   return new Promise((resolve, reject) => {
-    commit('ADD_SHOPPING_CART', data);
+    addGoodsToShopCart(data).then(response => {
+      commit('ADD_SHOPPING_CART', data);
+    });
   });
 };
 

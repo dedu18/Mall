@@ -3,7 +3,7 @@ import {Message} from 'element-ui'
 
 // 创建axios实例
 const http = axios.create({
-  timeout: 10000
+  timeout: 30000
 })
 
 // respone拦截器
