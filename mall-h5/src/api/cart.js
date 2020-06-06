@@ -6,10 +6,10 @@ const url = "http://localhost:9002";
  * 用户购物车
  * @param id
  */
-export function getUserShopCartByUserId(userId) {
+export function getUserShopCartByUserId(sessionId) {
   return http({
     baseURL: url,
-    url: '/api/cart/' + userId,
+    url: '/api/cart?sessionId=' + sessionId,
     method: 'get',
   })
 }

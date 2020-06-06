@@ -6,7 +6,7 @@ import com.dedu.mall.model.h5.ShopCartVo;
 import java.util.List;
 
 public interface CartService {
-    List<ShopCartVo> queryUserShopCartByUserId(Long userId);
+    List<ShopCartVo> queryUserShopCartBySessionId(String sessionId);
 
     Boolean addGoodsToShopCartOfUser(ShopCarItemVo goodsItem);
 }

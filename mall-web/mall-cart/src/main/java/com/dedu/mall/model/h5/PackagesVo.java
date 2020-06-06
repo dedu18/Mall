@@ -8,14 +8,15 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopCartVo {
-    private Long goodsId;
-    private Integer count;
-    private String img;
-    private PackagesVo packages;
+@Builder
+public class PackagesVo {
+     private String img;
+    private String intro;
+    private Integer num;
     private BigDecimal price;
-    private String title;
+    private String remarks;
+    private String sale;
+    private String shopName;
 }

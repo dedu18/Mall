@@ -153,14 +153,14 @@ export default {
       const index2 = this.selectBoxIndex % 3;
       const date = new Date();
       const goodsId = date.getTime();
-      console.log(this.userInfo)
+      var sessionId = this.userInfo.sessionId;
       const data = {
-        sessionId: this.userInfo.sessionId,
+        sessionId: sessionId,
         goodsId: goodsId,
         title: this.goodsInfo.title,
         count: this.count,
         img: this.goodsInfo.goodsImg[this.imgIndex],
-        package: "this.goodsInfo.setMeal[index1][index2]"
+        packages: this.goodsInfo.setMeal[index1][index2]
       };
       this.addShoppingCart(data);
       this.$router.push('/shoppingCart');

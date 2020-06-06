@@ -14,14 +14,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopCarItemVo {
-    @NotNull
-    @NotBlank
     private String sessionId;
     @NotNull
     private Long goodsId;
     private Integer count;
     private String img;
-    private String packages;
+    private PackagesVo packages;
     private BigDecimal price;
     private String title;
 }

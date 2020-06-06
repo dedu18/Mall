@@ -62,10 +62,10 @@ export default {
     };
   },
   created () {
-    this.loadShoppingCart();
+    this.loadShoppingCart(this.userInfo.sessionId);
   },
   computed: {
-    ...mapState(['shoppingCart'])
+    ...mapState(['shoppingCart', 'userInfo'])
   },
   methods: {
     ...mapActions(['loadShoppingCart']),

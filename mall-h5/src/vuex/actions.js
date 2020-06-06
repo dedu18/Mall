@@ -87,10 +87,8 @@ export const loadGoodsList = ({commit}) => {
 
 // 添加购物车
 export const addShoppingCart = ({commit}, data) => {
-  return new Promise((resolve, reject) => {
-    addGoodsToShopCart(data).then(response => {
-      commit('ADD_SHOPPING_CART', data);
-    });
+  addGoodsToShopCart(data).then(response => {
+    commit('ADD_SHOPPING_CART', data);
   });
 };
 
@@ -114,15 +112,14 @@ export const loadAddress = ({commit}) => {
 };
 
 /**
- * 购物车
+ * 加载购物车
  * @param commit
  * @returns {Promise<any>}
  */
-export const loadShoppingCart = ({commit}) => {
+export const loadShoppingCart = ({commit}, data) => {
   return new Promise((resolve, reject) => {
-    getUserShopCartByUserId(1).then(response => {
-      const data = response;
-      commit('SET_SHOPPING_CART', data);
+    getUserShopCartByUserId(data).then(response => {
+      commit('SET_SHOPPING_CART', response);
     });
   });
 };
@@ -144,7 +141,6 @@ export const registerUser = ({commit}, data) => {
 export const login = ({commit}, data) => {
   return new Promise((resolve, reject) => {
     loginUser({username: data.username, password: data.password}).then(response => {
-      console.log(response)
       if (response && response.isLegal) {
         data.password = '';
         data.sessionId = response.sessionId;

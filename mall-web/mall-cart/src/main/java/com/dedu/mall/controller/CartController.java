@@ -3,7 +3,6 @@ package com.dedu.mall.controller;
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.ResultCode;
 import com.dedu.mall.model.h5.ShopCarItemVo;
-import com.dedu.mall.model.h5.ShopCartVo;
 import com.dedu.mall.service.CartService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -11,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @CrossOrigin
@@ -21,13 +21,13 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/{userId}")
-    @ApiOperation(value = "根据用户Id查询购物车列表-dedu", notes = "购物车")
+    @GetMapping("")
+    @ApiOperation(value = "根据用户会话Id查询购物车列表-dedu", notes = "购物车")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "long", name = "userId", value = "用户主键id", required = true)
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "sessionId", value = "用户会话id", required = true)
     })
-    public Result queryUserShopCartByUserId(@PathVariable Long userId) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), cartService.queryUserShopCartByUserId(userId));
+    public Result queryUserShopCartByUserId(@RequestParam String sessionId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), cartService.queryUserShopCartBySessionId(sessionId));
     }
 
     @PostMapping("/")

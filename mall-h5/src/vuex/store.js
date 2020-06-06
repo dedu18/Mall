@@ -24,10 +24,11 @@ export default new Vuex.Store({
       remarks: [{
         goodAnalyse: '',
         remarksTags: [],
-        remarksNumDetail:[]
+        remarksNumDetail: []
       }]
     },
     userInfo: { // 用户信息
+      sessionId: '',
       username: '',
       nackname: '',
       sessionId: ''
@@ -56,4 +57,5 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations
-});
+})
+;

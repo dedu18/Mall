@@ -154,7 +154,7 @@
       this.loadCarouselItems();
       this.loadComputer();
       this.loadEat();
-      this.loadShoppingCart();
+      this.loadShoppingCart(this.userInfo.sessionId);
     },
     mounted() {
       const father = this;
@@ -172,7 +172,7 @@
       ...mapMutations(['REDUCE_SECKILLS_TIME'])
     },
     computed: {
-      ...mapState(['seckills', 'computer', 'eat']),
+      ...mapState(['seckills', 'computer', 'eat', 'userInfo']),
       ...mapGetters(['seckillsHours', 'seckillsMinutes', 'seckillsSeconds'])
     },
     components: {
@@ -461,11 +461,13 @@
     border-right: 0.5px solid #ccc;
     border-bottom: 0.5px solid #ccc;
   }
-  .item-four-detail:nth-child(2){
+
+  .item-four-detail:nth-child(2) {
     border-left: 0.5px solid #ccc;
     border-bottom: 0.5px solid #ccc;
   }
-  .item-four-detail:nth-child(3){
+
+  .item-four-detail:nth-child(3) {
     border-top: 0.5px solid #ccc;
     border-right: 0.5px solid #ccc;
   }

@@ -11,11 +11,11 @@
         </div>
         <div class="add-info-box-row">
           <div class="add-info-img">
-            <img :src="newShoppingCart.package.img" alt="">
+            <img v-if="newShoppingCart.packages.img" :src="newShoppingCart.packages.img" alt="">
           </div>
           <div class="add-info-intro">
-            <p>{{newShoppingCart.title}} {{newShoppingCart.package.intro}}...</p>
-            <p class="add-info-intro-detail">颜色：{{newShoppingCart.package.intro}}/ 数量：{{newShoppingCart.count}}</p>
+            <p>{{newShoppingCart.title}} {{newShoppingCart.packages.intro}}...</p>
+            <p class="add-info-intro-detail">颜色：{{newShoppingCart.packages.intro}}/ 数量：{{newShoppingCart.count}}</p>
           </div>
         </div>
       </div>
