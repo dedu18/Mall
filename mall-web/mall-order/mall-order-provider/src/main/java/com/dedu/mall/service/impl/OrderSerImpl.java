@@ -13,6 +13,7 @@ import com.dedu.mall.model.mysql.OrderDetailPo;
 import com.dedu.mall.model.mysql.OrderPo;
 import com.dedu.mall.model.mysql.OrderStatusPo;
 import com.dedu.mall.model.vo.OrderReqVo;
+import com.dedu.mall.model.vo.OrderRspVo;
 import com.dedu.mall.service.OrderService;
 import com.dedu.mall.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,14 +65,19 @@ public class OrderSerImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object createOrder(OrderReqVo orderReqVo) {
+    public OrderRspVo createOrder(OrderReqVo orderReqVo) {
+        Long userId = getUserIdBySession(orderReqVo.getSessionId());
         //创建tb_order
         OrderPo orderEntity = buildOrderPo(orderReqVo);
-        orderDao.save(orderEntity);
+//        orderDao.save(orderEntity);
         //创建tb_order_status
-        OrderStatusPo orderStatusPo = buildOrderStatusPo(orderEntity);
+//        OrderStatusPo orderStatusPo = buildOrderStatusPo(orderEntity);
         //创建tb_pay
-        return null;
+        return OrderRspVo.builder().orderId("B4E922C7B22DF5E58E7DBDCDADC56975").totalPrice(new BigDecimal(5999)).build();
+    }
+
+    private Long getUserIdBySession(String sessionId) {
+        return Long.parseLong("1");
     }
 
     private OrderStatusPo buildOrderStatusPo(OrderPo orderEntity) {
@@ -79,12 +86,7 @@ public class OrderSerImpl implements OrderService {
 
     private OrderPo buildOrderPo(OrderReqVo orderReqVo) {
         return OrderPo.builder()
-                .skuId(orderReqVo.getSkuId())
-                .buyerId(orderReqVo.getBuyerId())
-                .num(orderReqVo.getNum())
-                .totalPrice(orderReqVo.getTotalPrice())
                 .sourceType(orderReqVo.getSourceType())
-                .title(orderReqVo.getTitle())
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dedu.mall.model.mysql.OrderAllInfoPo;
 import com.dedu.mall.model.mysql.OrderDetailPo;
 import com.dedu.mall.model.vo.OrderReqVo;
+import com.dedu.mall.model.vo.OrderRspVo;
 
 public interface OrderService {
 
@@ -11,5 +12,5 @@ public interface OrderService {
 
     OrderDetailPo queryOrderDetailById(Long id);
 
-    Object createOrder(OrderReqVo orderReqVo);
+    OrderRspVo createOrder(OrderReqVo orderReqVo);
 }

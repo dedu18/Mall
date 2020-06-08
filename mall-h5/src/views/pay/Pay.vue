@@ -5,11 +5,11 @@
         <Icon type="qr-scanner" slot="icon"></Icon>
         <template slot="desc">
           <div style="display: flex;width: 100%;">
-            订单提交成功，请尽快付款！订单号：123456789
-            <div style="margin-left: 60%;display: flex;">
+            订单提交成功，请尽快付款！订单号：{{orderId}}
+            <div style="margin-left: 50%;display: flex;">
               应付金额
               <div style="color: red;font-size: 16px;font-weight: 700;">
-                5999.00
+                {{totalPrice}}
               </div>
               元
             </div>
@@ -33,8 +33,50 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex';
+  import {createOrder} from '../../api/order';
+
   export default {
-    name: 'Pay'
+    name: 'Pay',
+    data() {
+      return {
+        addressId: '',
+        goodsCheckList: [],
+        orderId: '',
+        totalPrice: ''
+      };
+    },
+    computed: {
+      ...mapState(['userInfo'])
+    },
+    mounted() {
+      this.addressId = this.$route.query.addressId;
+      this.goodsCheckList = this.$route.query.goodsCheckList;
+      const data = {
+        skuId: this.goodsCheckList,
+        sessionId: this.userInfo.sessionId,
+        addressId: this.addressId
+      }
+      createOrder(data).then(result => {
+        if (result) {
+          //创单成功
+          this.orderId = result.orderId;
+          this.totalPrice = result.totalPrice;
+        } else {
+          this.$Message.error({
+            content: '请稍后重试',
+            duration: 5000,
+            closable: true
+          });
+        }
+      }).catch(result => {
+        this.$Message.error({
+          content: result,
+          duration: 3000,
+          closable: true
+        });
+      });
+    },
   };
 </script>
 

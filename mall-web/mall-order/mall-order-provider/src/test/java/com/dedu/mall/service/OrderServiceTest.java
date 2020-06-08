@@ -16,12 +16,7 @@ public class OrderServiceTest extends BaseTest {
     @Test
     public void createOrder() {
         OrderReqVo orderReqVo = OrderReqVo.builder()
-                .skuId(1L)
-                .buyerId(11L)
-                .num(1)
-                .totalPrice(new BigDecimal(5000))
                 .sourceType(1)
-                .title("测试")
                 .build();
         Object order = orderService.createOrder(orderReqVo);
         Assert.assertEquals(null, order);
