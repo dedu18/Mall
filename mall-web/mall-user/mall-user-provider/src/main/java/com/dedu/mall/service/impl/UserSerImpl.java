@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -38,6 +39,9 @@ public class UserSerImpl implements UserService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    HttpServletRequest request;
 
     // 验证单元key
     public  final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
@@ -73,16 +77,17 @@ public class UserSerImpl implements UserService {
     private LoginUserResultVo getSessionOfCheckResult(boolean isLegal, UserEntity userEntityExited) {
         LoginUserResultVo result = LoginUserResultVo.builder().build();
         if (isLegal) {
-            cacheUserInfo(userEntityExited);
+            String sessionId = request.getSession().getId();
+            cacheUserInfo(sessionId, userEntityExited);
             result.setLegal(true);
-            result.setSessionId(userEntityExited.getId());
+            result.setSessionId(sessionId);
             result.setNackname(userEntityExited.getNackname());
         }
         return result;
     }
 
-    private void cacheUserInfo(UserEntity userEntityExited) {
-        stringRedisTemplate.opsForValue().set(userEntityExited.getId(), JSON.toJSONString(userEntityExited), Duration.ofMinutes(30));
+    private void cacheUserInfo(String sessionId, UserEntity userEntityExited) {
+        stringRedisTemplate.opsForValue().set(sessionId, JSON.toJSONString(userEntityExited), Duration.ofMinutes(30));
     }
 
     private boolean checkUserPassword(LoginUserVo loginUser, UserEntity userEntityExited) {

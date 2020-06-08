@@ -1,10 +1,13 @@
 package com.dedu.mall.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dedu.mall.model.h5.ShopCarItemVo;
 import com.dedu.mall.model.h5.ShopCartVo;
 import com.dedu.mall.service.CartService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +18,8 @@ import java.util.*;
 public class CartSerImpl implements CartService {
 
 
-
     @Autowired
-    HttpServletRequest request;
+    private StringRedisTemplate stringRedisTemplate;
 
     private Map<Long, List<ShopCartVo>> carCache = new HashMap<>();
 
@@ -43,12 +45,12 @@ public class CartSerImpl implements CartService {
     }
 
     private Long getUserIdBySession(String sessionId) {
-        if (StringUtils.isEmpty(sessionId)) {
-            String ip = request.getRemoteAddr();
-            String ipString = ip.replace(":", "").replace(".", "");
-            return Long.parseLong(ipString);
+        String userInfoJson = stringRedisTemplate.opsForValue().get(sessionId);
+        if (StringUtils.isBlank(userInfoJson)) {
+            return null;
         }
-        return Long.parseLong("1");
+        Map map = JSON.parseObject(userInfoJson, Map.class);
+        return Long.parseLong(map.get("id").toString());
     }
 
     private ShopCartVo convertShopCarItemToVo(ShopCarItemVo goodsItem) {

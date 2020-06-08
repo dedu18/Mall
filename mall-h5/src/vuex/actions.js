@@ -159,6 +159,8 @@ export const login = ({commit}, data) => {
 export const signOut = ({commit}) => {
   localStorage.removeItem('loginInfo');
   commit('SET_USER_LOGIN_INFO', {});
+  const resetShoppingCart = [];
+  commit('SET_SHOPPING_CART', resetShoppingCart);
 };
 
 // 判断是否登陆
