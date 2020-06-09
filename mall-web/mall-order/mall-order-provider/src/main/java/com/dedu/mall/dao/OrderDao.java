@@ -24,7 +24,11 @@ public class OrderDao extends ServiceImpl<OrderMapper, OrderPo> {
         return orderMapper.getOrderAllInfoCount();
     }
 
-    public OrderDetailPo getOrderDetailInfoById(Long id) {
+    public OrderDetailPo getOrderDetailInfoById(String id) {
         return orderMapper.getOrderDetailInfoById(id);
+    }
+
+    public Integer getOrderStatusByOrderId(String id) {
+        return orderMapper.getOrderStatusByOrderId(id);
     }
 }

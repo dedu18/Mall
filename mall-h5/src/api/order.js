@@ -19,6 +19,14 @@ export function getOrderDetail(id) {
   })
 }
 
+export function getOrderStatus(id) {
+  return http({
+    baseURL: url,
+    url: '/api/order/status/' + id,
+    method: 'get'
+  })
+}
+
 export function createOrder(datas) {
   return http({
     baseURL: url,

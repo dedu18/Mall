@@ -22,8 +22,11 @@
     name: 'PayDone',
     data() {
       return {
-        "orderId": "123213124"
+        orderId: ''
       }
+    },
+    mounted() {
+      this.orderId = this.$route.params.orderId
     }
   };
 </script>

@@ -14,8 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class OrderReqVo {
-    private String skuId;
+    private String skuIds;
     private String sessionId;
     private Long addressId;
+    //订单来源：1:app端，2：pc端，3：微信端
     private Integer sourceType;
 }

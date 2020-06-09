@@ -147,7 +147,7 @@
     },
     methods: {
       ...mapActions(['addShoppingCart']),
-      select(index1, index2) {
+      selectGoods(index1, index2) {
         this.selectBoxIndex = index1 * 3 + index2;
         this.price = this.goodsInfo.setMeal[index1][index2].price;
       },

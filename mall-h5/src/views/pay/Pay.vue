@@ -34,34 +34,60 @@
 
 <script>
   import {mapState} from 'vuex';
-  import {createOrder} from '../../api/order';
+  import {getOrderStatus, createOrder} from '../../api/order';
 
   export default {
     name: 'Pay',
     data() {
       return {
-        addressId: '',
-        goodsCheckList: [],
         orderId: '',
-        totalPrice: ''
+        totalPrice: '',
+        timer: ''
       };
+    },
+    methods: {
+      syncOrderStatus() {
+        if ('' != this.orderId) {
+          let father = this;
+          getOrderStatus(father.orderId).then(response => {
+            console.log(response)
+            if (response != null && response != 1) {
+              clearInterval(father.timer);
+              father.$router.push({
+                name: 'PayDone',
+                params: {
+                  orderId: father.orderId
+                }
+              });
+            }
+          }).catch(err => {
+            this.$Message.info({
+              content: '请到订单中心查看订单支付结果！',
+              duration: 5000,
+              closable: true
+            });
+            clearInterval(father.timer);
+          });
+        }
+      }
     },
     computed: {
       ...mapState(['userInfo'])
     },
     mounted() {
-      this.addressId = this.$route.query.addressId;
-      this.goodsCheckList = this.$route.query.goodsCheckList;
+      let father = this;
       const data = {
-        skuId: this.goodsCheckList,
-        sessionId: this.userInfo.sessionId,
-        addressId: this.addressId
+        skuIds: father.$route.params.skuIds,
+        sessionId: father.userInfo.sessionId,
+        addressId: father.$route.params.addressId,
+        sourceType: 2
       }
       createOrder(data).then(result => {
         if (result) {
           //创单成功
-          this.orderId = result.orderId;
-          this.totalPrice = result.totalPrice;
+          father.orderId = result.orderId;
+          father.totalPrice = result.totalPrice;
+          father.timer = setInterval(this.syncOrderStatus, 5000);
         } else {
           this.$Message.error({
             content: '请稍后重试',

@@ -7,7 +7,7 @@
         <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
         <template slot="desc">请点击商品前的选择框，选择购物车中的商品，点击付款即可。</template>
       </Alert>
-      <Table border ref="selection" :columns="columns" :data="shoppingCart" size="large" @on-selection-change="select"
+      <Table border ref="selection" :columns="columns" :data="shoppingCart" size="large" @on-selection-change="selectGoods"
              no-data-text="您的购物车没有商品，请先添加商品到购物车再点击购买"></Table>
       <div class="address-container">
         <h3>收货人信息</h3>
@@ -72,7 +72,7 @@
     },
     data() {
       return {
-        goodsCheckList: [],
+        goodsSelectedList: [],
         columns: [
           {
             type: 'selection',
@@ -130,7 +130,7 @@
       ...mapState(['address', 'shoppingCart']),
       totalPrice() {
         let price = 0;
-        this.goodsCheckList.forEach(item => {
+        this.goodsSelectedList.forEach(item => {
           price += item.price * item.count;
         });
         return price;
@@ -138,20 +138,23 @@
     },
     methods: {
       ...mapActions(['loadAddress']),
-      select(selection, row) {
-        this.goodsCheckList = selection;
+      selectGoods(selection, row) {
+        this.goodsSelectedList = selection;
       },
-      submitOrder(data) {
-        if (this.goodsCheckList.length == 0) {
+      submitOrder() {
+        if (this.goodsSelectedList.length == 0) {
           this.$Message.error('请选择下单商品！');
         } else if (this.checkAddress.addressId == '') {
           this.$Message.error('请选择收货地址！');
         } else {
+          var selectedGoodsIdList = this.goodsSelectedList.map(function (item) {
+            return item.goodsId;
+          });
           this.$router.push({
-            path: '/pay',
-            query: {
+            name: 'Pay',
+            params: {
               addressId: this.checkAddress.addressId,
-              goodsCheckList: JSON.stringify(this.goodsCheckList)
+              skuIds: JSON.stringify(selectedGoodsIdList)
             }
           });
         }

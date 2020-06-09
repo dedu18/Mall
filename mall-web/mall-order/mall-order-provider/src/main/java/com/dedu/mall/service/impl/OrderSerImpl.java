@@ -2,9 +2,7 @@ package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dedu.mall.dao.OrderDao;
-import com.dedu.mall.dao.mapper.OrderMapper;
 import com.dedu.mall.feign.SkuFeignClient;
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.SkuVo;
@@ -53,7 +51,7 @@ public class OrderSerImpl implements OrderService {
     }
 
     @Override
-    public OrderDetailPo queryOrderDetailById(Long id) {
+    public OrderDetailPo queryOrderDetailById(String id) {
         OrderDetailPo result = orderDao.getOrderDetailInfoById(id);
         if (null != result.getSkuId()) {
             Result<SkuVo> remoteRstData = skuFeignClient.getSkuById(result.getSkuId());
@@ -73,7 +71,7 @@ public class OrderSerImpl implements OrderService {
         //创建tb_order_status
 //        OrderStatusPo orderStatusPo = buildOrderStatusPo(orderEntity);
         //创建tb_pay
-        return OrderRspVo.builder().orderId("B4E922C7B22DF5E58E7DBDCDADC56975").totalPrice(new BigDecimal(5999)).build();
+        return OrderRspVo.builder().orderId("2").totalPrice(new BigDecimal(5999)).build();
     }
 
     private Long getUserIdBySession(String sessionId) {
@@ -90,5 +88,10 @@ public class OrderSerImpl implements OrderService {
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();
+    }
+
+    @Override
+    public Integer queryOrderStatusByOrderId(String orderId) {
+        return orderDao.getOrderStatusByOrderId(orderId);
     }
 }

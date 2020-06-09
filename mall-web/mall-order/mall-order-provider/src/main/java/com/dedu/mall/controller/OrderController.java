@@ -34,10 +34,19 @@ public class OrderController {
     @GetMapping("/{id}")
     @ApiOperation(value = "根据订单Id获取详情信息-dedu", notes = "订单")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "订单主键id", required = true)
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "id", value = "订单主键id", required = true)
     })
-    public Result getOrderDetailById(@PathVariable Long id) {
+    public Result getOrderDetailById(@PathVariable String id) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.queryOrderDetailById(id));
+    }
+
+    @GetMapping("/status/{orderId}")
+    @ApiOperation(value = "根据订单Id获取详情信息-dedu", notes = "订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "string", name = "orderId", value = "订单主键id", required = true)
+    })
+    public Result getOrderStatusById(@PathVariable String orderId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.queryOrderStatusByOrderId(orderId));
     }
 
     @PostMapping("/")

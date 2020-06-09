@@ -10,7 +10,9 @@ public interface OrderService {
 
     IPage<OrderAllInfoPo> getOrderPage(Integer pageNum, Integer pageSize);
 
-    OrderDetailPo queryOrderDetailById(Long id);
+    OrderDetailPo queryOrderDetailById(String id);
 
     OrderRspVo createOrder(OrderReqVo orderReqVo);
+
+    Integer queryOrderStatusByOrderId(String orderId);
 }
