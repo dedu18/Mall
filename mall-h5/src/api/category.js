@@ -11,6 +11,14 @@ export function getAllCategoryNavList (params) {
   });
 }
 
+export function getAllParentCategoryNavList () {
+  return http({
+    baseURL: url,
+    url: '/api/category/h5/parent/list',
+    method: 'get'
+  });
+}
+
 export function getAllNavigationPictureList (params) {
   return http({
     baseURL: url,

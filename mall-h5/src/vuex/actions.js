@@ -103,11 +103,9 @@ export const loadRecommend = ({commit}) => {
 };
 
 export const loadAddress = ({commit}) => {
-  return new Promise((resolve, reject) => {
-    getUserDeliverAddress({username: 1, password: 1}).then(response => {
-      const address = response;
-      commit('SET_USER_ADDRESS', address);
-    });
+  getUserDeliverAddress({username: 1, password: 1}).then(response => {
+    const address = response;
+    commit('SET_USER_ADDRESS', address);
   });
 };
 

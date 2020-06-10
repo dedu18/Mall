@@ -13,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryNavVo {
+    //上面标题
     private List<String> navTags;
+    //下面列表
     private List<CategoryNavItem> navItems;
 }

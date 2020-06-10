@@ -84,18 +84,16 @@ public class UserController {
 
     /**
      * 后台用户登录
-     * @param username
-     * @param password
+     * @param loginUser
      * @return
      * @throws Exception
      */
     @PostMapping("/manage/session")
     @ApiOperation(value = "根据账号密码进行用户登录-dedu", notes = "用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "string", name = "username", value = "账号", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "string", name = "password", value = "账号", required = true),
+            @ApiImplicitParam(paramType = "body", dataType = "LoginUserVo", name = "loginUser", value = "账号", required = true),
     })
-    public Result loginUserByUsernameAndPassword(@RequestParam @NotBlank String username, @RequestParam @NotBlank String password) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.userLoginByUsernameAndPassword(username, password));
+    public Result loginUserByUsernameAndPassword(@RequestBody @Valid LoginUserVo loginUser) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.userLoginByUsernameAndPassword(loginUser.getUsername(), loginUser.getPassword()));
     }
 }

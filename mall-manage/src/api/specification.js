@@ -1,5 +1,5 @@
 import http from '@/utils/http'
-const url = "http://localhost:8080"
+const url = "http://localhost:9003"
 export function getSpecGroupByCatId(id) {
   return http({
     baseURL: url,

@@ -6,71 +6,8 @@
       <!-- 侧边导航 -->
       <div class="nav-side">
         <ul>
-          <li @mouseenter="showDetail(0)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">家用电器</span>
-          </li>
-          <li @mouseenter="showDetail(1)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">手机</span> /
-            <span class="nav-side-item">运营商</span> /
-            <span class="nav-side-item">数码</span>
-          </li>
-          <li @mouseenter="showDetail(2)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">电脑</span> /
-            <span class="nav-side-item">办公</span>
-          </li>
-          <li @mouseenter="showDetail(3)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">家居</span> /
-            <span class="nav-side-item">家具</span> /
-            <span class="nav-side-item">家装</span> /
-            <span class="nav-side-item">厨具</span>
-          </li>
-          <li @mouseenter="showDetail(4)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">男装</span> /
-            <span class="nav-side-item">女装</span> /
-            <span class="nav-side-item">童装</span> /
-            <span class="nav-side-item">内衣</span>
-          </li>
-          <li @mouseenter="showDetail(5)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">美妆个护</span> /
-            <span class="nav-side-item">宠物</span>
-          </li>
-          <li @mouseenter="showDetail(6)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">女鞋</span> /
-            <span class="nav-side-item">箱包</span> /
-            <span class="nav-side-item">钟表</span> /
-            <span class="nav-side-item">珠宝</span>
-          </li>
-          <li @mouseenter="showDetail(7)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">男鞋</span> /
-            <span class="nav-side-item">运动</span> /
-            <span class="nav-side-item">户外</span>
-          </li>
-          <li @mouseenter="showDetail(8)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">汽车</span> /
-            <span class="nav-side-item">汽车用品</span>
-          </li>
-          <li @mouseenter="showDetail(9)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">母婴</span> /
-            <span class="nav-side-item">玩具乐器</span>
-          </li>
-          <li @mouseenter="showDetail(10)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">食品</span> /
-            <span class="nav-side-item">酒类</span> /
-            <span class="nav-side-item">生鲜</span> /
-            <span class="nav-side-item">特产</span>
-          </li>
-          <li @mouseenter="showDetail(11)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">礼品鲜花</span> /
-            <span class="nav-side-item">农资绿植</span>
-          </li>
-          <li @mouseenter="showDetail(12)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">医药保健</span> /
-            <span class="nav-side-item">计生情趣</span>
-          </li>
-          <li @mouseenter="showDetail(13)" @mouseleave="hideDetail()">
-            <span class="nav-side-item">图书</span> /
-            <span class="nav-side-item">音像</span> /
-            <span class="nav-side-item">电子书</span>
+          <li style="padding: 1px 15px 4px 20px;" v-for="(items, index) in parentNavItems" :key="items.id" @mouseenter="showDetail(items.id)" @mouseleave="hideDetail(items.id)">
+            <span class="nav-side-item">{{items.name}}</span>
           </li>
         </ul>
       </div>
@@ -98,9 +35,10 @@
     </div>
     <!-- 导航伸展-->
     <transition>
-      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel" @mouseenter="showDetail(1)" @mouseleave="hideDetail()">
+      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel" @mouseenter="showDetail(1)"
+           @mouseleave="hideDetail()">
         <div class="nav-detail-item">
-          <span v-for="(item, index) in panelData.navTags" :key="index">{{item}} > </span>
+          <span v-for="(item, index) in panelData.navTags" :key="index">{{item}}> </span>
         </div>
         <ul>
           <li class="detail-item-row" v-for="(items, index) in panelData.navItems" :key="index">
@@ -118,19 +56,19 @@
 <script>
   import store from '@/vuex/store';
   import {mapState} from 'vuex';
-  import {getAllCategoryNavList} from '@/api/category';
+  import {getAllCategoryNavList, getAllParentCategoryNavList} from '@/api/category';
 
   export default {
     name: 'IndexNav',
     data() {
       return {
+        parentNavItems:[],
         panel: false,
         navItems: [],
         panelData: {
           navTags: [],
           navItems: []
-        },
-        panelDatas: []
+        }
       };
     },
     computed: {
@@ -139,19 +77,21 @@
     methods: {
       showDetail(index) {
         this.panel = true;
-        if (this.panelDatas.length > index) {
-          this.panelData = this.panelDatas[index];
-        }
+        getAllCategoryNavList({
+          parentId: index
+        }).then(response => {
+          this.panelData = response;
+        });
       },
       hideDetail() {
         this.panel = false;
-        // this.panelData = {};
+        this.panelData = {};
       }
     },
     mounted() {
       this.navItems = ['秒杀', '优惠券', 'PLUS会员', '品牌闪购', '拍卖', '时尚', '超市', '生鲜', '全球购'];
-      getAllCategoryNavList(null).then(response => {
-        this.panelDatas = response;
+      getAllParentCategoryNavList().then(response => {
+        this.parentNavItems = response;
       });
     },
     store

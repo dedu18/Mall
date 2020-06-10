@@ -3,6 +3,7 @@ package com.dedu.mall.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dedu.mall.dao.CategoryMapper;
+import com.dedu.mall.model.h5.CategoryParentVo;
 import com.dedu.mall.model.mysql.*;
 import com.dedu.mall.service.CategoryService;
 import org.springframework.beans.BeanUtils;
@@ -11,36 +12,42 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> implements CategoryService {
 
     @Override
-    public List<CategoryNavVo> getAllCategoryNavList() {
-        List<CategoryNavVo> result = new ArrayList<>(14);
-
-        String[] navTagArr = {"清洁用品", "美妆商城", "美妆馆", "妆比社", "全球购美妆", "宠物馆"};
+    public CategoryNavVo getCategoryNavTreeByParentCategoryId(Integer parentId) {
+        String[] navTagArr = {"618活动", "惊爆降价", "跳楼甩卖", "全球购"};
         List<String> navTags = CollectionUtils.arrayToList(navTagArr);
-
         List<CategoryNavItem> navItems = new ArrayList<>();
-        navItems.add(createCategoryNavItem("面部护肤",
-                new String[]{"补水保湿", "卸妆", "洁面", "爽肤水", "乳液面霜", "精华", "眼霜", "防晒", "面膜", "剃须", "套装"}));
-        navItems.add(createCategoryNavItem("洗发护发",
-                new String[]{"洗发", "护发", "染发", "造型", "假发", "美发工具", "套装"}));
-        navItems.add(createCategoryNavItem("身体护理",
-                new String[]{"补水保湿", "沐浴", "润肤", "精油", "颈部", "手足", "纤体塑形", "美胸", "套装"}));
-        navItems.add(createCategoryNavItem("口腔护理",
-                new String[]{"牙膏/牙粉", "牙刷/牙线", "漱口水", "套装"}));
-        navItems.add(createCategoryNavItem("香水彩妆",
-                new String[]{"BB霜", "化妆棉", "女士香水", "男士香水", "底妆", "眉笔", "睫毛膏", "眼线", "眼影", "唇膏/彩"}));
-
-        result.add(CategoryNavVo.builder().navTags(navTags).navItems(navItems).build());
-        return result;
+        // 第二层类目
+        List<CategoryPo> catPoList = getAllCategoryByParentId(parentId.longValue());
+        for (CategoryPo catPo : catPoList) {
+            if (null != catPo.getIsParent() && catPo.getIsParent()) {
+                // 第三层类目
+                List<CategoryPo> innerCategoryList = getAllCategoryByParentId(catPo.getId());
+                List<String> tags = innerCategoryList.stream()
+                        .sorted(Comparator.comparing(CategoryPo::getSort))
+                        .map(CategoryPo::getName)
+                        .limit(8)
+                        .collect(Collectors.toList());
+                CategoryNavItem categoryNavItem = createCategoryNavItem(catPo.getName(), tags);
+                navItems.add(categoryNavItem);
+            }
+        }
+        return CategoryNavVo.builder().navTags(navTags).navItems(navItems).build();
     }
 
     private CategoryNavItem createCategoryNavItem(String title, String[] navItemTagArr) {
         List<String> navItemTags = CollectionUtils.arrayToList(navItemTagArr);
+        return CategoryNavItem.builder().title(title).tags(navItemTags).build();
+    }
+
+    private CategoryNavItem createCategoryNavItem(String title, List<String> navItemTags) {
         return CategoryNavItem.builder().title(title).tags(navItemTags).build();
     }
 
@@ -65,8 +72,8 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
         // 第一层类目
         List<CategoryPo> catPoList = this.list(new QueryWrapper<CategoryPo>().eq("parent_id", parentId).eq("is_delete", 0));
         List<CategoryVo> catVoList = new ArrayList<>();
-        for (CategoryPo catPo:
-        catPoList) {
+        for (CategoryPo catPo :
+                catPoList) {
             CategoryVo catVo = new CategoryVo();
             BeanUtils.copyProperties(catPo, catVo);
             if (null != catVo.getIsParent() && catVo.getIsParent()) {
@@ -74,7 +81,7 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
                 List<CategoryPo> secondCategoryList = getAllCategoryByParentId(catVo.getId());
                 if (!CollectionUtils.isEmpty(secondCategoryList)) {
                     List<CategoryVo> secondCatVoList = new ArrayList<>();
-                    for (CategoryPo secondCatPo:
+                    for (CategoryPo secondCatPo :
                             secondCategoryList) {
                         CategoryVo secondCatVo = new CategoryVo();
                         BeanUtils.copyProperties(secondCatPo, secondCatVo);
@@ -83,7 +90,7 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
                             List<CategoryPo> thirdCategoryList = getAllCategoryByParentId(secondCatVo.getId());
                             if (!CollectionUtils.isEmpty(thirdCategoryList)) {
                                 List<CategoryVo> thirdCatVoList = new ArrayList<>();
-                                for (CategoryPo thirdPo:
+                                for (CategoryPo thirdPo :
                                         thirdCategoryList) {
                                     CategoryVo thirdCatVo = new CategoryVo();
                                     BeanUtils.copyProperties(thirdPo, thirdCatVo);
@@ -144,13 +151,25 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
         return this.list(new QueryWrapper<CategoryPo>().eq("parent_id", parentId).eq("is_enable", "1").eq("is_delete", 0));
     }
 
+    @Override
+    public List<CategoryParentVo> getAllParentCategoryNav() {
+        List<CategoryPo> parentCategoryList = getAllCategoryByParentId(0L);
+        parentCategoryList.sort(Comparator.comparing(CategoryPo::getSort));
+        List<CategoryParentVo> result = new ArrayList<>();
+        for (CategoryPo categoryPo : parentCategoryList) {
+            result.add(CategoryParentVo.builder().id(categoryPo.getId()).name(categoryPo.getName()).build());
+        }
+        return result;
+    }
+
     /**
      * 递归一次收集类目
+     *
      * @param result
      * @param allCategoryList
      */
     private void collectCategorySelector(List<CategorySelectorVo> result, List<CategoryVo> allCategoryList, String prefix) {
-        for (CategoryVo catVo: allCategoryList) {
+        for (CategoryVo catVo : allCategoryList) {
             result.add(CategorySelectorVo.builder().id(catVo.getId()).name(prefix + catVo.getName()).build());
             if (!CollectionUtils.isEmpty(catVo.getChildren())) {
                 collectCategorySelector(result, catVo.getChildren(), catVo.getName() + "-");

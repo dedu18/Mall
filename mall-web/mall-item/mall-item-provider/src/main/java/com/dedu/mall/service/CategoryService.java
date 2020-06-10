@@ -1,5 +1,6 @@
 package com.dedu.mall.service;
 
+import com.dedu.mall.model.h5.CategoryParentVo;
 import com.dedu.mall.model.mysql.CategoryNavVo;
 import com.dedu.mall.model.mysql.CategorySelectorVo;
 import com.dedu.mall.model.mysql.CategoryVo;
@@ -18,7 +19,9 @@ public interface CategoryService {
 
     boolean addCategory(CategoryVo request);
 
-    List<CategoryNavVo> getAllCategoryNavList();
+    CategoryNavVo getCategoryNavTreeByParentCategoryId(Integer parentId);
 
     NavPictureVo getAllNavPictureList();
+
+    List<CategoryParentVo> getAllParentCategoryNav();
 }

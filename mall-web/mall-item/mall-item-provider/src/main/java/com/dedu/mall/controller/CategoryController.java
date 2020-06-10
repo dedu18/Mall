@@ -27,9 +27,21 @@ public class CategoryController {
      */
     @GetMapping("/h5/list")
     @ApiOperation(value = "查询所有H5导航类目列表-dedu", notes = "类目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "parentId", value = "父级类目Id", required = true)
+    })
+    public Result getCategoryNavTreeByParentCategoryId(@RequestParam Integer parentId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getCategoryNavTreeByParentCategoryId(parentId));
+    }
+    /**
+     * 获取所有导航类目顶级列表
+     * @return
+     */
+    @GetMapping("/h5/parent/list")
+    @ApiOperation(value = "获取所有导航类目顶级列表-dedu", notes = "类目")
     @ApiImplicitParams({})
-    public Result getAllCategoryNavList() {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getAllCategoryNavList());
+    public Result getAllParentCategoryNav() {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getAllParentCategoryNav());
     }
 
     /**
