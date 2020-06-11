@@ -10,10 +10,12 @@ import com.dedu.mall.model.mysql.OrderAllInfoPo;
 import com.dedu.mall.model.mysql.OrderDetailPo;
 import com.dedu.mall.model.mysql.OrderPo;
 import com.dedu.mall.model.mysql.OrderStatusPo;
+import com.dedu.mall.model.vo.OrderPayReqVo;
 import com.dedu.mall.model.vo.OrderReqVo;
 import com.dedu.mall.model.vo.OrderRspVo;
 import com.dedu.mall.service.OrderService;
 import com.dedu.mall.util.ResultUtil;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -65,13 +68,18 @@ public class OrderSerImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     public OrderRspVo createOrder(OrderReqVo orderReqVo) {
         Long userId = getUserIdBySession(orderReqVo.getSessionId());
-        //创建tb_order
+        List<String> skuIdList = getSkuIdList(orderReqVo.getSkuIds());
+        //检查库存tb_stock
+
+        //创建订单tb_order
         OrderPo orderEntity = buildOrderPo(orderReqVo);
-//        orderDao.save(orderEntity);
         //创建tb_order_status
 //        OrderStatusPo orderStatusPo = buildOrderStatusPo(orderEntity);
-        //创建tb_pay
         return OrderRspVo.builder().orderId("2").totalPrice(new BigDecimal(5999)).build();
+    }
+
+    private List<String> getSkuIdList(String skuIds) {
+        return Arrays.asList(skuIds.split(","));
     }
 
     private Long getUserIdBySession(String sessionId) {
@@ -93,5 +101,10 @@ public class OrderSerImpl implements OrderService {
     @Override
     public Integer queryOrderStatusByOrderId(String orderId) {
         return orderDao.getOrderStatusByOrderId(orderId);
+    }
+
+    @Override
+    public Object payOrder(OrderPayReqVo orderPayReqVo) {
+        return null;
     }
 }

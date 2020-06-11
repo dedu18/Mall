@@ -2,6 +2,7 @@ package com.dedu.mall.controller;
 
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.ResultCode;
+import com.dedu.mall.model.vo.OrderPayReqVo;
 import com.dedu.mall.model.vo.OrderReqVo;
 import com.dedu.mall.service.OrderService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -56,5 +57,14 @@ public class OrderController {
     })
     public Result createOrderDetailById(@RequestBody OrderReqVo orderReqVo) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.createOrder(orderReqVo));
+    }
+
+    @PostMapping("/pay")
+    @ApiOperation(value = "支付订单-dedu", notes = "支付订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", dataType = "OrderVo", name = "orderVo", value = "订单信息", required = true)
+    })
+    public Result payOrder(@RequestBody OrderPayReqVo orderPayReqVo) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.payOrder(orderPayReqVo));
     }
 }
