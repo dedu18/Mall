@@ -3,7 +3,7 @@ import http from '@/utils/http';
 const url = "http://localhost:9001";
 
 /**
- * 用户收货地址
+ * 获取用户收货地址
  * @param id
  */
 export function getUserDeliverAddress(params) {
@@ -12,6 +12,19 @@ export function getUserDeliverAddress(params) {
     url: '/api/user/addresses',
     method: 'get',
     params: params
+  })
+}
+
+/**
+ * 新增用户收货地址
+ * @param datas
+ */
+export function addUserDeliverAddress(datas) {
+  return http({
+    baseURL: url,
+    url: '/api/user/addresses',
+    method: 'post',
+    data: datas
   })
 }
 

@@ -7,14 +7,14 @@
 
     <div class="address-box" v-for="(item, index) in address" :key="index">
       <div class="address-header">
-        <span>{{item.name}}</span>
+        <span>{{item.recipientName}}</span>
         <div class="address-action">
           <span @click="edit(index)"><Icon type="edit"></Icon> 修改</span>
           <span @click="del(index)"><Icon type="trash-a"></Icon> 删除</span>
         </div>
       </div>
       <div class="address-content">
-        <p><span class="address-content-title"> 收 货 人 :</span> {{item.name}}</p>
+        <p><span class="address-content-title"> 收 货 人 :</span> {{item.recipientName}}</p>
         <p><span class="address-content-title">收货地区:</span> {{item.province}} {{item.city}} {{item.area}}</p>
         <p><span class="address-content-title">收货地址:</span> {{item.address}}</p>
         <p><span class="address-content-title">邮政编码:</span> {{item.postalcode}}</p>
@@ -27,8 +27,8 @@
       </p>
       <div>
         <Form :model="formData" label-position="left" :label-width="100" :rules="ruleInline">
-          <FormItem label="收件人" prop="name">
-            <i-input v-model="formData.name" size="large"></i-input>
+          <FormItem label="收件人" prop="recipientName">
+            <i-input v-model="formData.recipientName" size="large"></i-input>
           </FormItem>
           <FormItem label="收件地区" prop="address" style="width: 100%;">
             <v-distpicker :province="formData.province" :city="formData.city" :area="formData.area"
@@ -46,7 +46,7 @@
         </Form>
       </div>
       <div slot="footer">
-        <Button type="primary" size="large" long @click="editAction">保存收货地址</Button>
+        <Button type="primary" size="large" long @click="save">保存收货地址</Button>
       </div>
     </Modal>
   </div>
@@ -64,7 +64,9 @@
         modal: false,
         modaltitle: '',
         formData: {
-          name: '',
+          addressId: '',
+          sessionId: '',
+          recipientName: '',
           address: '',
           phone: '',
           postalcode: '',
@@ -73,7 +75,7 @@
           area: '武侯区'
         },
         ruleInline: {
-          name: [
+          recipientName: [
             {required: true, message: '请输入姓名', trigger: 'blur'}
           ],
           address: [
@@ -90,45 +92,52 @@
       };
     },
     created() {
-      this.loadAddress();
+      this.loadAddress(this.userInfo.sessionId);
     },
     computed: {
-      ...mapState(['address'])
+      ...mapState(['userInfo', 'address'])
     },
     methods: {
-      ...mapActions(['loadAddress']),
+      ...mapActions(['loadAddress', 'addAddress']),
       add() {
         this.modal = true;
         this.modaltitle = '添加地址';
+        this.formData.addressId = '';
         this.formData.province = '';
         this.formData.city = '';
         this.formData.area = '';
         this.formData.address = '';
-        this.formData.name = '';
+        this.formData.recipientName = '';
         this.formData.phone = '';
         this.formData.postalcode = '';
       },
       edit(index) {
         this.modal = true;
         this.modaltitle = '修改地址';
+        this.formData.addressId = this.address[index].addressId;
         this.formData.province = this.address[index].province;
         this.formData.city = this.address[index].city;
         this.formData.area = this.address[index].area;
         this.formData.address = this.address[index].address;
-        this.formData.name = this.address[index].name;
+        this.formData.recipientName = this.address[index].recipientName;
         this.formData.phone = this.address[index].phone;
         this.formData.postalcode = this.address[index].postalcode;
       },
-      editAction() {
+      save() {
         this.modal = false;
+        this.formData.sessionId = this.userInfo.sessionId;
+        this.addAddress(this.formData);
         this.$Message.success('修改成功');
+        this.loadAddress(this.userInfo.sessionId);
       },
       del(index) {
+        let father = this;
         this.$Modal.confirm({
           title: '信息提醒',
           content: '你确定删除这个收货地址',
           onOk: () => {
             this.$Message.success('删除成功');
+            father.loadAddress(this.userInfo.sessionId);
           },
           onCancel: () => {
             this.$Message.info('取消删除');

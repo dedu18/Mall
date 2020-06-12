@@ -1,5 +1,6 @@
 package com.dedu.mall.controller;
 
+import com.dedu.mall.model.vo.DeliveryAddress;
 import com.dedu.mall.model.vo.LoginUserVo;
 import com.dedu.mall.model.vo.RegisterUserVo;
 import com.dedu.mall.model.Result;
@@ -37,6 +38,7 @@ public class UserController {
     public Result registerUser(@RequestBody @Valid RegisterUserVo registerUserVo) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.registerUser(registerUserVo));
     }
+
     /**
      * 用户登录
      * @param loginUser
@@ -68,18 +70,31 @@ public class UserController {
 
     /**
      * 获取用户地址信息
-     * @param username
-     * @param password
+     * @param sessionId
      * @return
      */
     @GetMapping("/addresses")
-    @ApiOperation(value = "根据用户名密码查询用户地址信息-dedu", notes = "用户")
+    @ApiOperation(value = "根据会话Id查询用户地址信息-dedu", notes = "用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "string", name = "username", value = "账号", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "string", name = "password", value = "密码", required = true)
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "sessionId", value = "用户会话id", required = true)
     })
-    public Result queryUserAddressByUsernamAndPassword(@RequestParam @NotBlank String username, @RequestParam @NotBlank String password) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressByUsernamAndPassword(username, password));
+    public Result queryUserAddressBySessionId(@RequestParam String sessionId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressBySessionId(sessionId));
+    }
+
+    /**
+     * 用户添加或修改收货地址
+     * @param userAddress
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/addresses")
+    @ApiOperation(value = "用户添加或修改收货地址-dedu", notes = "用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", dataType = "LoginUserVo", name = "loginUser", value = "账号", required = true),
+    })
+    public Result addUserAddressBySessionId(@RequestBody @Valid DeliveryAddress userAddress) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.addUserAddressBySessionId(userAddress));
     }
 
     /**

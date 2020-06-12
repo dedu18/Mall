@@ -2,9 +2,11 @@ package com.dedu.mall.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dedu.mall.dao.UserAddressDao;
 import com.dedu.mall.dao.UserDao;
 import com.dedu.mall.enums.UserEnum;
 import com.dedu.mall.model.ServiceException;
+import com.dedu.mall.model.po.UserAddressEntity;
 import com.dedu.mall.model.po.UserEntity;
 import com.dedu.mall.model.vo.DeliveryAddress;
 import com.dedu.mall.model.vo.LoginUserResultVo;
@@ -13,6 +15,7 @@ import com.dedu.mall.model.vo.RegisterUserVo;
 import com.dedu.mall.service.UserService;
 import com.dedu.mall.util.StringUtil;
 import com.dedu.mall.util.UrlUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,32 +41,48 @@ public class UserSerImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
+    private UserAddressDao userAddressDao;
+
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     HttpServletRequest request;
 
     // 验证单元key
-    public  final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
+    public final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
     // 验证单元id
-    public  final String Vid = "5ed75a0b206810709d86c00a";
+    public final String Vid = "5ed75a0b206810709d86c00a";
 
-    public  final String Url = "http://0.vaptcha.com/verify";
+    public final String Url = "http://0.vaptcha.com/verify";
 
     @Override
-    public List<DeliveryAddress> queryUserAddressByUsernamAndPassword(String username, String password) {
-        List<DeliveryAddress> result = new ArrayList<>();
-        result.add(DeliveryAddress.builder()
-                .addressId("123456")
-                .name("麦特斯破")
-                .province("四川省")
-                .city("成都市")
-                .area("武侯区")
-                .address("净化共鸣")
-                .phone("112****1234")
-                .postalcode("123456")
-                .build());
+    public List<DeliveryAddress> queryUserAddressBySessionId(String sessionId) {
+        UserEntity cacheUserInfo = getCacheUserInfo(sessionId);
+        List<UserAddressEntity> addressEntityList = userAddressDao.getAddressByUserId(cacheUserInfo.getId());
+        List<DeliveryAddress> result = convertAddressEntityToDeliveryAddress(addressEntityList);
         return result;
+    }
+
+    private List<DeliveryAddress> convertAddressEntityToDeliveryAddress(List<UserAddressEntity> addressEntityList) {
+        List<DeliveryAddress> result = new ArrayList<>();
+        for (UserAddressEntity entity : addressEntityList) {
+            result.add(DeliveryAddress.builder()
+                    .addressId(entity.getId())
+                    .recipientName(entity.getRecipientName())
+                    .province(entity.getProvince())
+                    .city(entity.getCity())
+                    .area(entity.getArea())
+                    .address(entity.getAddress())
+                    .phone(hidePhone(entity.getPhone()))
+                    .postalcode(entity.getPostalCode())
+                    .build());
+        }
+        return result;
+    }
+
+    private String hidePhone(String phone) {
+        return phone.substring(0, 3) + "****" + phone.substring(7, phone.length());
     }
 
     @Override
@@ -88,6 +107,14 @@ public class UserSerImpl implements UserService {
 
     private void cacheUserInfo(String sessionId, UserEntity userEntityExited) {
         stringRedisTemplate.opsForValue().set(sessionId, JSON.toJSONString(userEntityExited), Duration.ofMinutes(30));
+    }
+
+    private UserEntity getCacheUserInfo(String sessionId) {
+        String userInfoString = stringRedisTemplate.opsForValue().get(sessionId);
+        if (StringUtils.isBlank(userInfoString)) {
+            throw new ServiceException(UserEnum.USER_LOGIN_EXPIRED_ERROR.getCode(), UserEnum.USER_LOGIN_EXPIRED_ERROR.getMsg());
+        }
+        return JSONObject.parseObject(userInfoString, UserEntity.class);
     }
 
     private boolean checkUserPassword(LoginUserVo loginUser, UserEntity userEntityExited) {
@@ -149,7 +176,7 @@ public class UserSerImpl implements UserService {
         return result;
     }
 
-    private Map<String,String> buildVaptchaData(String token) {
+    private Map<String, String> buildVaptchaData(String token) {
         HashMap<String, String> result = new HashMap<>();
         result.put("id", Vid);
         result.put("secretkey", SecretKey);
@@ -159,5 +186,31 @@ public class UserSerImpl implements UserService {
         return result;
     }
 
+    @Override
+    public Object addUserAddressBySessionId(DeliveryAddress userAddress) {
+        UserEntity cacheUserInfo = getCacheUserInfo(userAddress.getSessionId());
+        UserAddressEntity userAddressEntity = buildUserEntity(userAddress, cacheUserInfo);
+        if (StringUtils.isBlank(userAddressEntity.getId())) {
+            userAddressDao.save(userAddressEntity);
+        } else {
+            userAddressDao.updateById(userAddressEntity);
+        }
+        return userAddressEntity.getId();
+    }
 
+    private UserAddressEntity buildUserEntity(DeliveryAddress userAddress, UserEntity cacheUserInfo) {
+        return UserAddressEntity.builder()
+                .id(userAddress.getAddressId())
+                .userId(cacheUserInfo.getId())
+                .recipientName(userAddress.getRecipientName())
+                .province(userAddress.getProvince())
+                .city(userAddress.getCity())
+                .area(userAddress.getArea())
+                .address(userAddress.getAddress())
+                .phone(userAddress.getPhone())
+                .postalCode(userAddress.getPostalcode())
+                .isEnable(1)
+                .isDelete(0)
+                .build();
+    }
 }

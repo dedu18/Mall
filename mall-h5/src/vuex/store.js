@@ -32,6 +32,7 @@ export default new Vuex.Store({
       username: '',
       nackname: ''
     },
+    address:[],
     registerStep: 0, // 注册步骤
     marketing: { // 营销
       carouselItems: [], // 轮播图

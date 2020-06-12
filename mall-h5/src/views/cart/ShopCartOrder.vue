@@ -68,7 +68,7 @@
       next();
     },
     created() {
-      this.loadAddress();
+      this.getAddress();
     },
     data() {
       return {
@@ -127,7 +127,7 @@
       };
     },
     computed: {
-      ...mapState(['address', 'shoppingCart']),
+      ...mapState(['userInfo', 'address', 'shoppingCart']),
       totalPrice() {
         let price = 0;
         this.goodsSelectedList.forEach(item => {
@@ -168,6 +168,9 @@
             father.checkAddress.address = `${item.name} ${item.province} ${item.city} ${item.address} ${item.phone} ${item.postalcode}`;
           }
         });
+      },
+      getAddress() {
+        this.loadAddress(this.userInfo.sessionId);
       }
     },
     mounted() {

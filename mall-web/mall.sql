@@ -16,6 +16,24 @@ CREATE TABLE `tb_user` (
 ) ENGINE = INNODB AUTO_INCREMENT = 23 DEFAULT CHARSET = utf8 COMMENT = '用户表';
 INSERT INTO `tb_user` (id,username,password,nackname,phone) VALUES (1, 'admin', 'admin', '系统管理员', '13333333333');
 
+DROP TABLE IF EXISTS `tb_user_address`;
+CREATE TABLE `tb_user_address` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户主键id',
+  `recipient_name` varchar(100) NOT NULL DEFAULT '' COMMENT '收件人名称',
+  `province` varchar(100) DEFAULT '' COMMENT '省',
+  `city` varchar(100) DEFAULT '' COMMENT '市',
+  `area` varchar(100) DEFAULT '' COMMENT '区',
+  `address` varchar(200) DEFAULT '' COMMENT '详细地址',
+  `phone` varchar(100) NOT NULL COMMENT '手机',
+  `postal_code` varchar(100) NOT NULL DEFAULT '' COMMENT '邮编',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `is_enable` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效，0为否，1为是',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除，0为否，1为是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='用户地址信息表';
+
 -- ----------------------------
 -- Table structure for tb_category
 -- ----------------------------

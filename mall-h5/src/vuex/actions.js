@@ -1,7 +1,7 @@
 import {getAllNavigationPictureList} from '../api/category';
 import {getGoodsListByCategoryId, getGoodsById, getRecommendGoods} from '../api/goods';
 import {getSeckillInfoList, getSpecialByType} from '../api/market';
-import {getUserDeliverAddress, loginUser} from '../api/user';
+import {getUserDeliverAddress, loginUser, addUserDeliverAddress} from '../api/user';
 import {getUserShopCartByUserId} from '../api/cart';
 import {addGoodsToShopCart} from '../api/cart';
 
@@ -102,12 +102,23 @@ export const loadRecommend = ({commit}) => {
   });
 };
 
-export const loadAddress = ({commit}) => {
-  getUserDeliverAddress({username: 1, password: 1}).then(response => {
+export const loadAddress = ({commit}, data) => {
+  getUserDeliverAddress({sessionId: data}).then(response => {
     const address = response;
     commit('SET_USER_ADDRESS', address);
   });
 };
+
+/**
+ * 新增用户收货地址
+ * @param commit
+ * @param data
+ */
+export const addAddress = ({commit}, data) => {
+  addUserDeliverAddress(data).then(response => {
+  });
+};
+
 
 /**
  * 加载购物车

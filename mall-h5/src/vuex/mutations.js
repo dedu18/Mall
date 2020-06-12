@@ -1,4 +1,6 @@
 // 设置注册步骤
+import {getUserDeliverAddress} from "../api/user";
+
 export const SET_REGISTER_SETP = (state, step) => {
   state.registerStep = step;
 };
