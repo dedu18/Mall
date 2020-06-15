@@ -10,6 +10,7 @@ const GoodsList = resolve => require(['../views/goods/GoodsList'], resolve);
 const GoodsDetail = resolve => require(['../views/goods/GoodsDetail'], resolve);
 const ShoppingCart = resolve => require(['../views/cart/ShopCart'], resolve);
 const Order = resolve => require(['../views/cart/ShopCartOrder'], resolve);
+const ToPay = resolve => require(['../views/pay/ToPay'], resolve);
 const Pay = resolve => require(['../views/pay/Pay'], resolve);
 const PayDone = resolve => require(['../views/pay/PayDone'], resolve);
 const Freeback = resolve => require(['../views/freeback/Freeback'], resolve);
@@ -88,6 +89,11 @@ export default new Router({
       path: '/order', // 订单页面
       name: 'Order',
       component: Order
+    },
+    {
+      path: '/toPay', // 支付页面
+      name: 'ToPay',
+      component: ToPay
     },
     {
       path: '/pay', // 支付页面

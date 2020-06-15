@@ -17,14 +17,25 @@
         </template>
       </Alert>
       <div class="pay-box">
-        <div class="pay-demo">
-          <img src="static/img/pay/wx-pay.png">
+        <div style="display: flex; flex-direction: row;">
+          <div style="margin-top: 5px; margin-left: 5%; font-size: 30px; color: #76697a">微信支付</div>
+          <div style="margin-left: 35%;margin-top: 25px; display: flex; flex-direction: row">
+            距离二维码过期还剩
+            <div style="color: red;">{{remainingTime}}
+            </div>
+            秒，过期后请刷新页面重新获取二维码。
+          </div>
         </div>
-        <div class="pay-qr-scan">
-          <img style="margin-left: 25px;" src="static/img/pay/pay-qrscan.png">
-          <div class="pay-tips">
-            <img src="static/img/pay/wx-pay-tip.png">
-            <router-link to="/payDone"><p>点击我, 完成支付</p></router-link>
+        <div style="display: flex;align-items: center;justify-content: space-between;">
+          <div class="pay-demo">
+            <img src="static/img/pay/wx-pay.png">
+          </div>
+          <div class="pay-qr-scan">
+            <img style="margin-left: 25px;" src="static/img/pay/pay-qrscan.png">
+            <div class="pay-tips">
+              <img src="static/img/pay/wx-pay-tip.png">
+              <!--<router-link to="/payDone"><p>点击我, 完成支付</p></router-link>-->
+            </div>
           </div>
         </div>
       </div>
@@ -42,6 +53,7 @@
       return {
         orderId: '',
         totalPrice: '',
+        remainingTime: '60',
         timer: ''
       };
     },
@@ -114,10 +126,14 @@
   }
 
   .pay-box {
+    background-color: #fff;
+    box-shadow: darkgrey 5px 5px 15px 3px;
+    top: 162px;
+    left: 389px;
+    z-index: 999;
     height: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    margin-left: 2%;
+    margin-right: 2%;
   }
 
   .pay-demo {

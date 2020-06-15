@@ -187,7 +187,7 @@ public class UserSerImpl implements UserService {
     }
 
     @Override
-    public Object addUserAddressBySessionId(DeliveryAddress userAddress) {
+    public String addUserAddressBySessionId(DeliveryAddress userAddress) {
         UserEntity cacheUserInfo = getCacheUserInfo(userAddress.getSessionId());
         UserAddressEntity userAddressEntity = buildUserEntity(userAddress, cacheUserInfo);
         if (StringUtils.isBlank(userAddressEntity.getId())) {

@@ -151,7 +151,7 @@
             return item.goodsId;
           });
           this.$router.push({
-            name: 'Pay',
+            name: 'ToPay',
             params: {
               addressId: this.checkAddress.addressId,
               skuIds: JSON.stringify(selectedGoodsIdList)

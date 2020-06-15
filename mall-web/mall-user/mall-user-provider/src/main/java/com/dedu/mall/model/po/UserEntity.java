@@ -34,11 +34,8 @@ public class UserEntity {
     private String phone;
     @TableField(value="email")
     private String email;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @TableField(value="create_time")
     private LocalDateTime createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value="update_time")
     private LocalDateTime updateTime;
     @TableField(value="is_enable")

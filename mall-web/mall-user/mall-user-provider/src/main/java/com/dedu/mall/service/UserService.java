@@ -8,7 +8,7 @@ import com.dedu.mall.model.vo.RegisterUserVo;
 import java.util.List;
 
 public interface UserService {
-   List<DeliveryAddress> queryUserAddressBySessionId(String sessionId);
+    List<DeliveryAddress> queryUserAddressBySessionId(String sessionId);
 
     LoginUserResultVo userLoginByUsernameAndPassword(LoginUserVo loginUserVo);
 
@@ -18,5 +18,5 @@ public interface UserService {
 
     Boolean sendVerificationCode(String phone, String token);
 
-    Object addUserAddressBySessionId(DeliveryAddress userAddress);
+    String addUserAddressBySessionId(DeliveryAddress userAddress);
 }

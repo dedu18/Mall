@@ -9,6 +9,8 @@ import 'iview/dist/styles/iview.css';
 
 Vue.use(iView);
 Vue.config.productionTip = false;
+//开启vue-devtools
+Vue.config.devtools = true
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start();

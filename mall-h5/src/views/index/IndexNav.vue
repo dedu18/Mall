@@ -6,7 +6,7 @@
       <!-- 侧边导航 -->
       <div class="nav-side">
         <ul>
-          <li style="padding: 1px 15px 4px 20px;" v-for="(items, index) in parentNavItems" :key="items.id" @mouseenter="showDetail(items.id)" @mouseleave="hideDetail(items.id)">
+          <li style="padding: 1px 15px 4px 20px;" v-for="(items, index) in parentNavItems" :key="items.id" @mouseenter="showDetail(items.id)" @mouseleave="hideDetail()">
             <span class="nav-side-item">{{items.name}}</span>
           </li>
         </ul>
@@ -35,8 +35,8 @@
     </div>
     <!-- 导航伸展-->
     <transition>
-      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel" @mouseenter="showDetail(1)"
-           @mouseleave="hideDetail()">
+      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel" @mouseenter="showTransitionDetail()"
+           @mouseleave="hideTransitionDetail()">
         <div class="nav-detail-item">
           <span v-for="(item, index) in panelData.navTags" :key="index">{{item}}> </span>
         </div>
@@ -64,11 +64,13 @@
       return {
         parentNavItems:[],
         panel: false,
+        panelId: '',
         navItems: [],
         panelData: {
           navTags: [],
           navItems: []
-        }
+        },
+        allPanelData: new Map()
       };
     },
     computed: {
@@ -77,15 +79,25 @@
     methods: {
       showDetail(index) {
         this.panel = true;
-        getAllCategoryNavList({
-          parentId: index
-        }).then(response => {
-          this.panelData = response;
-        });
+        if (this.allPanelData.get(index)) {
+          this.panelData = this.allPanelData.get(index);
+        } else {
+          getAllCategoryNavList({
+            parentId: index
+          }).then(response => {
+            this.panelData = response;
+            this.allPanelData.set(index , response);
+          });
+        }
       },
       hideDetail() {
         this.panel = false;
-        this.panelData = {};
+      },
+      showTransitionDetail() {
+        this.panel = true;
+      },
+      hideTransitionDetail() {
+        this.panel = false;
       }
     },
     mounted() {
