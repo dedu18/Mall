@@ -2,13 +2,13 @@
   <div>
     <div class="pay-container">
       <Alert show-icon>
-        <Icon type="qr-scanner" slot="icon"></Icon>
+        <Icon type="qr-scanner" slot="icon"/>
         <template slot="desc">
           <div style="display: flex;width: 100%;">
             订单提交成功，请尽快付款！订单号：{{orderId}}
             <div style="margin-left: 50%;display: flex;">
               应付金额
-              <div style="color: red;font-size: 16px;font-weight: 700;">
+              <div style="color: red; font-size: 16px; font-weight: 700;">
                 {{totalPrice}}
               </div>
               元
@@ -18,15 +18,15 @@
       </Alert>
       <div class="pay-box">
         <div style="display: flex; flex-direction: row;">
-          <div style="margin-top: 5px; margin-left: 5%; font-size: 30px; color: #76697a">微信支付</div>
-          <div style="margin-left: 35%;margin-top: 25px; display: flex; flex-direction: row">
+          <div style="margin-top: 5px; margin-left: 20px; font-size: 30px; color: #76697a">微信支付</div>
+          <div style="margin-left: 40%;margin-top: 25px; display: flex; flex-direction: row">
             距离二维码过期还剩
             <div style="color: red;">{{remainingTime}}
             </div>
             秒，过期后请刷新页面重新获取二维码。
           </div>
         </div>
-        <div style="display: flex;align-items: center;justify-content: space-between;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
           <div class="pay-demo">
             <img src="static/img/pay/wx-pay.png">
           </div>
@@ -37,6 +37,10 @@
               <!--<router-link to="/payDone"><p>点击我, 完成支付</p></router-link>-->
             </div>
           </div>
+        </div>
+        <div style="display: flex; flex-direction: row; margin-left: 20px; cursor: pointer;" @click="backToPay">
+          <Icon type="ios-arrow-left" size="25" color="#0aaefa"/>
+          <div style="font-size: 15px;margin-left: 15px;color: #0aaefa;">选择其他支付方式</div>
         </div>
       </div>
     </div>
@@ -81,39 +85,21 @@
             clearInterval(father.timer);
           });
         }
+      },
+      backToPay() {
+        this.$router.push({
+          name: 'ToPay',
+          params: {}
+        })
       }
     },
     computed: {
       ...mapState(['userInfo'])
     },
     mounted() {
-      let father = this;
-      const data = {
-        skuIds: father.$route.params.skuIds,
-        sessionId: father.userInfo.sessionId,
-        addressId: father.$route.params.addressId,
-        sourceType: 2
-      }
-      createOrder(data).then(result => {
-        if (result) {
-          //创单成功
-          father.orderId = result.orderId;
-          father.totalPrice = result.totalPrice;
-          father.timer = setInterval(this.syncOrderStatus, 5000);
-        } else {
-          this.$Message.error({
-            content: '请稍后重试',
-            duration: 5000,
-            closable: true
-          });
-        }
-      }).catch(result => {
-        this.$Message.error({
-          content: result,
-          duration: 3000,
-          closable: true
-        });
-      });
+      this.orderId = this.$route.params.orderId;
+      this.totalPrice = this.$route.params.totalPrice;
+      this.timer = setInterval(this.syncOrderStatus, 5000);
     },
   };
 </script>
@@ -126,14 +112,17 @@
   }
 
   .pay-box {
-    background-color: #fff;
-    box-shadow: darkgrey 5px 5px 15px 3px;
-    top: 162px;
-    left: 389px;
-    z-index: 999;
-    height: 500px;
-    margin-left: 2%;
-    margin-right: 2%;
+    /*background-color: #fff;*/
+    /*box-shadow: darkgrey 5px 5px 15px 3px;*/
+    /*top: 162px;*/
+    /*left: 389px;*/
+    /*z-index: 999;*/
+    /*height: 500px;*/
+    /*margin-left: 2%;*/
+    /*margin-right: 2%;*/
+
+    padding: 20px;
+    border: 1px #ccc dotted;
   }
 
   .pay-demo {

@@ -180,7 +180,7 @@
 
   /* ---------------侧边广告栏开始------------------- */
   .as-box {
-    width: 15%;
+    width: 16%;
     border: 1px solid #ccc;
   }
 
@@ -204,13 +204,13 @@
   }
 
   .item-as {
-    width: 160px;
-    margin: 18px auto;
+    width: 200px;
+    margin: 18px 10px 0px 10px;
   }
 
   .item-as-img {
-    width: 160px;
-    height: 160px;
+    width: 100%;
+    height: 100%;
     margin: 0px auto;
   }
 
@@ -277,6 +277,11 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  .goods-show-img {
+    width: 220px;
+    height: 220px;
   }
 
   .goods-show-info {
