@@ -14,7 +14,7 @@
       <!-- 右边图区 -->
       <div class="nav-content">
         <!-- 幻灯图 -->
-        <div>
+        <div style="margin-left: 5px; width: 590px;">
           <Carousel autoplay loop>
             <CarouselItem v-for="(item, index) in marketing.carouselItems" :key="index">
               <router-link to="/goodsList">
@@ -27,7 +27,7 @@
         <div class="nav-show">
           <div class="nav-show-img" v-for="(item, index) in marketing.activity" :key="index">
             <router-link to="/goodsList">
-              <img :src="item">
+              <img style="width: auto;height: auto;max-width: 100%;max-height: 100%;" :src="item">
             </router-link>
           </div>
         </div>
@@ -170,20 +170,25 @@
 
   /*导航内容*/
   .nav-content {
-    width: 792px;
-    margin-left: 15px;
-    overflow: hidden;
-    float: left;
+    margin-left: 1%;
+    margin-right: 25%;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+  }
+
+  .nav-show {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 10px;
+    height: 100%;
+    width: 190px;
   }
 
   /*导航图片*/
   .nav-show-img {
-    margin-top: 10px;
-    float: left;
-  }
-
-  .nav-show-img:nth-child(2) {
-    margin-left: 12px;
+    cursor: pointer;
   }
 
   /*显示商品详细信息*/

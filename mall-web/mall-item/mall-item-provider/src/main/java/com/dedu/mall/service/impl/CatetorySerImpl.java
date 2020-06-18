@@ -59,10 +59,10 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
         carouselItems.add("static/img/navigation/3.jpg");
         carouselItems.add("static/img/navigation/4.jpg");
         carouselItems.add("static/img/navigation/5.jpg");
-        carouselItems.add("static/img/navigation/5.jpg");
         List<String> activity = new ArrayList<>();
         activity.add("static/img/navigation/nav_showimg1.jpg");
         activity.add("static/img/navigation/nav_showimg2.jpg");
+        activity.add("static/img/navigation/nav_showimg3.jpg");
         return NavPictureVo.builder().carouselItems(carouselItems).activity(activity).build();
     }
 
