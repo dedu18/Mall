@@ -165,7 +165,7 @@
   }
 
   .text-danger {
-    color: #A94442;
+    color: #e4393c;
   }
 
   .seckill-price {

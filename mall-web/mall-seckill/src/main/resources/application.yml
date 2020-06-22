@@ -1,0 +1,19 @@
+#
+server:
+  port: 9006
+spring:
+  application:
+    name: mall-seckill-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 5s
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1s
+        min-idle: 0
