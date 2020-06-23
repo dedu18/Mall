@@ -8,22 +8,12 @@ import com.dedu.mall.enums.UserEnum;
 import com.dedu.mall.model.ServiceException;
 import com.dedu.mall.model.po.UserAddressEntity;
 import com.dedu.mall.model.po.UserEntity;
-import com.dedu.mall.model.vo.DeliveryAddress;
-import com.dedu.mall.model.vo.LoginUserResultVo;
-import com.dedu.mall.model.vo.LoginUserVo;
-import com.dedu.mall.model.vo.RegisterUserVo;
+import com.dedu.mall.model.vo.*;
 import com.dedu.mall.service.UserService;
 import com.dedu.mall.util.StringUtil;
 import com.dedu.mall.util.UrlUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -61,6 +51,14 @@ public class UserSerImpl implements UserService {
         UserEntity cacheUserInfo = getCacheUserInfo(sessionId);
         List<UserAddressEntity> addressEntityList = userAddressDao.getAddressByUserId(cacheUserInfo.getId());
         List<DeliveryAddress> result = convertAddressEntityToDeliveryAddress(addressEntityList);
+        return result;
+    }
+
+    @Override
+    public UserAddressVo queryUserAddressByUserIdAndAddressId(String userId, String addressId) {
+        UserAddressEntity addressEntity = userAddressDao.getAddressByUserIdAndAddressId(userId, addressId);
+        UserAddressVo result = new UserAddressVo();
+        BeanUtils.copyProperties(addressEntity, result);
         return result;
     }
 

@@ -28,8 +28,9 @@ public class OrderController {
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "每页大小")
     })
     public Result getOrderPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                               @Max(100) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.getOrderPage(pageNum, pageSize));
+                               @Max(100) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                               @RequestParam(value = "sessionId")  String sessionId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.getOrderAllInfoPageByUserId(pageNum, pageSize, sessionId));
     }
 
     @GetMapping("/{id}")

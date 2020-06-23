@@ -9,7 +9,7 @@ import com.dedu.mall.model.vo.OrderRspVo;
 
 public interface OrderService {
 
-    IPage<OrderAllInfoPo> getOrderPage(Integer pageNum, Integer pageSize);
+    IPage<OrderAllInfoPo> getOrderAllInfoPageByUserId(Integer pageNum, Integer pageSize, String sessionId);
 
     OrderDetailPo queryOrderDetailById(String id);
 

@@ -1687,27 +1687,14 @@ CREATE TABLE `tb_order` (
   `receiver_name` varchar(32) DEFAULT NULL COMMENT '收货人',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单基本信息表';
-
-
--- ----------------------------
--- Table structure for tb_order_status
--- ----------------------------
-DROP TABLE IF EXISTS `tb_order_status`;
-CREATE TABLE `tb_order_status` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id ',
-  `order_id` bigint(20) NOT NULL COMMENT '订单id',
   `status` int(1) DEFAULT NULL COMMENT '状态：1、未付款 2、已付款,未发货 3、已发货,未确认 4、交易成功 5、交易关闭 6、已评价',
-  `consign_time` TIMESTAMP NULL COMMENT '发货时间',
-  `end_time` TIMESTAMP NULL COMMENT '交易完成时间',
-  `close_time` TIMESTAMP NULL COMMENT '交易关闭时间',
-  `comment_time` TIMESTAMP NULL COMMENT '评价时间',
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '状态更新时间',
-  PRIMARY KEY (`id`),
-  KEY `idx_orderId_status` (`order_id`, `status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单状态表';
+  `consign_time` timestamp NULL DEFAULT NULL COMMENT '发货时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '交易完成时间',
+  `close_time` timestamp NULL DEFAULT NULL COMMENT '交易关闭时间',
+  `comment_time` timestamp NULL DEFAULT NULL COMMENT '评价时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单信息表';
+
 
 
 -- ----------------------------

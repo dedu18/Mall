@@ -5,6 +5,7 @@ import com.dedu.mall.model.vo.LoginUserVo;
 import com.dedu.mall.model.vo.RegisterUserVo;
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.ResultCode;
+import com.dedu.mall.model.vo.UserAddressVo;
 import com.dedu.mall.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -80,6 +81,21 @@ public class UserController {
     })
     public Result queryUserAddressBySessionId(@RequestParam String sessionId) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressBySessionId(sessionId));
+    }
+
+    /**
+     * 获取用户Id查询地址信息
+     * @param userId
+     * @return
+     */
+    @GetMapping("/addresses")
+    @ApiOperation(value = "根据会话Id查询用户地址信息-dedu", notes = "用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "userId", value = "用户id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "string", name = "addressId", value = "用户地址id", required = true)
+    })
+    public Result<UserAddressVo> queryUserAddressByUserId(@RequestParam String userId, @RequestParam String addressId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressByUserIdAndAddressId(userId, addressId));
     }
 
     /**

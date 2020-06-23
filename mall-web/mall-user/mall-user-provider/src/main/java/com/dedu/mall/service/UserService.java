@@ -1,9 +1,6 @@
 package com.dedu.mall.service;
 
-import com.dedu.mall.model.vo.DeliveryAddress;
-import com.dedu.mall.model.vo.LoginUserResultVo;
-import com.dedu.mall.model.vo.LoginUserVo;
-import com.dedu.mall.model.vo.RegisterUserVo;
+import com.dedu.mall.model.vo.*;
 
 import java.util.List;
 
@@ -19,4 +16,6 @@ public interface UserService {
     Boolean sendVerificationCode(String phone, String token);
 
     String addUserAddressBySessionId(DeliveryAddress userAddress);
+
+    UserAddressVo queryUserAddressByUserIdAndAddressId(String userId, String addressId);
 }

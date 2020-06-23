@@ -16,12 +16,12 @@ public class OrderDao extends ServiceImpl<OrderMapper, OrderPo> {
     @Autowired
     private OrderMapper orderMapper;
 
-    public List<OrderAllInfoPo> getOrderAllInfoPage(Integer pageNum, Integer pageSize) {
-        return orderMapper.getOrderAllInfoPage(pageNum - 1, pageSize);
+    public List<OrderAllInfoPo> getOrderAllInfoPageByUserId(Long userId, Integer pageNum, Integer pageSize) {
+        return orderMapper.getOrderAllInfoPageByUserId(userId, pageNum - 1, pageSize);
     }
 
-    public Integer getOrderAllInfoCount() {
-        return orderMapper.getOrderAllInfoCount();
+    public Integer getOrderAllInfoCountByUserId(Long userId) {
+        return orderMapper.getOrderAllInfoCountByUserId(userId);
     }
 
     public OrderDetailPo getOrderDetailInfoById(String id) {

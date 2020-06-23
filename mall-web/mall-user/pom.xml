@@ -11,5 +11,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>mall-user-provider</module>
+        <module>mall-user-api</module>
     </modules>
 </project>

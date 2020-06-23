@@ -55,4 +55,14 @@ public class OrderPo {
     private LocalDateTime createTime;
     @TableField(value = "update_time")
     private LocalDateTime updateTime;
+    @TableField(value = "status")
+    private Integer status;
+    @TableField(value = "consign_time")
+    private LocalDateTime consignTime;
+    @TableField(value = "end_time")
+    private LocalDateTime endTime;
+    @TableField(value = "close_time")
+    private LocalDateTime closeTime;
+    @TableField(value = "comment_time")
+    private LocalDateTime commentTime;
 }

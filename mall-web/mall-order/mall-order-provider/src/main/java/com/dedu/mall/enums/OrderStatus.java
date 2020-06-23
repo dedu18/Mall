@@ -1,4 +1,4 @@
-package com.dedu.mall;
+package com.dedu.mall.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

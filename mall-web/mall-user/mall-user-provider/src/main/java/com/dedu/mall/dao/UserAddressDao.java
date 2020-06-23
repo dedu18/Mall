@@ -19,4 +19,12 @@ public class UserAddressDao extends ServiceImpl<UserAddressMapper, UserAddressEn
                 .eq("is_enable", 1)
                 .eq("is_delete", 0));
     }
+
+    public UserAddressEntity getAddressByUserIdAndAddressId(String userId, String addressId) {
+        return this.getOne(new QueryWrapper<UserAddressEntity>()
+                .eq("id", addressId)
+                .eq("user_id", userId)
+                .eq("is_enable", 1)
+                .eq("is_delete", 0));
+    }
 }

@@ -2,26 +2,30 @@ package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dedu.mall.enums.OrderStatus;
 import com.dedu.mall.dao.OrderDao;
+import com.dedu.mall.dao.PayDao;
+import com.dedu.mall.enums.PayStatus;
 import com.dedu.mall.feign.SkuFeignClient;
+import com.dedu.mall.feign.UserFeignClient;
 import com.dedu.mall.model.Result;
 import com.dedu.mall.model.SkuVo;
+import com.dedu.mall.model.UserAddressVo;
 import com.dedu.mall.model.mysql.OrderAllInfoPo;
 import com.dedu.mall.model.mysql.OrderDetailPo;
 import com.dedu.mall.model.mysql.OrderPo;
-import com.dedu.mall.model.mysql.OrderStatusPo;
+import com.dedu.mall.model.mysql.PayPo;
 import com.dedu.mall.model.vo.OrderPayReqVo;
 import com.dedu.mall.model.vo.OrderReqVo;
 import com.dedu.mall.model.vo.OrderRspVo;
 import com.dedu.mall.service.OrderService;
+import com.dedu.mall.util.FeignClientUtil;
 import com.dedu.mall.util.ResultUtil;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -33,15 +37,21 @@ public class OrderSerImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    private PayDao payDao;
+
     @Autowired
     private SkuFeignClient skuFeignClient;
 
+    @Autowired
+    private UserFeignClient userFeignClient;
+
     @Override
-    public IPage<OrderAllInfoPo> getOrderPage(Integer pageNum, Integer pageSize) {
+    public IPage<OrderAllInfoPo> getOrderAllInfoPageByUserId(Integer pageNum, Integer pageSize, String sessionId) {
+        Long userId = getUserIdBySession(sessionId);
         //分页查询
-        List<OrderAllInfoPo> orderAllInfoPage = orderDao.getOrderAllInfoPage(pageNum, pageSize);
+        List<OrderAllInfoPo> orderAllInfoPage = orderDao.getOrderAllInfoPageByUserId(userId, pageNum, pageSize);
         // 查询总数
-        Integer orderAllInfoCount = orderDao.getOrderAllInfoCount();
+        Integer orderAllInfoCount = orderDao.getOrderAllInfoCountByUserId(userId);
         // 返回值封装
         return convertOrderPoToVo(orderAllInfoCount, pageNum, pageSize, orderAllInfoPage);
     }
@@ -68,14 +78,27 @@ public class OrderSerImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     public OrderRspVo createOrder(OrderReqVo orderReqVo) {
         Long userId = getUserIdBySession(orderReqVo.getSessionId());
+        Result<UserAddressVo> feignClientResult = userFeignClient.queryUserAddressByUserId(userId.toString(), orderReqVo.getAddressId().toString());
+        FeignClientUtil.checkSuccessOtherwiseThrowException(feignClientResult);
         List<String> skuIdList = getSkuIdList(orderReqVo.getSkuIds());
         //检查库存tb_stock
-
         //创建订单tb_order
-        OrderPo orderEntity = buildOrderPo(orderReqVo);
-        //创建tb_order_status
-//        OrderStatusPo orderStatusPo = buildOrderStatusPo(orderEntity);
-        return OrderRspVo.builder().orderId("2").totalPrice(new BigDecimal(5999)).build();
+        OrderPo orderEntity = buildOrderPo(orderReqVo, feignClientResult.getData());
+        orderDao.save(orderEntity);
+        //创建支付订单
+        PayPo payEntity = buildPayPo(orderEntity, orderReqVo);
+        payDao.save(payEntity);
+        return OrderRspVo.builder().orderId(orderEntity.getId().toString()).totalPrice(orderEntity.getTotalPrice()).build();
+    }
+
+    private PayPo buildPayPo(OrderPo orderEntity, OrderReqVo orderReqVo) {
+        return PayPo.builder()
+                .orderId(orderEntity.getId())
+                .totalPay(orderEntity.getTotalPrice())
+                .status(Integer.valueOf(PayStatus.WAITING_TO_PAY.getCode()))
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .build();
     }
 
     private List<String> getSkuIdList(String skuIds) {
@@ -86,13 +109,17 @@ public class OrderSerImpl implements OrderService {
         return Long.parseLong("1");
     }
 
-    private OrderStatusPo buildOrderStatusPo(OrderPo orderEntity) {
-        return OrderStatusPo.builder().orderId(orderEntity.getId()).build();
-    }
-
-    private OrderPo buildOrderPo(OrderReqVo orderReqVo) {
+    private OrderPo buildOrderPo(OrderReqVo orderReqVo, UserAddressVo userAddressVo) {
         return OrderPo.builder()
                 .sourceType(orderReqVo.getSourceType())
+                .receiverState(userAddressVo.getProvince())
+                .receiverCity(userAddressVo.getCity())
+                .receiverDistrict(userAddressVo.getArea())
+                .receiverAddress(userAddressVo.getAddress())
+                .receiverMobile(userAddressVo.getPhone())
+                .receiverPostcode(userAddressVo.getPostalCode())
+                .receiverName(userAddressVo.getRecipientName())
+                .status(Integer.parseInt(OrderStatus.WAITING_TO_PAY.getCode()))
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();
