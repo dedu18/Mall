@@ -154,14 +154,16 @@
 
 <style scoped>
   .search-container {
-    margin: 0px auto;
-    margin-bottom: 15px;
+    /*margin: 0px auto;*/
+    /*margin-bottom: 15px;*/
   }
 
   .container {
     margin-top: 15px;
     margin-left: 15%;
     margin-right: 15%;
+    display: flex;
+    flex-direction: column;
   }
 
   .text-danger {
@@ -176,11 +178,12 @@
 
   .goods-box {
     display: flex;
+    flex-direction: row;
   }
 
   /* ---------------侧边广告栏开始------------------- */
   .as-box {
-    width: 16%;
+    /*width: 16%;*/
     border: 1px solid #ccc;
   }
 

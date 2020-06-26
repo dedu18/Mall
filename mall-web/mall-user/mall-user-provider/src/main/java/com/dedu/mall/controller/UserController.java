@@ -74,7 +74,7 @@ public class UserController {
      * @param sessionId
      * @return
      */
-    @GetMapping("/addresses")
+    @GetMapping("/address")
     @ApiOperation(value = "根据会话Id查询用户地址信息-dedu", notes = "用户")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "string", name = "sessionId", value = "用户会话id", required = true)
