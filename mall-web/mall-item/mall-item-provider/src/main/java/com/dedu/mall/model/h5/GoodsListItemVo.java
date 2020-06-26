@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GoodsRspVo {
+public class GoodsListItemVo {
     private String img;
     private Double price;
     private String intro;

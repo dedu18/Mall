@@ -30,9 +30,14 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
             if (null != catPo.getIsParent() && catPo.getIsParent()) {
                 // 第三层类目
                 List<CategoryPo> innerCategoryList = getAllCategoryByParentId(catPo.getId());
-                List<String> tags = innerCategoryList.stream()
+                List<CategoryNavSubItem> tags = innerCategoryList.stream()
                         .sorted(Comparator.comparing(CategoryPo::getSort))
-                        .map(CategoryPo::getName)
+                        .map(item -> {
+                            return CategoryNavSubItem.builder()
+                                    .id(item.getId())
+                                    .name(item.getName())
+                                    .build();
+                        })
                         .limit(8)
                         .collect(Collectors.toList());
                 CategoryNavItem categoryNavItem = createCategoryNavItem(catPo.getName(), tags);
@@ -42,12 +47,7 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
         return CategoryNavVo.builder().navTags(navTags).navItems(navItems).build();
     }
 
-    private CategoryNavItem createCategoryNavItem(String title, String[] navItemTagArr) {
-        List<String> navItemTags = CollectionUtils.arrayToList(navItemTagArr);
-        return CategoryNavItem.builder().title(title).tags(navItemTags).build();
-    }
-
-    private CategoryNavItem createCategoryNavItem(String title, List<String> navItemTags) {
+    private CategoryNavItem createCategoryNavItem(String title, List<CategoryNavSubItem> navItemTags) {
         return CategoryNavItem.builder().title(title).tags(navItemTags).build();
     }
 

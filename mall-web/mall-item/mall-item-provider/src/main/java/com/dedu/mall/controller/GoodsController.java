@@ -26,7 +26,17 @@ public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
-    //**********************************分割线，以下为H5前台接口********************************************
+
+    @GetMapping("/list/category/{id}")
+    @ApiOperation(value = "根据类目Id查询商品列表-dedu", notes = "商品")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "类目主键id", required = true)
+    })
+    public Result queryGoodsListByCategoryId(@PathVariable Long id) throws Exception {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsListByCategoryId(id));
+    }
+
+
     @GetMapping("/nav/category/{id}")
     @ApiOperation(value = "根据类目Id查询商品列表导航头信息-dedu", notes = "商品")
     @ApiImplicitParams({
@@ -34,15 +44,6 @@ public class GoodsController {
     })
     public Result queryGoodsNavByCategoryId(@PathVariable Long id) throws Exception {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsNavByCategoryId(id));
-    }
-
-    @GetMapping("/list/category/{id}")
-    @ApiOperation(value = "根据类目Id查询商品列表导航头信息-dedu", notes = "商品")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "类目主键id", required = true)
-    })
-    public Result queryGoodsListByCategoryId(@PathVariable Long id) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsListByCategoryId(id));
     }
 
     /**

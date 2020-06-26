@@ -1,6 +1,6 @@
 package com.dedu.mall.model.mysql;
 
-import com.dedu.mall.model.h5.GoodsRspVo;
+import com.dedu.mall.model.h5.GoodsListItemVo;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,9 +12,9 @@ public class GoodsListVo {
     /**
      * 广告推荐列表
      */
-    private List<GoodsRspVo> advertisingList;
+    private List<GoodsListItemVo> advertisingList;
     /**
      * 商品列表
      */
-    private List<GoodsRspVo> goodsList;
+    private List<GoodsListItemVo> goodsList;
 }

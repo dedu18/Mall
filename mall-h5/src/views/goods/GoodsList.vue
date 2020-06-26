@@ -138,10 +138,10 @@
       }
     },
     created() {
-      this.loadGoodsList();
     },
     mounted() {
       this.searchItem = this.$route.query.searchData;
+      this.loadGoodsList(this.$route.query.categoryId);
     },
     components: {
       Search,

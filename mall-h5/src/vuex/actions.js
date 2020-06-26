@@ -72,11 +72,11 @@ export const loadGoodsInfo = ({commit}) => {
 };
 
 // 获取商品列表
-export const loadGoodsList = ({commit}) => {
+export const loadGoodsList = ({commit}, data) => {
   commit('SET_LOAD_STATUS', true);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      getGoodsListByCategoryId(2).then(response => {
+      getGoodsListByCategoryId(data).then(response => {
         const data = response;
         commit('SET_GOODS_LIST', data);
         commit('SET_LOAD_STATUS', false);

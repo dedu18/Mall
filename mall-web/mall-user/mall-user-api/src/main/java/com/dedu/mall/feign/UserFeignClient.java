@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface UserFeignClient {
     @GetMapping("/addresses")
-    Result<UserAddressVo> queryUserAddressByUserId(@RequestParam String userId, @RequestParam String addressId);
+    Result<UserAddressVo> queryUserAddressByUserId(@RequestParam(value = "userId") String userId, @RequestParam("addressId") String addressId);
 }

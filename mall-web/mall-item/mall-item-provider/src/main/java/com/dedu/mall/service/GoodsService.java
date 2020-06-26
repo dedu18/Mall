@@ -1,7 +1,7 @@
 package com.dedu.mall.service;
 
 import com.dedu.mall.model.h5.GoodsDetailRspVo;
-import com.dedu.mall.model.h5.GoodsRspVo;
+import com.dedu.mall.model.h5.GoodsListItemVo;
 import com.dedu.mall.model.mysql.GoodsListVo;
 import com.dedu.mall.model.mysql.GoodsNavVo;
 import com.dedu.mall.model.mysql.GoodsVo;
@@ -17,5 +17,5 @@ public interface GoodsService {
 
     GoodsDetailRspVo queryGoodsById(Long id);
 
-    List<List<GoodsRspVo>> queryRecommendGoodsList();
+    List<List<GoodsListItemVo>> queryRecommendGoodsList();
 }

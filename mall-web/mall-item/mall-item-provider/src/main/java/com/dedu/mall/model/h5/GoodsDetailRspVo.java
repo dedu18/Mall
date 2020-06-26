@@ -22,9 +22,9 @@ public class GoodsDetailRspVo {
     //评价条数
     private Integer remarksNum;
     // 销售商品
-    private List<List<GoodsRspVo>> setMeal;
+    private List<List<GoodsListItemVo>> setMeal;
     // 店铺热销
-    private List<GoodsRspVo> hot;
+    private List<GoodsListItemVo> hot;
     // 商品介绍图
     private List<String> goodsDetail;
     // 规格参数

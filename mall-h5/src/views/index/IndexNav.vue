@@ -6,7 +6,8 @@
       <!-- 侧边导航 -->
       <div class="nav-side">
         <ul>
-          <li style="padding: 1px 15px 4px 20px;" v-for="(items, index) in parentNavItems" :key="items.id" @mouseenter="showDetail(items.id)" @mouseleave="hideDetail()">
+          <li style="padding: 1px 15px 4px 20px;" v-for="(items, index) in parentNavItems" :key="items.id"
+              @mouseenter="showDetail(items.id)" @mouseleave="hideDetail()">
             <span class="nav-side-item">{{items.name}}</span>
           </li>
         </ul>
@@ -35,7 +36,8 @@
     </div>
     <!-- 导航伸展-->
     <transition>
-      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel" @mouseenter="showTransitionDetail()"
+      <div class="detail-item-panel" :duration="{ enter: 1000, leave: 1000 }" v-show="panel"
+           @mouseenter="showTransitionDetail()"
            @mouseleave="hideTransitionDetail()">
         <div class="nav-detail-item">
           <span v-for="(item, index) in panelData.navTags" :key="index">{{item}}> </span>
@@ -43,8 +45,9 @@
         <ul>
           <li class="detail-item-row" v-for="(items, index) in panelData.navItems" :key="index">
             <span class="detail-item-title">{{items.title}}</span>
-            <router-link to="/goodsList" v-for="(item, subIndex) in items.tags" :key="subIndex">
-              <span class="detail-item">{{item}}</span>
+            <router-link :to="{path:'/goodsList', query: {categoryId : item.id}}" v-for="(item, subIndex) in items.tags"
+                         :key="subIndex">
+              <span class="detail-item">{{item.name}}</span>
             </router-link>
           </li>
         </ul>
@@ -62,7 +65,7 @@
     name: 'IndexNav',
     data() {
       return {
-        parentNavItems:[],
+        parentNavItems: [],
         panel: false,
         panelId: '',
         navItems: [],
@@ -86,7 +89,7 @@
             parentId: index
           }).then(response => {
             this.panelData = response;
-            this.allPanelData.set(index , response);
+            this.allPanelData.set(index, response);
           });
         }
       },

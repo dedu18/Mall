@@ -20,19 +20,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-//**********************************分割线，以下为H5前台接口*******************************************
-    /**
-     * 获取所有导航类目列表
-     * @return
-     */
-    @GetMapping("/h5/list")
-    @ApiOperation(value = "查询所有H5导航类目列表-dedu", notes = "类目")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "int", name = "parentId", value = "父级类目Id", required = true)
-    })
-    public Result getCategoryNavTreeByParentCategoryId(@RequestParam Integer parentId) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getCategoryNavTreeByParentCategoryId(parentId));
-    }
     /**
      * 获取所有导航类目顶级列表
      * @return
@@ -42,6 +29,19 @@ public class CategoryController {
     @ApiImplicitParams({})
     public Result getAllParentCategoryNav() {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getAllParentCategoryNav());
+    }
+
+    /**
+     * 查询导航二三级类目列表
+     * @return
+     */
+    @GetMapping("/h5/list")
+    @ApiOperation(value = "查询导航二三级类目列表-dedu", notes = "类目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "parentId", value = "父级类目Id", required = true)
+    })
+    public Result getCategoryNavTreeByParentCategoryId(@RequestParam Integer parentId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getCategoryNavTreeByParentCategoryId(parentId));
     }
 
     /**
@@ -57,18 +57,12 @@ public class CategoryController {
 
 
 
-
-
-
-
-//**********************************分割线，以下为运营后台接口*******************************************
-
     /**
      * 获取所有类目树形结构
      * @param parentId
      * @return
      */
-    @GetMapping("/tree")
+    @GetMapping("/management/tree")
     @ApiOperation(value = "根据父级类目Id查询类目树-dedu", notes = "类目")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "parentId", value = "父级类目Id", required = true)
@@ -81,7 +75,7 @@ public class CategoryController {
      * 获取所有类目列表
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping("/management/list")
     @ApiOperation(value = "查询所有类目列表-dedu", notes = "类目")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "parentId", value = "父级类目Id", required = true)
@@ -90,7 +84,7 @@ public class CategoryController {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.getAllCategoryList());
     }
 
-    @PutMapping("")
+    @PutMapping("/management/")
     @ApiOperation(value = "根据Id修改类目信息-dedu", notes = "类目")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "body", dataType = "CategoryVo", name = "request", value = "类目Model")
@@ -99,7 +93,7 @@ public class CategoryController {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.modifyInfoById(request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/management/{id}")
     @ApiOperation(value = "根据Id逻辑删除类目信息-dedu", notes = "类目")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "类目主键id", required = true)
@@ -108,7 +102,7 @@ public class CategoryController {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), categoryService.removeCategoryById(id));
     }
 
-    @PostMapping("/")
+    @PostMapping("/management/")
     @ApiOperation(value = "添加类目-dedu", notes = "类目")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "body", dataType = "CategoryVo", name = "request", value = "类目实体", required = true)
