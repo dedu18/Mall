@@ -32,7 +32,7 @@ public class GoodsController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "类目主键id", required = true)
     })
-    public Result queryGoodsListByCategoryId(@PathVariable Long id) throws Exception {
+    public Result queryGoodsListByCategoryId(@PathVariable Long id) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsListByCategoryId(id));
     }
 

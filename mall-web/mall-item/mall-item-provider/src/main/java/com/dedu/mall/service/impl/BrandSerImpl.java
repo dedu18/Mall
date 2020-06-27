@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.BrandMapper;
+import com.dedu.mall.dao.mapper.BrandMapper;
 import com.dedu.mall.model.mysql.BrandPo;
 import com.dedu.mall.model.mysql.BrandVo;
 import com.dedu.mall.service.BrandService;

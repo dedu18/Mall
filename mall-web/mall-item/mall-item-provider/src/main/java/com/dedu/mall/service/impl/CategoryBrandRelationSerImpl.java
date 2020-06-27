@@ -1,7 +1,7 @@
 package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.CategoryBrandRelationMapper;
+import com.dedu.mall.dao.mapper.CategoryBrandRelationMapper;
 import com.dedu.mall.model.mysql.BrandPo;
 import com.dedu.mall.model.mysql.BrandVo;
 import com.dedu.mall.model.mysql.CategoryBrandRelationPo;

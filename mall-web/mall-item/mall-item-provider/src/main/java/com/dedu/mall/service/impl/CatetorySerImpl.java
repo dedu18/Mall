@@ -2,7 +2,7 @@ package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.CategoryMapper;
+import com.dedu.mall.dao.mapper.CategoryMapper;
 import com.dedu.mall.model.h5.CategoryParentVo;
 import com.dedu.mall.model.mysql.*;
 import com.dedu.mall.service.CategoryService;

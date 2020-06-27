@@ -1,7 +1,7 @@
 package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.SkuMapper;
+import com.dedu.mall.dao.mapper.SkuMapper;
 import com.dedu.mall.model.mysql.SkuPo;
 import com.dedu.mall.model.mysql.SkuVo;
 import com.dedu.mall.service.SkuService;

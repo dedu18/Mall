@@ -1,5 +1,7 @@
 package com.dedu.mall.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dedu.mall.model.h5.CommentInfoVo;
 import com.dedu.mall.model.h5.CommentVo;
 import com.dedu.mall.model.h5.GoodsDetailRspVo;
@@ -132,8 +134,31 @@ public class GoodsSerImpl implements GoodsService {
         goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-6.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("monqiqi旗舰店").sale(new Double("5500")).build());
         goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-7.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("BIAZE官方旗舰店").sale(new Double("5500")).build());
         goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-8.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("monqiqi旗舰店").sale(new Double("5500")).build());
-        GoodsListVo result = GoodsListVo.builder().advertisingList(adList).goodsList(goodsList).build();
+
+        IPage<SpuVo> spuPageByCategoryId = spuService.getSpuPageByCategoryId(id, 0, 10);
+        IPage<GoodsListItemVo> goodsListItemPage = convertSpuPageToGoodsListItemPage(spuPageByCategoryId);
+
+        GoodsListVo result = GoodsListVo.builder().advertisingList(adList).goodsList(goodsList).goodsListPage(goodsListItemPage).build();
         return result;
+    }
+
+    private IPage<GoodsListItemVo> convertSpuPageToGoodsListItemPage(IPage<SpuVo> spuVoPage) {
+        IPage<GoodsListItemVo> result = new Page();
+        result.setTotal(spuVoPage.getTotal());
+        result.setSize(spuVoPage.getSize());
+        result.setPages(spuVoPage.getPages());
+        List<GoodsListItemVo> goodsListItemRecords = new ArrayList<>();
+        for (SpuVo spuVo : spuVoPage.getRecords()) {
+            goodsListItemRecords.add(GoodsListItemVo.builder()
+                    .intro(spuVo.getSpuTitle())
+                    .img("static/img/goodsList/item-show-2.jpg")
+                    .price(spuVo.getPrice().doubleValue())
+                    .remarks(9000)
+                    .sale(9000.0)
+                    .build());
+        }
+        result.setRecords(goodsListItemRecords);
+        return null;
     }
 
     @Override

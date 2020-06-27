@@ -1,5 +1,6 @@
 package com.dedu.mall.model.mysql;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dedu.mall.model.h5.GoodsListItemVo;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,8 @@ public class GoodsListVo {
      * 商品列表
      */
     private List<GoodsListItemVo> goodsList;
+    /**
+     * 商品分页列表
+     */
+    private IPage<GoodsListItemVo> goodsListPage;
 }

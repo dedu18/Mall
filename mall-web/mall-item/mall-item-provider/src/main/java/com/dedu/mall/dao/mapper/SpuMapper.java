@@ -1,4 +1,4 @@
-package com.dedu.mall.dao;
+package com.dedu.mall.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,4 +15,7 @@ public interface SpuMapper extends BaseMapper<SpuPo> {
 
     @Select("SELECT COUNT(1) FROM tb_spu spu, tb_sku sku, tb_stock stock WHERE sku.spu_id = spu.id AND stock.sku_id = sku.id")
     Integer selectSpuCount();
+
+    @Select("SELECT *  FROM tb_spu spu WHERE spu.categoty_ids in categoryId AND spu.is_enable = 1")
+    List<SpuVo> getSpuPageByCategoryId(Long categoryId, Page page);
 }
