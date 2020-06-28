@@ -15,7 +15,7 @@ public interface GoodsService {
 
     GoodsListVo queryGoodsListByCategoryId(Long id);
 
-    GoodsDetailRspVo queryGoodsById(Long id);
+    GoodsDetailRspVo queryGoodsBySpuId(Long id);
 
     List<List<GoodsListItemVo>> queryRecommendGoodsList();
 }

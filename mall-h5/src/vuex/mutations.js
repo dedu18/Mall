@@ -52,7 +52,8 @@ export const REDUCE_SECKILLS_TIME = state => {
 
 // 设置商品列表(搜索)
 export const SET_GOODS_LIST = (state, data) => {
-  state.goodsList = data.goodsList;
+  state.goodsList = data.goodsListPage.records;
+  state.goodsListTotal = data.goodsListPage.total;
   state.advertisingList = data.advertisingList;
 };
 

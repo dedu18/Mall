@@ -58,30 +58,22 @@ export const loadEat = ({commit}) => {
 };
 
 // 请求获得商品详细信息
-export const loadGoodsInfo = ({commit}) => {
+export const loadGoodsInfo = ({commit}, data) => {
   commit('SET_LOAD_STATUS', true);
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      getGoodsById(1).then(response => {
-        const data = response;
-        commit('SET_GOODS_INFO', data);
+      getGoodsById(data).then(response => {
+        commit('SET_GOODS_INFO', response);
         commit('SET_LOAD_STATUS', false);
       });
-    }, 300);
   });
 };
 
 // 获取商品列表
 export const loadGoodsList = ({commit}, data) => {
   commit('SET_LOAD_STATUS', true);
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      getGoodsListByCategoryId(data).then(response => {
-        const data = response;
-        commit('SET_GOODS_LIST', data);
-        commit('SET_LOAD_STATUS', false);
-      });
-    });
+  getGoodsListByCategoryId(data).then(response => {
+    commit('SET_GOODS_LIST', response);
+    commit('SET_LOAD_STATUS', false);
   });
 };
 

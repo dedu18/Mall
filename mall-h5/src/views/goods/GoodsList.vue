@@ -52,17 +52,23 @@
           <!-- 排序按钮-->
           <div class="goods-list-tool">
             <ul>
-              <li v-for="(item,index) in goodsTool" :key="index" @click="orderBy(item.en, index)"><span
-                :class="{ 'goods-list-tool-active': isAction[index]}">{{item.title}} <Icon
-                :type="icon[index]"></Icon></span></li>
+              <li v-for="(item,index) in goodsTool" :key="index" @click="orderBy(item.en, index)">
+                <span :class="{ 'goods-list-tool-active': isAction[index]}">
+                {{item.title}}
+                <Icon :type="icon[index]"/>
+                </span>
+              </li>
             </ul>
           </div>
           <!-- 商品列表-->
           <div class="goods-list">
-            <div class="goods-show-info" v-for="(item, index) in orderGoodsList" :key="index">
+            <div v-if="orderGoodsList.length == 0" class="goods-list-empty">抱歉，没有找到相关的商品</div>
+            <div v-else class="goods-show-info" v-for="(item, index) in orderGoodsList" :key="index">
               <!-- 商品图片-->
               <div class="goods-show-img">
-                <router-link to="/goodsDetail"><img :src="item.img"/></router-link>
+                <router-link :to="{path:'/goodsDetail', query: {spuId : item.spuId}}">
+                  <img :src="item.img"/>
+                </router-link>
               </div>
               <!-- 商品价格-->
               <div class="goods-show-price">
@@ -88,7 +94,7 @@
         </div>
       </div>
       <div class="goods-page">
-        <Page :total="100" show-sizer></Page>
+        <Page :total="goodsListTotal" page-size="50" show-total @on-change="goodsListPageChange"></Page>
       </div>
     </div>
     <Spin size="large" fix v-if="isLoading"></Spin>
@@ -119,11 +125,11 @@
           {title: '价格', en: 'price'},
           {title: '评论数', en: 'remarks'},
           {title: '上架时间', en: 'saletime'}
-        ]
+        ],
       };
     },
     computed: {
-      ...mapState(['advertisingList', 'isLoading']),
+      ...mapState(['advertisingList', 'goodsListTotal', 'isLoading']),
       ...mapGetters(['orderGoodsList'])
     },
     methods: {
@@ -135,6 +141,9 @@
         this.isAction[index] = true;
         this.icon[index] = 'arrow-up-a';
         this.SET_GOODS_ORDER_BY(data);
+      },
+      goodsListPageChange(index) {
+        console.log(index)
       }
     },
     created() {
@@ -238,6 +247,16 @@
   /* ---------------侧边广告栏结束------------------- */
 
   /* ---------------商品栏开始------------------- */
+  .goods-list-empty {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20%;
+    font-size: 20px;
+    color: #fd984b;
+  }
+
   .goods-list-box {
     margin-left: 15px;
     width: 85%;
@@ -245,7 +264,7 @@
 
   .goods-list-tool {
     width: 100%;
-    height: 38px;
+    height: 40px;
     border: 1px solid #ccc;
     background-color: #F1F1F1;
   }
@@ -263,7 +282,7 @@
   .goods-list-tool span {
     padding: 5px 8px;
     border: 1px solid #ccc;
-    border-left: none;
+    /*border-left: none;*/
     line-height: 36px;
     background-color: #fff;
   }
@@ -305,7 +324,7 @@
   }
 
   .goods-show-detail {
-    font-size: 12px;
+    font: 12px/150% tahoma, arial, Microsoft YaHei, Hiragino Sans GB, "\u5b8b\u4f53", sans-serif;
     margin: 6px 0px;
   }
 

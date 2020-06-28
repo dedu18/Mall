@@ -13,6 +13,7 @@ export default new Vuex.Store({
     goodsInfo: { // 商品详情
       goodsImg: [],
       title: '',
+      phraseTitle: '',
       tags: [],
       discount: [],
       promotion: [],
@@ -50,6 +51,7 @@ export default new Vuex.Store({
     eat: {}, // 爱吃专栏
     advertisingList: [], // 广告
     goodsList: [], // 商品列表
+    goodsListTotal: 0,
     shoppingCart: [], // 购物车
     newShoppingCart: [], // 刚加入的购物车，作为展示
     recommend: [] // 推荐购买

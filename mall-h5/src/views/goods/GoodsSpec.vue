@@ -99,6 +99,11 @@ import store from '@/vuex/store';
 import { mapState } from 'vuex';
 export default {
   name: 'GoodsSpec',
+  props: {
+    spuId: {
+      type: String
+    }
+  },
   data () {
     return {
       tagsColor: [ 'blue', 'green', 'red', 'yellow' ]

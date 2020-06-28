@@ -1,5 +1,7 @@
 package com.dedu.mall.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dedu.mall.dao.mapper.SpuMapper;
@@ -22,7 +24,7 @@ public class SpuDao extends ServiceImpl<SpuMapper, SpuPo> {
         return this.getBaseMapper().selectSpuPage(page);
     }
 
-    public List<SpuVo> getSpuPageByCategoryId(Long categoryId, Page page) {
-        return this.getBaseMapper().getSpuPageByCategoryId(categoryId, page);
+    public IPage<SpuPo> getSpuPageByCategoryId(Long categoryId, Page page) {
+        return this.page(page, new QueryWrapper<SpuPo>().eq("is_enable", 1).like("categoty_ids", categoryId));
     }
 }

@@ -118,6 +118,16 @@ public class GoodsSerImpl implements GoodsService {
      */
     @Override
     public GoodsListVo queryGoodsListByCategoryId(Long id) {
+        //查询推荐商品列表
+        List<GoodsListItemVo> adList = getRecommendedGoodsList();
+        //根据类目Id查Spu列表
+        IPage<SpuPo> spuPageByCategoryId = spuService.getSpuPageByCategoryId(id, 0, 50);
+        IPage<GoodsListItemVo> goodsListItemPage = convertSpuPageToGoodsListItemPage(spuPageByCategoryId);
+        GoodsListVo result = GoodsListVo.builder().advertisingList(adList).goodsListPage(goodsListItemPage).build();
+        return result;
+    }
+
+    private List<GoodsListItemVo> getRecommendedGoodsList() {
         List<GoodsListItemVo> adList = new ArrayList<>(6);
         adList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-as-img-1.jpg").price(new Double("39.9")).intro("SKSK 苹果7/7plus手机壳 iPhone 7 Plus保护套全包硬").num(3140).sale(new Double("9000")).build());
         adList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-as-img-2.jpg").price(new Double("49.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").num(1160).sale(new Double("5900")).build());
@@ -125,44 +135,35 @@ public class GoodsSerImpl implements GoodsService {
         adList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-as-img-2.jpg").price(new Double("69.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").num(6160).sale(new Double("7700")).build());
         adList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-as-img-1.jpg").price(new Double("79.9")).intro("SKSK 苹果7/7plus手机壳 iPhone 7 Plus保护套全包硬").num(7160).sale(new Double("6600")).build());
         adList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-as-img-2.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").num(9160).sale(new Double("5500")).build());
-        List<GoodsListItemVo> goodsList = new ArrayList<>();
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-1.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("歌乐力手配专营店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-2.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("BIAZE官方旗舰店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-3.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("歌乐力手配专营店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-4.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("BIAZE官方旗舰店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-5.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("歌乐力手配专营店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-6.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("monqiqi旗舰店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-7.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("BIAZE官方旗舰店").sale(new Double("5500")).build());
-        goodsList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-show-8.jpg").price(new Double("89.9")).intro("狮普 苹果7/7 Plus手机壳 电镀 超薄 全包 防摔 保护外").remarks(9000).shopName("monqiqi旗舰店").sale(new Double("5500")).build());
-
-        IPage<SpuVo> spuPageByCategoryId = spuService.getSpuPageByCategoryId(id, 0, 10);
-        IPage<GoodsListItemVo> goodsListItemPage = convertSpuPageToGoodsListItemPage(spuPageByCategoryId);
-
-        GoodsListVo result = GoodsListVo.builder().advertisingList(adList).goodsList(goodsList).goodsListPage(goodsListItemPage).build();
-        return result;
+        return adList;
     }
 
-    private IPage<GoodsListItemVo> convertSpuPageToGoodsListItemPage(IPage<SpuVo> spuVoPage) {
+    private IPage<GoodsListItemVo> convertSpuPageToGoodsListItemPage(IPage<SpuPo> spuVoPage) {
         IPage<GoodsListItemVo> result = new Page();
+        if (null == spuVoPage) {
+            return result;
+        }
         result.setTotal(spuVoPage.getTotal());
         result.setSize(spuVoPage.getSize());
         result.setPages(spuVoPage.getPages());
         List<GoodsListItemVo> goodsListItemRecords = new ArrayList<>();
-        for (SpuVo spuVo : spuVoPage.getRecords()) {
+        for (SpuPo spuPo : spuVoPage.getRecords()) {
             goodsListItemRecords.add(GoodsListItemVo.builder()
-                    .intro(spuVo.getSpuTitle())
-                    .img("static/img/goodsList/item-show-2.jpg")
-                    .price(spuVo.getPrice().doubleValue())
+                    .spuId(spuPo.getId())
+                    .intro(spuPo.getSubTitle())
+                    .img("static/img/goodsList/item-show-4.jpg")
+                    .price(5000.0)
                     .remarks(9000)
+                    .shopName("荣耀京东自营旗舰店")
                     .sale(9000.0)
                     .build());
         }
         result.setRecords(goodsListItemRecords);
-        return null;
+        return result;
     }
 
     @Override
-    public GoodsDetailRspVo queryGoodsById(Long id) {
+    public GoodsDetailRspVo queryGoodsBySpuId(Long id) {
         //商品预览图
         String[] goodsImgArr = {"static/img/goodsDetail/item-detail-1.jpg", "static/img/goodsDetail/item-detail-2.jpg", "static/img/goodsDetail/item-detail-3.jpg", "static/img/goodsDetail/item-detail-4.jpg"};
         List<String> goodsImg = CollectionUtils.arrayToList(goodsImgArr);
@@ -238,6 +239,7 @@ public class GoodsSerImpl implements GoodsService {
         GoodsDetailRspVo result = GoodsDetailRspVo.builder()
                 .goodsImg(goodsImg)
                 .title(title)
+                .phraseTitle("新品")
                 .tags(tags)
                 .discount(discount)
                 .promotion(promotion)

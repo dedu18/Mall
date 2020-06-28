@@ -72,8 +72,7 @@ public class SpuSerImpl implements SpuService {
     }
 
     @Override
-    public IPage<SpuVo> getSpuPageByCategoryId(Long categoryId, Integer pageNum, Integer pageSize) {
-        List<SpuVo> spuPoList = spuDao.getSpuPageByCategoryId(categoryId, new Page<>(pageNum, pageSize));
-        return null;
+    public IPage<SpuPo> getSpuPageByCategoryId(Long categoryId, Integer pageNum, Integer pageSize) {
+        return spuDao.getSpuPageByCategoryId(categoryId, new Page<>(pageNum, pageSize));
     }
 }

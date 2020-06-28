@@ -15,10 +15,6 @@ public class GoodsListVo {
      */
     private List<GoodsListItemVo> advertisingList;
     /**
-     * 商品列表
-     */
-    private List<GoodsListItemVo> goodsList;
-    /**
      * 商品分页列表
      */
     private IPage<GoodsListItemVo> goodsListPage;

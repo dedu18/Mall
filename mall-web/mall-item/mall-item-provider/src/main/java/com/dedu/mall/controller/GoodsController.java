@@ -42,7 +42,7 @@ public class GoodsController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "类目主键id", required = true)
     })
-    public Result queryGoodsNavByCategoryId(@PathVariable Long id) throws Exception {
+    public Result queryGoodsNavByCategoryId(@PathVariable Long id) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsNavByCategoryId(id));
     }
 
@@ -53,12 +53,12 @@ public class GoodsController {
      * @throws Exception
      */
     @GetMapping("/{id}")
-    @ApiOperation(value = "根据商品Id查询商品详情信息-dedu", notes = "商品")
+    @ApiOperation(value = "根据商品SpuId查询商品详情信息-dedu", notes = "商品")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "商品主键id", required = true)
     })
-    public Result queryGoodsById(@PathVariable Long id) throws Exception {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsById(id));
+    public Result queryGoodsBySpuId(@PathVariable Long id) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsBySpuId(id));
     }
 
     /**
@@ -69,7 +69,7 @@ public class GoodsController {
     @GetMapping("/recommend")
     @ApiOperation(value = "查询推荐商品-dedu", notes = "商品")
     @ApiImplicitParams({})
-    public Result queryRecommendGoodsList() throws Exception {
+    public Result queryRecommendGoodsList() {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryRecommendGoodsList());
     }
 
@@ -92,7 +92,7 @@ public class GoodsController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "body", dataType = "GoodsVo", name = "goodsVo", value = "商品实体", required = true)
     })
-    public Result querySpecGroupByCategoryId(@NotNull @RequestBody GoodsVo goodsVo) throws Exception {
+    public Result querySpecGroupByCategoryId(@NotNull @RequestBody GoodsVo goodsVo) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.addGoods(goodsVo));
     }
 }

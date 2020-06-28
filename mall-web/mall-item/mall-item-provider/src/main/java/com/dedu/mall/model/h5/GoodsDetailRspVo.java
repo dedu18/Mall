@@ -13,6 +13,8 @@ public class GoodsDetailRspVo {
     private List<String> goodsImg;
     //商品标题
     private String title;
+    //商品短语标题，如校园配送
+    private String phraseTitle;
     // 标题下小标题
     private List<String> tags;
     //优惠价

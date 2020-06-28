@@ -8,5 +8,5 @@ import com.dedu.mall.model.mysql.SpuVo;
 public interface SpuService {
     SpuPo addSpuAndSpuDetail(SpuAndDetailVo spuAndDetailVo);
     IPage<SpuVo> getSpuPage(Integer pageNum, Integer pageSize);
-    IPage<SpuVo> getSpuPageByCategoryId(Long categoryId, Integer pageNum, Integer pageSize);
+    IPage<SpuPo> getSpuPageByCategoryId(Long categoryId, Integer pageNum, Integer pageSize);
 }

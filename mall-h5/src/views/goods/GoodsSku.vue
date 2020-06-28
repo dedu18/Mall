@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="item-detail-show">
+      <!-- 左边图片区 -->
       <div class="item-detail-left">
         <div class="item-detail-big-img">
           <img :src="goodsInfo.goodsImg[imgIndex]" alt="">
@@ -12,21 +13,25 @@
           </div>
         </div>
       </div>
+      <!-- 右边商品信息区 -->
       <div class="item-detail-right">
+        <!-- 标题短语 -->
         <div class="item-detail-title">
           <p>
-            <span class="item-detail-express">校园配送</span> {{goodsInfo.title}}</p>
+            <span v-if="goodsInfo.phraseTitle.length != 0" class="item-detail-express">{{goodsInfo.phraseTitle}}</span> {{goodsInfo.title}}</p>
         </div>
+        <!-- 小标题 -->
         <div class="item-detail-tag">
           <p>
             <span v-for="(item,index) in goodsInfo.tags" :key="index">【{{item}}】</span>
           </p>
         </div>
+        <!-- 商品价格信息 -->
         <div class="item-detail-price-row">
           <div class="item-price-left">
             <div class="item-price-row">
               <p>
-                <span class="item-price-title">B I T 价</span>
+                <span class="item-price-title">京东价</span>
                 <span class="item-price">￥{{price.toFixed(2)}}</span>
               </p>
             </div>
@@ -54,14 +59,14 @@
             </div>
           </div>
         </div>
-        <!-- 选择颜色 -->
+        <!-- 选择SKU选择 -->
         <div class="item-select">
           <div class="item-select-title">
             <p>选择颜色</p>
           </div>
           <div class="item-select-column">
             <div class="item-select-row" v-for="(items, index) in goodsInfo.setMeal" :key="index">
-              <div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="select(index, index1)"
+              <div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="selectGoods(index, index1)"
                    :class="{'item-select-box-active': ((index * 3) + index1) === selectBoxIndex}">
                 <div class="item-select-img">
                   <img :src="item.img" alt="">
@@ -70,19 +75,6 @@
                   <p>{{item.intro}}</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <!-- 白条分期 -->
-        <div class="item-select">
-          <div class="item-select-title">
-            <p>白条分期</p>
-          </div>
-          <div class="item-select-row">
-            <div class="item-select-class" v-for="(item,index) in hirePurchase" :key="index">
-              <Tooltip :content="item.tooltip" placement="top-start">
-                <span>{{item.type}}</span>
-              </Tooltip>
             </div>
           </div>
         </div>
@@ -105,45 +97,22 @@
 
   export default {
     name: 'GoodsSku',
+    props: {
+      spuId: {
+        type: String
+      }
+    },
     data() {
       return {
         price: 0,
         count: 1,
-        selectBoxIndex: 0,
+        selectBoxIndex: 1,
         imgIndex: 0
       };
     },
     computed: {
       ...mapState(['goodsInfo']),
-      ...mapState(['userInfo']),
-      hirePurchase() {
-        const three = this.price * this.count / 3;
-        const sex = this.price * this.count / 6;
-        const twelve = this.price * this.count / 12 * 1.0025;
-        const twentyFour = this.price * this.count / 24 * 1.005;
-        return [
-          {
-            tooltip: '无手续费',
-            type: '不分期'
-          },
-          {
-            tooltip: '无手续费',
-            type: `￥${three.toFixed(2)} x 3期`
-          },
-          {
-            tooltip: '无手续费',
-            type: `￥${sex.toFixed(2)} x 6期`
-          },
-          {
-            tooltip: '含手续费：费率0.25%起，￥0.1起×12期',
-            type: `￥${twelve.toFixed(2)} x 12期`
-          },
-          {
-            tooltip: '含手续费：费率0.5%起，￥0.1起×12期',
-            type: `￥${twentyFour.toFixed(2)} x 24期`
-          }
-        ];
-      }
+      ...mapState(['userInfo'])
     },
     methods: {
       ...mapActions(['addShoppingCart']),
@@ -296,7 +265,7 @@
   }
 
   .item-remarks-sum {
-    padding-left: 8px;
+    padding: 9px 8px 0;
     border-left: 1px solid #ccc;
   }
 
@@ -349,16 +318,16 @@
     padding: 5px;
     margin-right: 8px;
     background-color: #f7f7f7;
-    border: 0.5px solid #ccc;
+    border: 1px solid #ccc;
     cursor: pointer;
   }
 
   .item-select-box:hover {
-    border: 0.5px solid #e3393c;
+    border: 1px solid #e3393c;
   }
 
   .item-select-box-active {
-    border: 0.5px solid #e3393c;
+    border: 1px solid #e3393c;
   }
 
   .item-select-img img {
@@ -379,7 +348,7 @@
   }
 
   .item-select-class:hover {
-    border: 0.5px solid #e3393c;
+    border: 1px solid #e3393c;
   }
 
   .add-buy-car-box {
