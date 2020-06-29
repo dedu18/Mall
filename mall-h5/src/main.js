@@ -7,7 +7,14 @@ import store from './vuex/store'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 
+import {Sku, Button} from 'vant';
+import 'vant/lib/index.css';
+
+
 Vue.use(iView);
+Vue.use(Sku);
+Vue.use(Button);
+
 Vue.config.productionTip = false;
 //开启vue-devtools
 Vue.config.devtools = true
@@ -25,6 +32,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>'
 });

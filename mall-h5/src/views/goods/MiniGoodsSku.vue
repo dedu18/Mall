@@ -1,0 +1,458 @@
+<template>
+  <div>
+    <div class="item-detail-show">
+      <!-- 左边图片区 -->
+      <div class="item-detail-left">
+        <div class="item-detail-big-img">
+          <img :src="goodsInfo.goodsImg[imgIndex]" alt="">
+        </div>
+        <div class="item-detail-img-row">
+          <div class="item-detail-img-small" v-for="(item, index) in goodsInfo.goodsImg" :key="index"
+               @mouseover="showBigImg(index)">
+            <img :src="item" alt="">
+          </div>
+        </div>
+      </div>
+      <!-- 右边商品信息区 -->
+      <div class="item-detail-right">
+
+        <!-- 选择SKU选择 -->
+        <div class="item-select">
+          <!--<div class="item-select-title">-->
+          <!--<p>选择颜色</p>-->
+          <!--</div>-->
+          <!--<div class="item-select-column">-->
+          <!--<div class="item-select-row" v-for="(items, index) in goodsInfo.setMeal" :key="index">-->
+          <!--<div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="selectGoods(index, index1)"-->
+          <!--:class="{'item-select-box-active': ((index * 3) + index1) === selectBoxIndex}">-->
+          <!--<div class="item-select-img">-->
+          <!--<img :src="item.img" alt="">-->
+          <!--</div>-->
+          <!--<div class="item-select-intro">-->
+          <!--<p>{{item.intro}}</p>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <div style="width: 500px; height: 450px;background-color: cadetblue;">
+            <van-sku
+              v-model="show"
+              :sku="sku"
+              :goods="goods"
+              :goods-id="goodsId"
+              :quota="quota"
+              :hide-stock="sku.hide_stock"
+              :overlay="true"
+              :message-config="messageConfig"
+              :custom-sku-validator="customSkuValidator"
+              @buy-clicked="onBuyClicked"
+              @add-cart="onAddCartClicked"
+              ref="sku">
+              <!-- 自定义 sku-header-price -->
+              <template #sku-header-price="props">
+                <!-- 标题短语 -->
+                <div class="item-detail-title">
+                  <p>
+                    <span v-if="goodsInfo.phraseTitle.length != 0"
+                          class="item-detail-express">{{goodsInfo.phraseTitle}}</span>
+                    {{goodsInfo.title}}</p>
+                </div>
+                <!-- 小标题 -->
+                <div class="item-detail-tag">
+                  <p>
+                    <span v-for="(item,index) in goodsInfo.tags" :key="index">【{{item}}】</span>
+                  </p>
+                </div>
+                <!-- 商品价格信息 -->
+                <div class="item-detail-price-row">
+                  <div class="item-price-left">
+                    <div class="item-price-row">
+                      <p>
+                        <span class="item-price-title">京东价</span>
+                        <span class="item-price">￥{{ props.price }}</span>
+                      </p>
+                    </div>
+                    <div class="item-price-row">
+                      <p>
+                        <span class="item-price-title">优 惠 价</span>
+                        <span class="item-price-full-cut" v-for="(item,index) in goodsInfo.discount"
+                              :key="index">{{item}}</span>
+                      </p>
+                    </div>
+                    <div class="item-price-row">
+                      <p>
+                        <span class="item-price-title">促&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;销</span>
+                        <span class="item-price-full-cut" v-for="(item,index) in goodsInfo.promotion"
+                              :key="index">{{item}}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="item-price-right">
+                    <div class="item-remarks-sum">
+                      <p>累计评价</p>
+                      <p>
+                        <span class="item-remarks-num">{{goodsInfo.remarksNum}} 条</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- 自定义 sku actions -->
+              <template #sku-actions="props">
+                <div class="add-buy-car-box">
+                  <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+                  <van-button
+                    color="#df3033"
+                    square
+                    size="large"
+                    type="danger"
+                    @click="onAddCartClicked">
+                    加入购物车
+                  </van-button>
+                </div>
+              </template>
+            </van-sku>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import store from '@/vuex/store';
+  import {mapState, mapActions} from 'vuex';
+
+  export default {
+    name: 'MiniGoodsSku',
+    props: {
+      spuId: {
+        type: String
+      }
+    },
+    data() {
+      return {
+        price: 0,
+        count: 1,
+        selectBoxIndex: 1,
+        imgIndex: 0,
+
+        show: true,
+        sku: {
+          // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
+          // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
+          tree: [
+            {
+              k: '颜色', // skuKeyName：规格类目名称
+              v: [
+                {
+                  id: '30349', // skuValueId：规格值 id
+                  name: '红色', // skuValueName：规格值名称
+                },
+                {
+                  id: '1215',
+                  name: '蓝色',
+                }
+              ],
+              k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
+            }
+          ],
+          // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+          list: [
+            {
+              id: 2259, // skuId，下单时后端需要
+              price: 1000, // 价格（单位分）
+              s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
+              s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
+              s3: '0', // 最多包含3个规格值，为0表示不存在该规格
+              stock_num: 110 // 当前 sku 组合对应的库存
+            },
+            {
+              id: 2259, // skuId，下单时后端需要
+              price: 1000, // 价格（单位分）
+              s1: '30349', // 规格类目 k_s 为 s1 的对应规格值 id
+              s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
+              s3: '0', // 最多包含3个规格值，为0表示不存在该规格
+              stock_num: 110 // 当前 sku 组合对应的库存
+            }
+          ],
+          price: '0.00', // 默认价格（单位元）
+          stock_num: 227, // 商品总库存
+          collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+          none_sku: false, // 是否无规格商品
+          hide_stock: true // 是否隐藏剩余库存
+        },
+        goods: {
+          // 数据结构见下方文档
+        },
+        messageConfig: {
+          // 数据结构见下方文档
+        },
+        quota: 0,
+        goodsId: "946755",
+        customSkuValidator: () => '请选择xxx!'
+      };
+    },
+    computed: {
+      ...mapState(['goodsInfo']),
+      ...mapState(['userInfo'])
+    },
+    methods: {
+      ...mapActions(['addShoppingCart']),
+      selectGoods(index1, index2) {
+        this.selectBoxIndex = index1 * 3 + index2;
+        this.price = this.goodsInfo.setMeal[index1][index2].price;
+      },
+      showBigImg(index) {
+        this.imgIndex = index;
+      },
+      addShoppingCartBtn() {
+        const index1 = parseInt(this.selectBoxIndex / 3);
+        const index2 = this.selectBoxIndex % 3;
+        const date = new Date();
+        const goodsId = date.getTime();
+        var sessionId = this.userInfo.sessionId;
+        if (sessionId == null || sessionId == 'undefined' || sessionId == '') {
+          this.$router.push('/login');
+        } else {
+          const data = {
+            sessionId: sessionId,
+            goodsId: goodsId,
+            title: this.goodsInfo.title,
+            count: this.count,
+            img: this.goodsInfo.goodsImg[this.imgIndex],
+            packages: this.goodsInfo.setMeal[index1][index2]
+          };
+          this.addShoppingCart(data);
+          this.$router.push('/shoppingCart');
+        }
+      },
+
+      onBuyClicked(data) {
+        console.log(JSON.stringify(data))
+      },
+      onAddCartClicked() {
+        console.log(this.$refs.sku.getSkuData())
+      }
+    },
+    mounted() {
+      const father = this;
+      setTimeout(() => {
+        father.price = father.goodsInfo.setMeal[0][0].price || 0;
+      }, 300);
+    },
+    store
+  };
+</script>
+
+<style scoped>
+  /******************商品图片及购买详情开始******************/
+  .item-detail-show {
+    width: 80%;
+    margin-left: 15%;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+  }
+
+  .item-detail-left {
+    width: 350px;
+    margin-right: 30px;
+  }
+
+  .item-detail-big-img {
+    width: 350px;
+    height: 350px;
+    box-shadow: 0px 0px 8px #ccc;
+    cursor: pointer;
+  }
+
+  .item-detail-big-img img {
+    width: 100%;
+  }
+
+  .item-detail-img-row {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .item-detail-img-small {
+    width: 68px;
+    height: 68px;
+    box-shadow: 0px 0px 8px #ccc;
+    cursor: pointer;
+  }
+
+  .item-detail-img-small img {
+    width: 100%;
+  }
+
+  /*商品选购详情*/
+  .item-detail-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-detail-title p {
+    color: #666;
+    font-size: 20px;
+  }
+
+  .item-detail-express {
+    font-size: 14px;
+    padding: 2px 3px;
+    border-radius: 3px;
+    background-color: #e4393c;
+    color: #fff;
+  }
+
+  /*商品标签*/
+  .item-detail-tag {
+    font-size: 12px;
+    color: #e4393c;
+  }
+
+  /*价格详情等*/
+  .item-detail-price-row {
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #f3f3f3;
+  }
+
+  .item-price-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-price-title {
+    color: #999999;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+
+  .item-price-row {
+    margin: 5px 0px;
+  }
+
+  .item-price {
+    color: #e4393c;
+    font-size: 23px;
+    cursor: pointer;
+  }
+
+  .item-price-full-cut {
+    margin-right: 5px;
+    padding: 3px;
+    color: #e4393c;
+    font-size: 12px;
+    background-color: #ffdedf;
+    border: 1px dotted #e4393c;
+    cursor: pointer;
+  }
+
+  .item-remarks-sum {
+    padding: 9px 8px 0;
+    border-left: 1px solid #ccc;
+  }
+
+  .item-remarks-sum p {
+    color: #999999;
+    font-size: 12px;
+    line-height: 10px;
+    text-align: center;
+  }
+
+  .item-remarks-num {
+    line-height: 18px;
+    color: #005eb7;
+  }
+
+  .item-select {
+    display: flex;
+    /*background-color: red;*/
+    flex-direction: row;
+    margin-top: 15px;
+  }
+
+  .item-select-title {
+    color: #999999;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+
+  .item-select-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-select-row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 8px;
+  }
+
+  .item-select-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .item-select-img {
+    width: 36px;
+  }
+
+  .item-select-box {
+    padding: 5px;
+    margin-right: 8px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .item-select-box:hover {
+    border: 1px solid #e3393c;
+  }
+
+  .item-select-box-active {
+    border: 1px solid #e3393c;
+  }
+
+  .item-select-img img {
+    width: 100%;
+  }
+
+  .item-select-intro p {
+    margin: 0px;
+    padding: 5px;
+  }
+
+  .item-select-class {
+    padding: 5px;
+    margin-right: 8px;
+    background-color: #f7f7f7;
+    border: 0.5px solid #ccc;
+    cursor: pointer;
+  }
+
+  .item-select-class:hover {
+    border: 1px solid #e3393c;
+  }
+
+  .add-buy-car-box {
+    width: 100%;
+    margin-top: 15px;
+    border-top: 1px dotted #ccc;
+  }
+
+  .add-buy-car {
+    margin-top: 15px;
+  }
+
+  /******************商品图片及购买详情结束******************/
+</style>

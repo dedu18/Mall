@@ -18,7 +18,8 @@
         <!-- 标题短语 -->
         <div class="item-detail-title">
           <p>
-            <span v-if="goodsInfo.phraseTitle.length != 0" class="item-detail-express">{{goodsInfo.phraseTitle}}</span> {{goodsInfo.title}}</p>
+            <span v-if="goodsInfo.phraseTitle.length != 0" class="item-detail-express">{{goodsInfo.phraseTitle}}</span>
+            {{goodsInfo.title}}</p>
         </div>
         <!-- 小标题 -->
         <div class="item-detail-tag">
@@ -32,7 +33,7 @@
             <div class="item-price-row">
               <p>
                 <span class="item-price-title">京东价</span>
-                <span class="item-price">￥{{price.toFixed(2)}}</span>
+                <span class="item-price">￥{{price}}</span>
               </p>
             </div>
             <div class="item-price-row">
@@ -61,22 +62,22 @@
         </div>
         <!-- 选择SKU选择 -->
         <div class="item-select">
-          <div class="item-select-title">
-            <p>选择颜色</p>
-          </div>
-          <div class="item-select-column">
-            <div class="item-select-row" v-for="(items, index) in goodsInfo.setMeal" :key="index">
-              <div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="selectGoods(index, index1)"
-                   :class="{'item-select-box-active': ((index * 3) + index1) === selectBoxIndex}">
-                <div class="item-select-img">
-                  <img :src="item.img" alt="">
-                </div>
-                <div class="item-select-intro">
-                  <p>{{item.intro}}</p>
-                </div>
+          <!-- SKU 开始 -->
+          <div class="product-box">
+            <div class="product-delcom" v-for="(spec,n) in goodsDetail.specs">
+              <div style="display: flex; flex-direction: row; align-items: center;">
+                <p style="color: #999;font-size: 16px;">{{spec.name}}</p>
+                <ul class="product-footerlist">
+                  <li v-for="(specValue,index) in spec.specValues"
+                      v-on:click="specificationBtn(specValue.name,n,$event,index)"
+                      v-bind:class="[specValue.isShow ? '' : 'noneActive', subIndex[n] == index ? 'productActive' : '']">
+                    {{specValue.name}}
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
+          <!-- SKU 结束 -->
         </div>
         <br>
         <div class="add-buy-car-box">
@@ -104,10 +105,97 @@
     },
     data() {
       return {
-        price: 0,
         count: 1,
         selectBoxIndex: 1,
-        imgIndex: 0
+        imgIndex: 0,
+
+        goodsDetail: {
+          skulist: [
+            { //所有的规格可能情况都在这个数组里
+              "id": "19",
+              "price": "200.00",
+              "stock": "19",
+              "specs": "100,白色"
+            },
+            {
+              "id": "20",
+              "price": "100.00",
+              "stock": "29",
+              "specs": "200,白色"
+            },
+            {
+              "id": "21",
+              "price": "300.00",
+              "stock": "10",
+              "specs": "100,黑色"
+            },
+            {
+              "id": "22",
+              "price": "900.00",
+              "stock": "0",
+              "specs": "200,黑色"
+            },
+            {
+              "id": "23",
+              "price": "600.00",
+              "stock": "48",
+              "specs": "100,绿色"
+            },
+            {
+              "id": "24",
+              "price": "500.00",
+              "stock": "40",
+              "specs": "200,绿色"
+            },
+            {
+              "id": "25",
+              "price": "90.00",
+              "stock": "0",
+              "specs": "100,蓝色"
+            },
+            {
+              "id": "26",
+              "price": "40.00",
+              "stock": "20",
+              "specs": "200,蓝色"
+            }
+          ],
+          specs: [
+            { //这里是要被渲染字段
+              "name": "尺寸",
+              "specValues": [
+                {
+                  "name": "100",
+                },
+                {
+                  "name": "200",
+                }
+              ]
+            },
+            {
+              "name": "颜色",
+              "specValues": [
+                {
+                  "name": "白色",
+                },
+                {
+                  "name": "蓝色",
+                },
+                {
+                  "name": "黑色",
+                },
+                {
+                  "name": "绿色",
+                }
+              ]
+            }
+          ]
+        },
+        selectArr: [], //存放被选中的值
+        shopItemInfo: {}, //存放要和选中的值进行匹配的数据
+        subIndex: [], //是否选中 因为不确定是多规格还是单规格，所以这里定义数组来判断
+        price: '', //选中规格的价钱
+        skuIdSelected: ''
       };
     },
     computed: {
@@ -116,39 +204,95 @@
     },
     methods: {
       ...mapActions(['addShoppingCart']),
-      selectGoods(index1, index2) {
-        this.selectBoxIndex = index1 * 3 + index2;
-        this.price = this.goodsInfo.setMeal[index1][index2].price;
-      },
       showBigImg(index) {
         this.imgIndex = index;
       },
       addShoppingCartBtn() {
-        const index1 = parseInt(this.selectBoxIndex / 3);
-        const index2 = this.selectBoxIndex % 3;
-        const date = new Date();
-        const goodsId = date.getTime();
-        var sessionId = this.userInfo.sessionId;
-        if (sessionId == null || sessionId == 'undefined' || sessionId == '') {
-          this.$router.push('/login');
+        if (this.checkContainEmptyStringOfArray(this.selectArr)) {
+          this.$Message.error('请选择商品的所有规格！');
         } else {
-          const data = {
-            sessionId: sessionId,
-            goodsId: goodsId,
-            title: this.goodsInfo.title,
-            count: this.count,
-            img: this.goodsInfo.goodsImg[this.imgIndex],
-            packages: this.goodsInfo.setMeal[index1][index2]
-          };
-          this.addShoppingCart(data);
-          this.$router.push('/shoppingCart');
+          const date = new Date();
+          const goodsId = date.getTime();
+          var sessionId = this.userInfo.sessionId;
+          if (sessionId == null || sessionId == 'undefined' || sessionId == '') {
+            this.$router.push('/login');
+          } else {
+            const data = {
+              sessionId: sessionId,
+              skuId: sessionId,
+              goodsId: this.skuIdSelected,
+              title: this.goodsInfo.title,
+              count: this.count,
+              img: this.goodsInfo.goodsImg[this.imgIndex],
+              packages: this.selectArr
+            };
+            this.addShoppingCart(data);
+            this.$router.push('/shoppingCart');
+          }
         }
+      },
+
+      checkContainEmptyStringOfArray(data) {
+        if (data.length == 0 || data.length < this.goodsDetail.specs.length) {
+          return true;
+        }
+        for (var i = 0; i < data.length; i++) {
+          if (data[i] === "")
+            return true;
+        }
+        return false;
+      },
+
+      specificationBtn: function (item, n, event, index) {
+        var self = this;
+        if (self.selectArr[n] != item) {
+          self.selectArr[n] = item;
+          self.subIndex[n] = index;
+        } else {
+          self.selectArr[n] = "";
+          self.subIndex[n] = -1; //去掉选中的颜色
+        }
+        self.checkItem();
+      },
+      checkItem: function () {
+        var self = this;
+        var option = self.goodsDetail.specs;
+        var result = []; //定义数组储存被选中的值
+        for (var i in option) {
+          result[i] = self.selectArr[i] ? self.selectArr[i] : '';
+        }
+        for (var i in option) {
+          var last = result[i]; //把选中的值存放到字符串last去
+          for (var k in option[i].specValues) {
+            result[i] = option[i].specValues[k].name; //赋值，存在直接覆盖，不存在往里面添加name值
+            option[i].specValues[k].isShow = self.isMay(result); //在数据里面添加字段isShow来判断是否可以选择
+          }
+          result[i] = last; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
+        }
+        if (this.shopItemInfo[result]) {
+          this.price = this.shopItemInfo[result].price || '';
+          this.skuIdSelected = this.shopItemInfo[result].id || '';
+        }
+        self.$forceUpdate(); //重绘
+      },
+      isMay: function (result) {
+        for (var i in result) {
+          if (result[i] == '') {
+            return true; //如果数组里有为空的值，那直接返回true
+          }
+        }
+        return this.shopItemInfo[result].stock == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
       }
     },
     mounted() {
-      const father = this;
+      const self = this;
+      for (var i in self.goodsDetail.skulist) {
+        self.shopItemInfo[self.goodsDetail.skulist[i].specs] = self.goodsDetail.skulist[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
+      }
+      self.checkItem();
+
       setTimeout(() => {
-        father.price = father.goodsInfo.setMeal[0][0].price || 0;
+        self.price = self.goodsInfo.setMeal[0][0].price || 0;
       }, 300);
     },
     store
@@ -156,6 +300,55 @@
 </script>
 
 <style scoped>
+  <!--
+  SKU样式
+
+  -->
+  .product-box {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .product-delcom {
+    padding: 10px 0;
+  }
+
+  .product-footerlist {
+    margin-left: 5px;
+    padding: 3px;
+    font-size: 12px;
+  }
+
+  .product-footerlist li {
+    border: 1px solid #606060;
+    color: #606060;
+    text-align: center;
+    padding: 5px 20px;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .product-footerlist li.productActive {
+    border: 1px solid #e3393c;
+  }
+
+  .product-footerlist li.noneActive {
+    background-color: #ccc;
+    opacity: 0.4;
+    color: #000;
+    pointer-events: none;
+  }
+
+  .product-footer a {
+    color: #fff;
+    text-decoration: none;
+    height: 88px;
+    line-height: 88px;
+    font-size: 28px;
+  }
+
   /******************商品图片及购买详情开始******************/
   .item-detail-show {
     width: 80%;
@@ -201,6 +394,7 @@
 
   /*商品选购详情*/
   .item-detail-right {
+    width: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -264,6 +458,11 @@
     cursor: pointer;
   }
 
+  .item-price-right {
+    margin-top: 10px;
+    margin-right: 20px;
+  }
+
   .item-remarks-sum {
     padding: 9px 8px 0;
     border-left: 1px solid #ccc;
@@ -287,49 +486,6 @@
     margin-top: 15px;
   }
 
-  .item-select-title {
-    color: #999999;
-    font-size: 14px;
-    margin-right: 15px;
-  }
-
-  .item-select-column {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .item-select-row {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 8px;
-  }
-
-  .item-select-box {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .item-select-img {
-    width: 36px;
-  }
-
-  .item-select-box {
-    padding: 5px;
-    margin-right: 8px;
-    background-color: #f7f7f7;
-    border: 1px solid #ccc;
-    cursor: pointer;
-  }
-
-  .item-select-box:hover {
-    border: 1px solid #e3393c;
-  }
-
-  .item-select-box-active {
-    border: 1px solid #e3393c;
-  }
-
   .item-select-img img {
     width: 100%;
   }
@@ -337,18 +493,6 @@
   .item-select-intro p {
     margin: 0px;
     padding: 5px;
-  }
-
-  .item-select-class {
-    padding: 5px;
-    margin-right: 8px;
-    background-color: #f7f7f7;
-    border: 0.5px solid #ccc;
-    cursor: pointer;
-  }
-
-  .item-select-class:hover {
-    border: 1px solid #e3393c;
   }
 
   .add-buy-car-box {
