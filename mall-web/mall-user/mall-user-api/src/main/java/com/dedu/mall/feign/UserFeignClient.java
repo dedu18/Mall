@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
         fallback = UserFeignClientFallBack.class
 )
 public interface UserFeignClient {
-    @GetMapping("/addresses")
+    @GetMapping("/api/user/addresses")
     Result<UserAddressVo> queryUserAddressByUserId(@RequestParam(value = "userId") String userId, @RequestParam("addressId") String addressId);
 }

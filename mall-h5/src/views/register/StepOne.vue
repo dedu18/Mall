@@ -67,7 +67,7 @@
         } else {
           this.$Message.error({
             content: '请输入正确的手机号',
-            duration: 6,
+            duration: 5,
             closable: true
           });
         }
@@ -83,7 +83,7 @@
           } else {
             this.$Message.error({
               content: '请填写正确的信息',
-              duration: 6,
+              duration: 5,
               closable: true
             });
           }

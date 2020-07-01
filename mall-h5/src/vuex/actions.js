@@ -1,5 +1,5 @@
 import {getAllNavigationPictureList} from '../api/category';
-import {getGoodsListByCategoryId, getGoodsById, getRecommendGoods} from '../api/goods';
+import {getGoodsListByCategoryId, getGoodsBySpuId, getRecommendGoods} from '../api/goods';
 import {getSeckillInfoList, getSpecialByType} from '../api/market';
 import {getUserDeliverAddress, loginUser, addUserDeliverAddress} from '../api/user';
 import {getUserShopCartByUserId} from '../api/cart';
@@ -61,7 +61,7 @@ export const loadEat = ({commit}) => {
 export const loadGoodsInfo = ({commit}, data) => {
   commit('SET_LOAD_STATUS', true);
   return new Promise((resolve, reject) => {
-      getGoodsById(data).then(response => {
+      getGoodsBySpuId(data).then(response => {
         commit('SET_GOODS_INFO', response);
         commit('SET_LOAD_STATUS', false);
       });

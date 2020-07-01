@@ -8,9 +8,7 @@ import com.dedu.mall.dao.PayDao;
 import com.dedu.mall.enums.PayStatus;
 import com.dedu.mall.feign.SkuFeignClient;
 import com.dedu.mall.feign.UserFeignClient;
-import com.dedu.mall.model.Result;
-import com.dedu.mall.model.SkuVo;
-import com.dedu.mall.model.UserAddressVo;
+import com.dedu.mall.model.*;
 import com.dedu.mall.model.mysql.OrderAllInfoPo;
 import com.dedu.mall.model.mysql.OrderDetailPo;
 import com.dedu.mall.model.mysql.OrderPo;
@@ -26,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +36,7 @@ public class OrderSerImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
     private PayDao payDao;
 
     @Autowired
@@ -81,12 +81,27 @@ public class OrderSerImpl implements OrderService {
         Result<UserAddressVo> feignClientResult = userFeignClient.queryUserAddressByUserId(userId.toString(), orderReqVo.getAddressId().toString());
         FeignClientUtil.checkSuccessOtherwiseThrowException(feignClientResult);
         List<String> skuIdList = getSkuIdList(orderReqVo.getSkuIds());
-        //检查库存tb_stock
-        //创建订单tb_order
+        BigDecimal totalPrice = new BigDecimal(0);
+        for (String skuId : skuIdList) {
+            Result<SkuVo> remoteRstData = skuFeignClient.getSkuById(Long.valueOf(skuId));
+            SkuVo skuVo = ResultUtil.getResultData(remoteRstData);
+            if (null == skuVo) {
+                throw new ServiceException(ResultCode.NO_DATA.getCode(), ResultCode.NO_DATA.getDesc());
+            }
+            totalPrice = totalPrice.add(skuVo.getPrice());
+        }
+        //检查库存
+
+        //创建订单
         OrderPo orderEntity = buildOrderPo(orderReqVo, feignClientResult.getData());
+        orderEntity.setBuyerId(userId);
+        orderEntity.setTotalPrice(totalPrice);
+        orderEntity.setNum(skuIdList.size());
         orderDao.save(orderEntity);
+
         //创建支付订单
         PayPo payEntity = buildPayPo(orderEntity, orderReqVo);
+        payEntity.setTotalPay(totalPrice);
         payDao.save(payEntity);
         return OrderRspVo.builder().orderId(orderEntity.getId().toString()).totalPrice(orderEntity.getTotalPrice()).build();
     }
@@ -94,6 +109,7 @@ public class OrderSerImpl implements OrderService {
     private PayPo buildPayPo(OrderPo orderEntity, OrderReqVo orderReqVo) {
         return PayPo.builder()
                 .orderId(orderEntity.getId())
+                .userId(orderEntity.getBuyerId())
                 .totalPay(orderEntity.getTotalPrice())
                 .status(Integer.valueOf(PayStatus.WAITING_TO_PAY.getCode()))
                 .createTime(LocalDateTime.now())
@@ -106,11 +122,12 @@ public class OrderSerImpl implements OrderService {
     }
 
     private Long getUserIdBySession(String sessionId) {
-        return Long.parseLong("1");
+        return Long.parseLong("26");
     }
 
     private OrderPo buildOrderPo(OrderReqVo orderReqVo, UserAddressVo userAddressVo) {
         return OrderPo.builder()
+                .skuId(orderReqVo.getSkuIds())
                 .sourceType(orderReqVo.getSourceType())
                 .receiverState(userAddressVo.getProvince())
                 .receiverCity(userAddressVo.getCity())

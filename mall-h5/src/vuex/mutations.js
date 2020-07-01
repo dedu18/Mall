@@ -72,10 +72,11 @@ export const ADD_SHOPPING_CART = (state, data) => {
   const item = {
     goods_id: data.goods_id,
     count: data.count,
-    img: data.packages.img,
-    package: data.packages.intro,
-    price: data.packages.price,
-    title: data.title
+    img: data.img,
+    package: data.packages,
+    price: data.price,
+    title: data.title,
+    skuId: data.skuId
   };
   state.shoppingCart.push(item);
   state.newShoppingCart = data;

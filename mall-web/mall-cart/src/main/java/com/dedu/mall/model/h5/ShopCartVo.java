@@ -18,4 +18,5 @@ public class ShopCartVo {
     private PackagesVo packages;
     private BigDecimal price;
     private String title;
+    private String skuId;
 }

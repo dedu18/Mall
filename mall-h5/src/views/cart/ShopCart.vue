@@ -9,13 +9,13 @@
           <p>
             <i class="fa fa-check-circle"></i> 商品已成功加入购物车！</p>
         </div>
-        <div class="add-info-box-row">
+        <div class="add-info-box-row" v-if="newShoppingCart.packages" >
           <div class="add-info-img">
-            <img v-if="newShoppingCart.packages.img" :src="newShoppingCart.packages.img" alt="">
+            <img :src="newShoppingCart.packages.img" alt="">
           </div>
           <div class="add-info-intro">
-            <p>{{newShoppingCart.title}} {{newShoppingCart.packages.intro}}...</p>
-            <p class="add-info-intro-detail">颜色：{{newShoppingCart.packages.intro}}/ 数量：{{newShoppingCart.count}}</p>
+            <p>{{newShoppingCart.title}}</p>
+            <p class="add-info-intro-detail">{{newShoppingCart.packages.intro}} / 数量：{{newShoppingCart.count}}</p>
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@
             <div class="item-price-row">
               <p>
                 <span class="item-price-title">京东价</span>
-                <span class="item-price">￥{{price}}</span>
+                <span class="item-price">￥{{Number(price).toFixed(2)}}</span>
               </p>
             </div>
             <div class="item-price-row">
@@ -115,49 +115,49 @@
               "id": "19",
               "price": "200.00",
               "stock": "19",
-              "specs": "100,白色"
+              "specs": "100cm,白色"
             },
             {
               "id": "20",
               "price": "100.00",
               "stock": "29",
-              "specs": "200,白色"
+              "specs": "200cm,白色"
             },
             {
               "id": "21",
               "price": "300.00",
               "stock": "10",
-              "specs": "100,黑色"
+              "specs": "100cm,黑色"
             },
             {
               "id": "22",
               "price": "900.00",
               "stock": "0",
-              "specs": "200,黑色"
+              "specs": "200cm,黑色"
             },
             {
               "id": "23",
               "price": "600.00",
               "stock": "48",
-              "specs": "100,绿色"
+              "specs": "100cm,绿色"
             },
             {
               "id": "24",
               "price": "500.00",
               "stock": "40",
-              "specs": "200,绿色"
+              "specs": "200cm,绿色"
             },
             {
               "id": "25",
               "price": "90.00",
               "stock": "0",
-              "specs": "100,蓝色"
+              "specs": "100cm,蓝色"
             },
             {
-              "id": "26",
+              "id": "22",
               "price": "40.00",
               "stock": "20",
-              "specs": "200,蓝色"
+              "specs": "200cm,蓝色"
             }
           ],
           specs: [
@@ -165,10 +165,10 @@
               "name": "尺寸",
               "specValues": [
                 {
-                  "name": "100",
+                  "name": "100cm",
                 },
                 {
-                  "name": "200",
+                  "name": "200cm",
                 }
               ]
             },
@@ -194,13 +194,12 @@
         selectArr: [], //存放被选中的值
         shopItemInfo: {}, //存放要和选中的值进行匹配的数据
         subIndex: [], //是否选中 因为不确定是多规格还是单规格，所以这里定义数组来判断
-        price: '', //选中规格的价钱
+        price: 0, //选中规格的价钱
         skuIdSelected: ''
       };
     },
     computed: {
-      ...mapState(['goodsInfo']),
-      ...mapState(['userInfo'])
+      ...mapState(['goodsInfo', 'userInfo'])
     },
     methods: {
       ...mapActions(['addShoppingCart']),
@@ -209,22 +208,28 @@
       },
       addShoppingCartBtn() {
         if (this.checkContainEmptyStringOfArray(this.selectArr)) {
-          this.$Message.error('请选择商品的所有规格！');
+          this.$Message.error({
+            content: '请选择商品的所有规格！',
+            duration: 5,
+            closable: true
+          });
         } else {
-          const date = new Date();
-          const goodsId = date.getTime();
           var sessionId = this.userInfo.sessionId;
           if (sessionId == null || sessionId == 'undefined' || sessionId == '') {
             this.$router.push('/login');
           } else {
             const data = {
               sessionId: sessionId,
-              skuId: sessionId,
-              goodsId: this.skuIdSelected,
+              skuId: this.skuIdSelected,
+              goodsId: 1,
               title: this.goodsInfo.title,
               count: this.count,
               img: this.goodsInfo.goodsImg[this.imgIndex],
-              packages: this.selectArr
+              packages: {
+                intro: this.selectArr.join("、"),
+                img: this.goodsInfo.goodsImg[this.imgIndex]
+              },
+              price: this.price
             };
             this.addShoppingCart(data);
             this.$router.push('/shoppingCart');
@@ -285,25 +290,19 @@
       }
     },
     mounted() {
+      //这里已经查到了goodsInfo信息
       const self = this;
       for (var i in self.goodsDetail.skulist) {
         self.shopItemInfo[self.goodsDetail.skulist[i].specs] = self.goodsDetail.skulist[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
       }
       self.checkItem();
-
-      setTimeout(() => {
-        self.price = self.goodsInfo.setMeal[0][0].price || 0;
-      }, 300);
     },
     store
   };
 </script>
 
 <style scoped>
-  <!--
-  SKU样式
-
-  -->
+  <!-- SKU样式 -->
   .product-box {
     width: 100%;
     display: block;

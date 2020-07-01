@@ -2,10 +2,7 @@ package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dedu.mall.model.h5.CommentInfoVo;
-import com.dedu.mall.model.h5.CommentVo;
-import com.dedu.mall.model.h5.GoodsDetailRspVo;
-import com.dedu.mall.model.h5.GoodsListItemVo;
+import com.dedu.mall.model.h5.*;
 import com.dedu.mall.model.mysql.*;
 import com.dedu.mall.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +110,7 @@ public class GoodsSerImpl implements GoodsService {
 
     /**
      * 根据类目查询商品列表和广告列表
+     *
      * @param id
      * @return
      */
@@ -163,7 +161,7 @@ public class GoodsSerImpl implements GoodsService {
     }
 
     @Override
-    public GoodsDetailRspVo queryGoodsBySpuId(Long id) {
+    public GoodsDetailRspVo queryGoodsBySpuId(Long spuId) {
         //商品预览图
         String[] goodsImgArr = {"static/img/goodsDetail/item-detail-1.jpg", "static/img/goodsDetail/item-detail-2.jpg", "static/img/goodsDetail/item-detail-3.jpg", "static/img/goodsDetail/item-detail-4.jpg"};
         List<String> goodsImg = CollectionUtils.arrayToList(goodsImgArr);
@@ -180,23 +178,7 @@ public class GoodsSerImpl implements GoodsService {
         List<String> promotion = CollectionUtils.arrayToList(promotionArr);
         //评价条数
         Integer remarksNum = 6000;
-        //销售商品
-        List<List<GoodsListItemVo>> setMeal = new ArrayList<>();
-        List<GoodsListItemVo> sale1 = new ArrayList<>(4);
-        sale1.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/1.jpg").intro("4.7英寸-深邃蓝").price(128.0).build());
-        sale1.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/2.jpg").intro("4.7英寸-星空黑").price(228.0).build());
-        sale1.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/3.jpg").intro("5.5英寸-香槟金").price(1328.0).build());
-        List<GoodsListItemVo> sale2 = new ArrayList<>(4);
-        sale2.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/4.jpg").intro("4.7英寸-深邃蓝").price(128.0).build());
-        sale2.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/5.jpg").intro("4.7英寸-星空黑").price(228.0).build());
-        sale2.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/6.jpg").intro("5.5英寸-香槟金").price(1328.0).build());
-        List<GoodsListItemVo> sale3 = new ArrayList<>(4);
-        sale3.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/7.jpg").intro("4.7英寸-深邃蓝").price(128.0).build());
-        sale3.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/8.jpg").intro("4.7英寸-星空黑").price(228.0).build());
-        sale3.add(GoodsListItemVo.builder().img("static/img/goodsDetail/pack/9.jpg").intro("5.5英寸-香槟金").price(1328.0).build());
-        setMeal.add(sale1);
-        setMeal.add(sale2);
-        setMeal.add(sale3);
+
         List<GoodsListItemVo> hot = new ArrayList<>();
         hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/1.jpg").price(128.0).sale(165076.0).build());
         hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/2.jpg").price(128.0).sale(165076.0).build());
@@ -235,22 +217,58 @@ public class GoodsSerImpl implements GoodsService {
                 .remarksNumDetail(remarksNumDetail)
                 .detail(detail)
                 .build();
+
+        //销售属性组装
+        List<SkuItemVo> skus = buildSkusBySpuId(spuId);
+        List<SpecItemVo> saleSpecs = buildSaleSpecs(spuId);
+        SaleDetail saleDetail = SaleDetail.builder().skus(skus).specs(saleSpecs).build();
+        //标题短语生成
+        String phraseTitle = buildPhraseTitle();
         //结果组装
         GoodsDetailRspVo result = GoodsDetailRspVo.builder()
                 .goodsImg(goodsImg)
                 .title(title)
-                .phraseTitle("新品")
+                .phraseTitle(phraseTitle)
                 .tags(tags)
                 .discount(discount)
                 .promotion(promotion)
                 .remarksNum(remarksNum)
-                .setMeal(setMeal)
+                .saleDetail(saleDetail)
                 .hot(hot)
                 .goodsDetail(goodsDetail)
                 .param(specs)
                 .remarks(commentInfo)
                 .build();
         return result;
+    }
+
+    private String buildPhraseTitle() {
+        return "新品";
+    }
+
+    /**
+     * 根据SpuId查询所有的Sku
+     * @param spuId
+     * @return
+     */
+    private List<SkuItemVo> buildSkusBySpuId(Long spuId) {
+        List<SkuVo> skuVoList = skuService.querySkuBySpuId(spuId);
+        List<SkuItemVo> result = new ArrayList<>();
+        for (SkuVo skuVo : skuVoList) {
+            SkuItemVo skuItemVo = SkuItemVo.builder().build();
+            result.add(skuItemVo);
+        }
+        return result;
+    }
+
+    /**
+     * 根据SpuId查询销售规格属性
+     * @param spuId
+     * @return
+     */
+    private List<SpecItemVo> buildSaleSpecs(Long spuId) {
+
+        return new ArrayList<>();
     }
 
     @Override

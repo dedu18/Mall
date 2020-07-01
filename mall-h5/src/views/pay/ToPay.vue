@@ -101,14 +101,14 @@
         } else {
           this.$Message.error({
             content: '请稍后重试',
-            duration: 5000,
+            duration: 5,
             closable: true
           });
         }
       }).catch(result => {
         this.$Message.error({
           content: result,
-          duration: 3000,
+          duration: 3,
           closable: true
         });
       });

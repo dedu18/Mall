@@ -17,6 +17,7 @@ public class ShopCarItemVo {
     private String sessionId;
     @NotNull
     private Long goodsId;
+    private String skuId;
     private Integer count;
     private String img;
     private PackagesVo packages;

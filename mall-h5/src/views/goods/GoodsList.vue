@@ -66,7 +66,7 @@
             <div v-else class="goods-show-info" v-for="(item, index) in orderGoodsList" :key="index">
               <!-- 商品图片-->
               <div class="goods-show-img">
-                <router-link :to="{path:'/goodsDetail', query: {spuId : item.spuId}}">
+                <router-link :to="{path:'/goodsDetail', query: {spuId : item.spuId + ''}}">
                   <img :src="item.img"/>
                 </router-link>
               </div>
@@ -94,7 +94,7 @@
         </div>
       </div>
       <div class="goods-page">
-        <Page :total="goodsListTotal" page-size="50" show-total @on-change="goodsListPageChange"></Page>
+        <Page :total="goodsListTotal" :page-size="pageSize" show-total @on-change="goodsListPageChange"></Page>
       </div>
     </div>
     <Spin size="large" fix v-if="isLoading"></Spin>
@@ -126,6 +126,7 @@
           {title: '评论数', en: 'remarks'},
           {title: '上架时间', en: 'saletime'}
         ],
+        pageSize: 50
       };
     },
     computed: {

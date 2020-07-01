@@ -1669,13 +1669,12 @@ CREATE TABLE `tb_stock` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_order`;
 CREATE TABLE `tb_order` (
-  `id` bigint(20) NOT NULL COMMENT '订单id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单id',
   `total_price` decimal(13,2) NOT NULL COMMENT '商品总金额 单位：分',
   `buyer_id` varchar(32) NOT NULL COMMENT '用户id',
-  `sku_id` bigint(20) NOT NULL COMMENT '商品skuId',
+  `sku_id` varchar(100) NOT NULL COMMENT ',分隔的商品skuId',
   `num` int(11) NOT NULL COMMENT '购买数量',
-  `title` varchar(256) NOT NULL COMMENT '商品标题',
-   `source_type` int(1) DEFAULT '2' COMMENT '订单来源：1:app端，2：pc端，3：微信端',
+  `source_type` int(1) DEFAULT '2' COMMENT '订单来源：1:app端，2：pc端，3：微信端',
   `logistics_name` varchar(20) DEFAULT NULL COMMENT '物流名称',
   `logistics_code` varchar(20) DEFAULT NULL COMMENT '物流单号',
   `receiver_state` varchar(128) DEFAULT NULL COMMENT '收获地址（省）',
@@ -1686,12 +1685,12 @@ CREATE TABLE `tb_order` (
   `receiver_postcode` varchar(16) DEFAULT NULL COMMENT '收货人邮编',
   `receiver_name` varchar(32) DEFAULT NULL COMMENT '收货人',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单更新时间',
-  `status` int(1) DEFAULT NULL COMMENT '状态：1、未付款 2、已付款,未发货 3、已发货,未确认 4、交易成功 5、交易关闭 6、已评价',
-  `consign_time` timestamp NULL DEFAULT NULL COMMENT '发货时间',
-  `end_time` timestamp NULL DEFAULT NULL COMMENT '交易完成时间',
-  `close_time` timestamp NULL DEFAULT NULL COMMENT '交易关闭时间',
-  `comment_time` timestamp NULL DEFAULT NULL COMMENT '评价时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '订单更新时间',
+  `status` int(1) DEFAULT 1 COMMENT '状态：1、未付款 2、已付款,未发货 3、已发货,未确认 4、交易成功 5、交易关闭 6、已评价',
+  `consign_time` timestamp NULL COMMENT '发货时间',
+  `end_time` timestamp NULL COMMENT '交易完成时间',
+  `close_time` timestamp NULL COMMENT '交易关闭时间',
+  `comment_time` timestamp NULL COMMENT '评价时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单信息表';
 
@@ -1713,7 +1712,7 @@ CREATE TABLE `tb_pay` (
   `closed_time` TIMESTAMP NULL COMMENT '关闭时间',
   `refund_time` TIMESTAMP NULL COMMENT '退款时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '支付订单创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '支付订单更新时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '支付订单更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_orderId_status` (`order_id`, `status`),
   KEY `idx_userId` (`user_id`)

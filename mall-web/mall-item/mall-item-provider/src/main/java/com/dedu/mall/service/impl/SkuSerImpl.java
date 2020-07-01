@@ -1,5 +1,6 @@
 package com.dedu.mall.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dedu.mall.dao.mapper.SkuMapper;
 import com.dedu.mall.model.mysql.SkuPo;
@@ -10,6 +11,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -33,5 +36,15 @@ public class SkuSerImpl extends ServiceImpl<SkuMapper, SkuPo> implements SkuServ
     public SkuVo querySkuById(Long id) {
         SkuPo skuPo = this.getById(id);
         return null == skuPo ? null : new SkuVo(skuPo);
+    }
+
+    @Override
+    public List<SkuVo> querySkuBySpuId(Long spuId) {
+        List<SkuPo> skuPoList = this.list(new QueryWrapper<SkuPo>().eq("spu_id", spuId).eq("is_enable", 1).eq("is_delete", 0));
+        List<SkuVo> result = new ArrayList<>();
+        for (SkuPo po : skuPoList) {
+            result.add(new SkuVo(po));
+        }
+        return result;
     }
 }

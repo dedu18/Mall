@@ -27,13 +27,13 @@ export function getGoodsListByCategoryId(id) {
 }
 
 /**
- * 商品列表及广告推荐
+ * 根据Spu查询商品详情
  * @param id
  */
-export function getGoodsById(id) {
+export function getGoodsBySpuId(spuId) {
   return http({
     baseURL: url,
-    url:'/api/goods/' + id,
+    url:'/api/goods/' + spuId,
     method:'get'
   })
 }

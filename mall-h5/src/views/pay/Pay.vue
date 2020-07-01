@@ -79,7 +79,7 @@
           }).catch(err => {
             this.$Message.info({
               content: '请到订单中心查看订单支付结果！',
-              duration: 5000,
+              duration: 5,
               closable: true
             });
             clearInterval(father.timer);

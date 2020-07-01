@@ -58,7 +58,9 @@ public class UserSerImpl implements UserService {
     public UserAddressVo queryUserAddressByUserIdAndAddressId(String userId, String addressId) {
         UserAddressEntity addressEntity = userAddressDao.getAddressByUserIdAndAddressId(userId, addressId);
         UserAddressVo result = new UserAddressVo();
-        BeanUtils.copyProperties(addressEntity, result);
+        if (null != addressEntity) {
+            BeanUtils.copyProperties(addressEntity, result);
+        }
         return result;
     }
 
@@ -104,7 +106,7 @@ public class UserSerImpl implements UserService {
     }
 
     private void cacheUserInfo(String sessionId, UserEntity userEntityExited) {
-        stringRedisTemplate.opsForValue().set(sessionId, JSON.toJSONString(userEntityExited), Duration.ofMinutes(30));
+        stringRedisTemplate.opsForValue().set(sessionId, JSON.toJSONString(userEntityExited), Duration.ofMinutes(60));
     }
 
     private UserEntity getCacheUserInfo(String sessionId) {

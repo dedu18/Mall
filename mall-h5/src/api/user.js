@@ -9,7 +9,7 @@ const url = "http://localhost:9001";
 export function getUserDeliverAddress(params) {
   return http({
     baseURL: url,
-    url: '/api/user/addresses',
+    url: '/api/user/address',
     method: 'get',
     params: params
   })

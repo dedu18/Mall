@@ -82,12 +82,15 @@
           {
             title: '图片',
             key: 'img',
-            width: 86,
             render: (h, params) => {
               return h('div', [
                 h('img', {
                   attrs: {
                     src: params.row.img
+                  },
+                  style: {
+                    width: '100px',
+                    height: '100px'
                   }
                 })
               ]);
@@ -100,20 +103,21 @@
             align: 'center'
           },
           {
-            title: '套餐',
-            width: 198,
+            title: '规格',
             key: 'package',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              return h('div', params.row.package.intro);
+            }
           },
           {
             title: '数量',
             key: 'count',
-            width: 68,
+            width: 58,
             align: 'center'
           },
           {
             title: '价格',
-            width: 68,
             key: 'price',
             align: 'center'
           }
@@ -143,18 +147,26 @@
       },
       submitOrder() {
         if (this.goodsSelectedList.length == 0) {
-          this.$Message.error('请选择下单商品！');
+          this.$Message.error({
+            content: '请选择下单商品！',
+            duration: 3,
+            closable: true
+          });
         } else if (this.checkAddress.addressId == '') {
-          this.$Message.error('请选择收货地址！');
+          this.$Message.error({
+            content: '请选择收货地址！',
+            duration: 3,
+            closable: true
+          });
         } else {
           var selectedGoodsIdList = this.goodsSelectedList.map(function (item) {
-            return item.goodsId;
+            return item.skuId;
           });
           this.$router.push({
             name: 'ToPay',
             params: {
               addressId: this.checkAddress.addressId,
-              skuIds: JSON.stringify(selectedGoodsIdList)
+              skuIds: selectedGoodsIdList.join(",")
             }
           });
         }

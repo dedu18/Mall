@@ -54,22 +54,14 @@ public class CartSerImpl implements CartService {
     }
 
     private ShopCartVo convertShopCarItemToVo(ShopCarItemVo goodsItem) {
-//        ShopCartVo.builder()
-//                .goodsId(1529931938150L)
-//                .count(1)
-//                .img("/static/img/goodsDetail/pack/1.jpg")
-//                .packages("4.7英寸-深邃蓝")
-//                .price(new BigDecimal(28.0))
-//                .title("苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳")
-//                .build();
-
         return ShopCartVo.builder()
                 .goodsId(goodsItem.getGoodsId())
+                .skuId(goodsItem.getSkuId())
                 .count(1)
-                .img("/static/img/goodsDetail/pack/1.jpg")
+                .img(goodsItem.getImg())
                 .packages(goodsItem.getPackages())
-                .price(new BigDecimal(28.0))
-                .title("苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳")
+                .price(goodsItem.getPrice())
+                .title(goodsItem.getTitle())
                 .build();
     }
 }

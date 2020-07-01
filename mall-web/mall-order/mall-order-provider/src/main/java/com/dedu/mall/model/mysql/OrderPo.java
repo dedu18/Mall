@@ -22,15 +22,13 @@ public class OrderPo {
     @TableId(value = "id", type = AUTO)
     private Long id;
     @TableField(value = "sku_id")
-    private Long skuId;
+    private String skuId;
     @TableField(value = "buyer_id")
     private Long buyerId;
     @TableField(value = "num")
     private Integer num;
     @TableField(value = "total_price")
     private BigDecimal totalPrice;
-    @TableField(value = "title")
-    private String title;
     @TableField(value = "source_type")
     private Integer sourceType;
     @TableField(value = "logistics_name")

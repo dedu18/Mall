@@ -23,7 +23,7 @@ public class SkuController {
     private SkuService skuService;
 
     /**
-     * 分页查询Spu
+     * 根据Id查询SKU
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "根据Id查询SKU-dedu", notes = "SKU")
