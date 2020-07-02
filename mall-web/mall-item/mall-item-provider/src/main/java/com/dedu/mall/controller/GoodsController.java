@@ -48,17 +48,17 @@ public class GoodsController {
 
     /**
      * 商品详情
-     * @param id
+     * @param spuId
      * @return
      * @throws Exception
      */
-    @GetMapping("/{id}")
+    @GetMapping("/{spuId}")
     @ApiOperation(value = "根据商品SpuId查询商品详情信息-dedu", notes = "商品")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "商品主键id", required = true)
+            @ApiImplicitParam(paramType = "path", dataType = "long", name = "spuId", value = "商品主键id", required = true)
     })
-    public Result queryGoodsBySpuId(@PathVariable Long id) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsBySpuId(id));
+    public Result queryGoodsBySpuId(@PathVariable Long spuId) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsBySpuId(spuId));
     }
 
     /**

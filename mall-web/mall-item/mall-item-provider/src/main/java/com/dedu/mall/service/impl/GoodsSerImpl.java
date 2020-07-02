@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dedu.mall.model.h5.*;
 import com.dedu.mall.model.mysql.*;
 import com.dedu.mall.service.*;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -248,6 +246,7 @@ public class GoodsSerImpl implements GoodsService {
 
     /**
      * 根据SpuId查询所有的Sku
+     *
      * @param spuId
      * @return
      */
@@ -255,7 +254,14 @@ public class GoodsSerImpl implements GoodsService {
         List<SkuVo> skuVoList = skuService.querySkuBySpuId(spuId);
         List<SkuItemVo> result = new ArrayList<>();
         for (SkuVo skuVo : skuVoList) {
-            SkuItemVo skuItemVo = SkuItemVo.builder().build();
+            StockPo stockPo = stockService.getStockBySkuId(skuVo.getId());
+            SkuItemVo skuItemVo = SkuItemVo
+                    .builder()
+                    .id(skuVo.getId().toString())
+                    .price(skuVo.getPrice())
+                    .stock(stockPo.getStock())
+                    .specs(skuVo.getSpecValues())
+                    .build();
             result.add(skuItemVo);
         }
         return result;
@@ -263,12 +269,38 @@ public class GoodsSerImpl implements GoodsService {
 
     /**
      * 根据SpuId查询销售规格属性
+     *
      * @param spuId
      * @return
      */
     private List<SpecItemVo> buildSaleSpecs(Long spuId) {
-
-        return new ArrayList<>();
+        List<SkuVo> skuVoList = skuService.querySkuBySpuId(spuId);
+        Map<String, SpecItemVo> cache = new HashMap<>(); //key为specId，value为所有的sepcValue
+        List<String> sortedSpecIdList = new LinkedList<>();
+        for (SkuVo skuVo : skuVoList) {
+            String[] specs = skuVo.getSpecs().split(",");
+            String[] specValues = skuVo.getSpecValues().split(",");
+            for (int i = 0; i < specs.length; i++) {
+                String specId = specs[i];
+                if (!sortedSpecIdList.contains(specId)) {
+                    sortedSpecIdList.add(specId);
+                }
+                String specValue = specValues[i];
+                if (cache.containsKey(specId)) {
+                    cache.get(specId).getSpecValues().add(SpecValueItem.builder().name(specValue).build());
+                } else {
+                    SpecificationPo specPo = specService.getSpecById(Long.parseLong(specId));
+                    Set<SpecValueItem> specValueList = new HashSet<>();
+                    specValueList.add(SpecValueItem.builder().name(specValue).build());
+                    cache.put(specId, SpecItemVo.builder().id(specId).name(specPo.getName()).specValues(specValueList).build());
+                }
+            }
+        }
+        List<SpecItemVo> result = new ArrayList<>();
+        for (String specId : sortedSpecIdList) {
+            result.add(cache.get(specId));
+        }
+        return result;
     }
 
     @Override

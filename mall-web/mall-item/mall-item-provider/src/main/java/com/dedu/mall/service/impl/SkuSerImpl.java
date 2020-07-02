@@ -1,13 +1,12 @@
 package com.dedu.mall.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.mapper.SkuMapper;
+import com.dedu.mall.dao.SkuDao;
 import com.dedu.mall.model.mysql.SkuPo;
 import com.dedu.mall.model.mysql.SkuVo;
 import com.dedu.mall.service.SkuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,7 +15,10 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SkuSerImpl extends ServiceImpl<SkuMapper, SkuPo> implements SkuService {
+public class SkuSerImpl implements SkuService {
+
+    @Autowired
+    private SkuDao skuDao;
 
     @Override
     public SkuPo addSku(SkuVo skuVo) {
@@ -26,7 +28,7 @@ public class SkuSerImpl extends ServiceImpl<SkuMapper, SkuPo> implements SkuServ
         skuPo.setUpdateTime(LocalDateTime.now());
         skuPo.setIsEnable(Boolean.TRUE);
         skuPo.setIsDelete(Boolean.FALSE);
-        if (this.save(skuPo)) {
+        if (skuDao.save(skuPo)) {
             return skuPo;
         }
         return null;
@@ -34,13 +36,13 @@ public class SkuSerImpl extends ServiceImpl<SkuMapper, SkuPo> implements SkuServ
 
     @Override
     public SkuVo querySkuById(Long id) {
-        SkuPo skuPo = this.getById(id);
+        SkuPo skuPo = skuDao.getById(id);
         return null == skuPo ? null : new SkuVo(skuPo);
     }
 
     @Override
     public List<SkuVo> querySkuBySpuId(Long spuId) {
-        List<SkuPo> skuPoList = this.list(new QueryWrapper<SkuPo>().eq("spu_id", spuId).eq("is_enable", 1).eq("is_delete", 0));
+        List<SkuPo> skuPoList = skuDao.querySkuBySpuId(spuId);
         List<SkuVo> result = new ArrayList<>();
         for (SkuPo po : skuPoList) {
             result.add(new SkuVo(po));

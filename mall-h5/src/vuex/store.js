@@ -19,6 +19,10 @@ export default new Vuex.Store({
       promotion: [],
       remarksNum: 0,
       setMeal: [],
+      saleDetail: {
+        skus: [],
+        specs: []
+      },
       hot: [],
       goodsDetail: [],
       param: [],

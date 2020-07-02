@@ -15,4 +15,5 @@ public interface SpecificationService {
 
     void removeAllSpecificationByGroupId(Long id);
 
+    SpecificationPo getSpecById(Long specId);
 }

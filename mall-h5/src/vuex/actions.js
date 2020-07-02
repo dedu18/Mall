@@ -60,11 +60,9 @@ export const loadEat = ({commit}) => {
 // 请求获得商品详细信息
 export const loadGoodsInfo = ({commit}, data) => {
   commit('SET_LOAD_STATUS', true);
-  return new Promise((resolve, reject) => {
-      getGoodsBySpuId(data).then(response => {
-        commit('SET_GOODS_INFO', response);
-        commit('SET_LOAD_STATUS', false);
-      });
+  getGoodsBySpuId(data).then(response => {
+    commit('SET_GOODS_INFO', response);
+    commit('SET_LOAD_STATUS', false);
   });
 };
 

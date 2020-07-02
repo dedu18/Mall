@@ -66,7 +66,6 @@
         if ('' != this.orderId) {
           let father = this;
           getOrderStatus(father.orderId).then(response => {
-            console.log(response)
             if (response != null && response != 1) {
               clearInterval(father.timer);
               father.$router.push({

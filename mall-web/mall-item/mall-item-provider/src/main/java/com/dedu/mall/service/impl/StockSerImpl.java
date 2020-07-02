@@ -1,10 +1,10 @@
 package com.dedu.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.mapper.StockMapper;
+import com.dedu.mall.dao.StockDao;
 import com.dedu.mall.model.mysql.StockPo;
 import com.dedu.mall.service.StockService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,7 +15,10 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class StockSerImpl extends ServiceImpl<StockMapper, StockPo> implements StockService {
+public class StockSerImpl implements StockService {
+
+    @Autowired
+    private StockDao stockDao;
 
     @Override
     public void addStockByMapBatch(Map<Long, BigDecimal> stockMap) {
@@ -30,6 +33,11 @@ public class StockSerImpl extends ServiceImpl<StockMapper, StockPo> implements S
                     .isDelete(Boolean.FALSE)
                     .build())
         );
-        this.saveBatch(stockPoList);
+        stockDao.saveBatch(stockPoList);
+    }
+
+    @Override
+    public StockPo getStockBySkuId(Long skuId) {
+        return stockDao.getBySkuId(skuId);
     }
 }

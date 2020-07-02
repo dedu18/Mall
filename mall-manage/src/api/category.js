@@ -5,7 +5,7 @@ const url = "http://localhost:9003"
 export function getAllCategoryTree(params) {
   return http({
     baseURL: url,
-    url:'/api/category/tree',
+    url:'/api/category/management/tree',
     method:'get',
     params:params
   })
@@ -14,7 +14,7 @@ export function getAllCategoryTree(params) {
 export function getAllCategoryList(params) {
   return http({
     baseURL: url,
-    url:'/api/category/list',
+    url:'/api/category/management/list',
     method:'get',
     params:params
   })

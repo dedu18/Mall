@@ -41,10 +41,14 @@ export default {
           align: 'center'
         },
         {
-          title: '套餐',
-          width: 198,
+          title: '规格',
           key: 'package',
-          align: 'center'
+          align: 'center',
+          render: (h, params) => {
+            console.log(params)
+            console.log(h)
+            return h('div', params.row.packages.intro);
+          }
         },
         {
           title: '数量',

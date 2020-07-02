@@ -5,12 +5,13 @@
     </div>
     <Table border :columns="columns" :data="orders.records" size="large" no-data-text="你还没有订单，快点去购物吧"/>
     <div class="page-size">
-      <Page :total="orders.total" show-sizer/>
+      <Page :total="orders.total" :page-size="50"/>
     </div>
   </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex';
   import {getAllOrderByPage} from '@/api/order';
   export default {
     name: 'MyOrder',
@@ -73,6 +74,9 @@
         ]
       };
     },
+    computed: {
+      ...mapState(['userInfo'])
+    },
     methods: {
       handleSizeChange(size) {
         this.pageSize = size
@@ -86,7 +90,8 @@
         // 分页查询品牌
         getAllOrderByPage({
           pageSize: this.pageSize,
-          pageNum: this.pageNum
+          pageNum: this.pageNum,
+          sessionId: this.userInfo.sessionId
         }).then(response => {
           this.orders.total = response.total
           this.orders.records = response.records

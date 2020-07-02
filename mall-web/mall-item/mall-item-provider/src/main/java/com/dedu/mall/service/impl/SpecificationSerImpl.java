@@ -60,4 +60,8 @@ public class SpecificationSerImpl extends ServiceImpl<SpecificationMapper, Speci
         this.update(SpecificationPo.builder().isEnable(Boolean.FALSE).isDelete(Boolean.TRUE).build(), new QueryWrapper<SpecificationPo>().eq("group_id", id).eq("is_delete", Boolean.FALSE));
     }
 
+    @Override
+    public SpecificationPo getSpecById(Long specId) {
+        return this.getById(specId);
+    }
 }

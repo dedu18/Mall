@@ -64,12 +64,12 @@
         <div class="item-select">
           <!-- SKU 开始 -->
           <div class="product-box">
-            <div class="product-delcom" v-for="(spec,n) in goodsDetail.specs">
+            <div class="product-delcom" v-for="(spec,n) in saleDetail.specs">
               <div style="display: flex; flex-direction: row; align-items: center;">
                 <p style="color: #999;font-size: 16px;">{{spec.name}}</p>
                 <ul class="product-footerlist">
                   <li v-for="(specValue,index) in spec.specValues"
-                      v-on:click="specificationBtn(specValue.name,n,$event,index)"
+                      v-on:click="specificationBtn(specValue.name, n, $event, index)"
                       v-bind:class="[specValue.isShow ? '' : 'noneActive', subIndex[n] == index ? 'productActive' : '']">
                     {{specValue.name}}
                   </li>
@@ -94,7 +94,8 @@
 
 <script>
   import store from '@/vuex/store';
-  import {mapState, mapActions} from 'vuex';
+  import {mapActions, mapState} from 'vuex';
+  import {getGoodsBySpuId} from '../../api/goods';
 
   export default {
     name: 'GoodsSku',
@@ -106,108 +107,28 @@
     data() {
       return {
         count: 1,
-        selectBoxIndex: 1,
         imgIndex: 0,
-
-        goodsDetail: {
-          skulist: [
-            { //所有的规格可能情况都在这个数组里
-              "id": "19",
-              "price": "200.00",
-              "stock": "19",
-              "specs": "100cm,白色"
-            },
-            {
-              "id": "20",
-              "price": "100.00",
-              "stock": "29",
-              "specs": "200cm,白色"
-            },
-            {
-              "id": "21",
-              "price": "300.00",
-              "stock": "10",
-              "specs": "100cm,黑色"
-            },
-            {
-              "id": "22",
-              "price": "900.00",
-              "stock": "0",
-              "specs": "200cm,黑色"
-            },
-            {
-              "id": "23",
-              "price": "600.00",
-              "stock": "48",
-              "specs": "100cm,绿色"
-            },
-            {
-              "id": "24",
-              "price": "500.00",
-              "stock": "40",
-              "specs": "200cm,绿色"
-            },
-            {
-              "id": "25",
-              "price": "90.00",
-              "stock": "0",
-              "specs": "100cm,蓝色"
-            },
-            {
-              "id": "22",
-              "price": "40.00",
-              "stock": "20",
-              "specs": "200cm,蓝色"
-            }
-          ],
-          specs: [
-            { //这里是要被渲染字段
-              "name": "尺寸",
-              "specValues": [
-                {
-                  "name": "100cm",
-                },
-                {
-                  "name": "200cm",
-                }
-              ]
-            },
-            {
-              "name": "颜色",
-              "specValues": [
-                {
-                  "name": "白色",
-                },
-                {
-                  "name": "蓝色",
-                },
-                {
-                  "name": "黑色",
-                },
-                {
-                  "name": "绿色",
-                }
-              ]
-            }
-          ]
+        saleDetail: {
+          skus: [],
+          specs: []
         },
-        selectArr: [], //存放被选中的值
-        shopItemInfo: {}, //存放要和选中的值进行匹配的数据
+        selectedSpecValueArray: [], //存放所有被选中的规格属性值
+        skuInfoCacheMap: {}, //存放要和选中的值进行匹配的数据，这个对象的每个字段为逗号分隔的specs字符串，字段值为对应的sku对象
         subIndex: [], //是否选中 因为不确定是多规格还是单规格，所以这里定义数组来判断
-        price: 0, //选中规格的价钱
-        skuIdSelected: ''
+        price: 0, //选中的规格所对应的SKU价钱
+        selectedSkuId: '' //选中的规格所对应的SKUID
       };
     },
     computed: {
       ...mapState(['goodsInfo', 'userInfo'])
     },
     methods: {
-      ...mapActions(['addShoppingCart']),
+      ...mapActions(['addShoppingCart', 'loadGoodsInfo']),
       showBigImg(index) {
         this.imgIndex = index;
       },
       addShoppingCartBtn() {
-        if (this.checkContainEmptyStringOfArray(this.selectArr)) {
+        if (this.checkContainEmptyStringOfArray(this.selectedSpecValueArray)) {
           this.$Message.error({
             content: '请选择商品的所有规格！',
             duration: 5,
@@ -220,13 +141,13 @@
           } else {
             const data = {
               sessionId: sessionId,
-              skuId: this.skuIdSelected,
+              skuId: this.selectedSkuId,
               goodsId: 1,
               title: this.goodsInfo.title,
               count: this.count,
               img: this.goodsInfo.goodsImg[this.imgIndex],
               packages: {
-                intro: this.selectArr.join("、"),
+                intro: this.selectedSpecValueArray.join("、"),
                 img: this.goodsInfo.goodsImg[this.imgIndex]
               },
               price: this.price
@@ -236,9 +157,8 @@
           }
         }
       },
-
       checkContainEmptyStringOfArray(data) {
-        if (data.length == 0 || data.length < this.goodsDetail.specs.length) {
+        if (data.length == 0 || data.length < this.saleDetail.specs.length) {
           return true;
         }
         for (var i = 0; i < data.length; i++) {
@@ -247,62 +167,74 @@
         }
         return false;
       },
-
-      specificationBtn: function (item, n, event, index) {
+      specificationBtn(item, n, event, index) {
         var self = this;
-        if (self.selectArr[n] != item) {
-          self.selectArr[n] = item;
+        if (self.selectedSpecValueArray[n] != item) {
+          self.selectedSpecValueArray[n] = item;
           self.subIndex[n] = index;
         } else {
-          self.selectArr[n] = "";
+          self.selectedSpecValueArray[n] = "";
           self.subIndex[n] = -1; //去掉选中的颜色
         }
-        self.checkItem();
+        self.checkEachSpecItem();
       },
-      checkItem: function () {
+      checkEachSpecItem() {
         var self = this;
-        var option = self.goodsDetail.specs;
-        var result = []; //定义数组储存被选中的值
-        for (var i in option) {
-          result[i] = self.selectArr[i] ? self.selectArr[i] : '';
+        var specArray = self.saleDetail.specs;
+        var result = []; //定义数组,储存被选中的规格属性值，如果该规格属性没被选，则为空值
+        for (var idx in specArray) {
+          result[idx] = self.selectedSpecValueArray[idx] ? self.selectedSpecValueArray[idx] : '';
         }
-        for (var i in option) {
-          var last = result[i]; //把选中的值存放到字符串last去
-          for (var k in option[i].specValues) {
-            result[i] = option[i].specValues[k].name; //赋值，存在直接覆盖，不存在往里面添加name值
-            option[i].specValues[k].isShow = self.isMay(result); //在数据里面添加字段isShow来判断是否可以选择
+        for (var idx in specArray) { //这里的idx代表第几个规格属性
+          var selectedSpecValue = result[idx]; //把选中的值存放到字符串last去
+          for (var specValueIdx in specArray[idx].specValues) { //这里的specValueIdx代表该规格属性的第一个可选属性值，如颜色有红色，白色
+            result[idx] = specArray[idx].specValues[specValueIdx].name; //赋值，存在直接覆盖，不存在往里面添加name值
+            specArray[idx].specValues[specValueIdx].isShow = self.isSpecShow(result); //在数据里面添加字段isShow来判断是否可以选择
           }
-          result[i] = last; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
+          result[idx] = selectedSpecValue; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
         }
-        if (this.shopItemInfo[result]) {
-          this.price = this.shopItemInfo[result].price || '';
-          this.skuIdSelected = this.shopItemInfo[result].id || '';
+        if (this.skuInfoCacheMap[result]) {
+          this.price = this.skuInfoCacheMap[result].price || '';
+          this.selectedSkuId = this.skuInfoCacheMap[result].id || '';
+        } else {
+          this.price = 0
+          this.selectedSkuId = ''
         }
         self.$forceUpdate(); //重绘
       },
-      isMay: function (result) {
+      isSpecShow(result) {
         for (var i in result) {
           if (result[i] == '') {
             return true; //如果数组里有为空的值，那直接返回true
           }
         }
-        return this.shopItemInfo[result].stock == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
+        if (this.skuInfoCacheMap[result]) {
+          return this.skuInfoCacheMap[result].stock == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
+        } else {
+          return false;
+        }
       }
     },
     mounted() {
-      //这里已经查到了goodsInfo信息
       const self = this;
-      for (var i in self.goodsDetail.skulist) {
-        self.shopItemInfo[self.goodsDetail.skulist[i].specs] = self.goodsDetail.skulist[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
-      }
-      self.checkItem();
+      console.log(self.spuId)
+      getGoodsBySpuId(self.spuId).then(response => {
+        self.saleDetail = response.saleDetail;
+        for (var i in self.saleDetail.skus) {
+          self.skuInfoCacheMap[self.saleDetail.skus[i].specs] = self.saleDetail.skus[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
+        }
+        self.checkEachSpecItem();
+      });
     },
     store
   };
 </script>
 
 <style scoped>
-  <!-- SKU样式 -->
+  <!--
+  SKU样式
+
+  -->
   .product-box {
     width: 100%;
     display: block;

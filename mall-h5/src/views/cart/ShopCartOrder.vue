@@ -107,7 +107,7 @@
             key: 'package',
             align: 'center',
             render: (h, params) => {
-              return h('div', params.row.package.intro);
+              return h('div', params.row.packages.intro);
             }
           },
           {

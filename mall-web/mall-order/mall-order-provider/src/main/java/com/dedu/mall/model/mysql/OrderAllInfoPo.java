@@ -20,15 +20,11 @@ public class OrderAllInfoPo {
     private Long id;
     private Long buyerId;
     private BigDecimal totalPrice;
-    private String title;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
-    /**
-     * tb_order_status
-     */
     private Integer status;
 
     /**
