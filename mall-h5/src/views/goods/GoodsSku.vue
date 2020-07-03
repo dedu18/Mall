@@ -55,7 +55,7 @@
             <div class="item-remarks-sum">
               <p>累计评价</p>
               <p>
-                <span class="item-remarks-num">{{goodsInfo.remarksNum}} 条</span>
+                <span class="item-remarks-num">{{goodsInfo.remarks.remarksNum}} 条</span>
               </p>
             </div>
           </div>
@@ -99,13 +99,9 @@
 
   export default {
     name: 'GoodsSku',
-    props: {
-      spuId: {
-        type: String
-      }
-    },
     data() {
       return {
+        spuId: "",
         count: 1,
         imgIndex: 0,
         saleDetail: {
@@ -217,7 +213,7 @@
     },
     mounted() {
       const self = this;
-      console.log(self.spuId)
+      self.spuId = self.$route.query.spuId;
       getGoodsBySpuId(self.spuId).then(response => {
         self.saleDetail = response.saleDetail;
         for (var i in self.saleDetail.skus) {

@@ -15,11 +15,11 @@
       </div>
     </div>
     <!-- 商品Sku信息展示 -->
-    <GoodsSku :spuId="spuId"/>
+    <GoodsSku/>
     <!-- 商品Intro详细展示 -->
     <br/>
-    <GoodsSpec :spuId="spuId"/>
-    <Spin size="large" fix v-if="isLoading"></Spin>
+    <GoodsSpec/>
+    <Spin size="large" fix v-if="isLoading" />
   </div>
 </template>
 
@@ -41,7 +41,7 @@
     data() {
       return {
         tagsColor: ['blue', 'green', 'red', 'yellow'],
-        spuId: ""
+        spuId: "4"
       };
     },
     methods: {

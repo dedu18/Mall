@@ -160,11 +160,13 @@ public class GoodsSerImpl implements GoodsService {
 
     @Override
     public GoodsDetailRspVo queryGoodsBySpuId(Long spuId) {
+
+        SpuVo spuBySpuId = spuService.getSpuBySpuId(spuId);
+
         //商品预览图
         String[] goodsImgArr = {"static/img/goodsDetail/item-detail-1.jpg", "static/img/goodsDetail/item-detail-2.jpg", "static/img/goodsDetail/item-detail-3.jpg", "static/img/goodsDetail/item-detail-4.jpg"};
         List<String> goodsImg = CollectionUtils.arrayToList(goodsImgArr);
 
-        String title = "苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳";
         // 标题下小标题
         String[] tagsArr = {"满69-20元", "关注产品★送钢化膜", "BIT配次日达"};
         List<String> tags = CollectionUtils.arrayToList(tagsArr);
@@ -174,26 +176,69 @@ public class GoodsSerImpl implements GoodsService {
         //促销标签
         String[] promotionArr = {"跨店满减", "多买优惠"};
         List<String> promotion = CollectionUtils.arrayToList(promotionArr);
-        //评价条数
-        Integer remarksNum = 6000;
 
-        List<GoodsListItemVo> hot = new ArrayList<>();
-        hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/1.jpg").price(128.0).sale(165076.0).build());
-        hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/2.jpg").price(128.0).sale(165076.0).build());
-        hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/3.jpg").price(128.0).sale(165076.0).build());
-        hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/4.jpg").price(128.0).sale(165076.0).build());
-        hot.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/5.jpg").price(128.0).sale(165076.0).build());
+        List<GoodsListItemVo> hotSales = buildHotSalesOfStore(spuId);
+
         // 商品介绍图
+        List<String> goodsDetailIntroImages = buildGoodsDetailIntroImages(spuId);
+
+        // 全局规格参数
+        List<SpecialItemVo> globalSpecs = buildAllGlobalSpec(spuId);
+
+        // 商品评价组装
+        CommentInfoVo commentInfo = buildCommentInfo(spuId);
+
+        //销售属性组装
+        List<SkuItemVo> skus = buildSkusBySpuId(spuId);
+        List<SpecItemVo> saleSpecs = buildSaleSpecs(spuId);
+        SaleDetail saleDetail = SaleDetail.builder().skus(skus).specs(saleSpecs).build();
+
+        //标题短语生成
+        String phraseTitle = buildPhraseTitle();
+
+        //结果组装
+        GoodsDetailRspVo result = GoodsDetailRspVo.builder()
+                .goodsImg(goodsImg)
+                .title(spuBySpuId.getSpuTitle())
+                .phraseTitle(phraseTitle)
+                .tags(tags)
+                .discount(discount)
+                .promotion(promotion)
+                .saleDetail(saleDetail)
+                .hotSales(hotSales)
+                .goodsDetailIntroImages(goodsDetailIntroImages)
+                .globalSpecs(globalSpecs)
+                .remarks(commentInfo)
+                .build();
+        return result;
+    }
+
+    private List<GoodsListItemVo> buildHotSalesOfStore(Long spuId) {
+        List<GoodsListItemVo> hotSales = new ArrayList<>();
+        hotSales.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/1.jpg").price(128.0).sale(165076.0).build());
+        hotSales.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/2.jpg").price(128.0).sale(165076.0).build());
+        hotSales.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/3.jpg").price(128.0).sale(165076.0).build());
+        hotSales.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/4.jpg").price(128.0).sale(165076.0).build());
+        hotSales.add(GoodsListItemVo.builder().img("static/img/goodsDetail/hot/5.jpg").price(128.0).sale(165076.0).build());
+        return hotSales;
+    }
+
+    private List<String> buildGoodsDetailIntroImages(Long spuId) {
         String[] goodsDetailArr = {"static/img/goodsDetail/intro/1.jpg",
                 "static/img/goodsDetail/intro/2.jpg",
                 "static/img/goodsDetail/intro/3.jpg",
                 "static/img/goodsDetail/intro/4.jpg"};
-        List<String> goodsDetail = CollectionUtils.arrayToList(goodsDetailArr);
-        // 规格参数
-        List<SpecialItemVo> specs = new ArrayList<>();
-        specs.add(SpecialItemVo.builder().title("商品名称").content("iPhone 7手机壳").build());
-        specs.add(SpecialItemVo.builder().title("商品编号").content("10435663237").build());
-        // 商品评价
+        return CollectionUtils.arrayToList(goodsDetailArr);
+    }
+
+    private List<SpecialItemVo> buildAllGlobalSpec(Long spuId) {
+        List<SpecialItemVo> result = new ArrayList<>();
+        result.add(SpecialItemVo.builder().title("商品名称").content("iPhone 7手机壳").build());
+        result.add(SpecialItemVo.builder().title("商品编号").content("10435663237").build());
+        return result;
+    }
+
+    private CommentInfoVo buildCommentInfo(Long spuId) {
         // 好评率
         Integer goodAnalyse = 10;
         // 评价标签
@@ -209,35 +254,13 @@ public class GoodsSerImpl implements GoodsService {
         detail.add(CommentVo.builder().username("3****z").values(7.0).content("相当轻薄，店家还送了一大堆配件，*元非常值得！").goods("4.7英寸-深邃蓝").time(LocalDateTime.of(2019, 10, 24, 10, 24)).build());
         detail.add(CommentVo.builder().username("gd****c").values(8.0).content("就是我想要的手机壳，壳子很薄，手感不错，就像没装手机壳一样，想要裸机手感的赶快下手了。").goods("4.7英寸-中国红").time(LocalDateTime.of(2019, 10, 24, 10, 24)).build());
         detail.add(CommentVo.builder().username("r****b").values(10.0).content("磨砂的，相当漂亮，尺寸非常合适！精工细作！").goods("5.5英寸-星空黑").time(LocalDateTime.of(2019, 10, 24, 10, 24)).build());
-        CommentInfoVo commentInfo = CommentInfoVo.builder()
+        return CommentInfoVo.builder()
+                .remarksNum(6000)
                 .goodAnalyse(goodAnalyse)
                 .remarksTags(remarkTags)
                 .remarksNumDetail(remarksNumDetail)
                 .detail(detail)
                 .build();
-
-        //销售属性组装
-        List<SkuItemVo> skus = buildSkusBySpuId(spuId);
-        List<SpecItemVo> saleSpecs = buildSaleSpecs(spuId);
-        SaleDetail saleDetail = SaleDetail.builder().skus(skus).specs(saleSpecs).build();
-        //标题短语生成
-        String phraseTitle = buildPhraseTitle();
-        //结果组装
-        GoodsDetailRspVo result = GoodsDetailRspVo.builder()
-                .goodsImg(goodsImg)
-                .title(title)
-                .phraseTitle(phraseTitle)
-                .tags(tags)
-                .discount(discount)
-                .promotion(promotion)
-                .remarksNum(remarksNum)
-                .saleDetail(saleDetail)
-                .hot(hot)
-                .goodsDetail(goodsDetail)
-                .param(specs)
-                .remarks(commentInfo)
-                .build();
-        return result;
     }
 
     private String buildPhraseTitle() {

@@ -50,7 +50,6 @@ public class GoodsController {
      * 商品详情
      * @param spuId
      * @return
-     * @throws Exception
      */
     @GetMapping("/{spuId}")
     @ApiOperation(value = "根据商品SpuId查询商品详情信息-dedu", notes = "商品")

@@ -26,13 +26,11 @@ public class GoodsDetailRspVo {
     private SaleDetail saleDetail;
 
     // 店铺热销
-    private List<GoodsListItemVo> hot;
+    private List<GoodsListItemVo> hotSales;
     // 商品介绍图
-    private List<String> goodsDetail;
+    private List<String> goodsDetailIntroImages;
     // 规格参数
-    private List<SpecialItemVo> param;
-    //评价条数
-    private Integer remarksNum;
+    private List<SpecialItemVo> globalSpecs;
     // 商品评价
     private CommentInfoVo remarks;
 }

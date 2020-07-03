@@ -27,4 +27,8 @@ public class SpuDao extends ServiceImpl<SpuMapper, SpuPo> {
     public IPage<SpuPo> getSpuPageByCategoryId(Long categoryId, Page page) {
         return this.page(page, new QueryWrapper<SpuPo>().eq("is_enable", 1).like("categoty_ids", categoryId));
     }
+
+    public SpuPo getSpuPoBySpuId(Long spuId) {
+        return this.getOne(new QueryWrapper<SpuPo>().eq("id", spuId).eq("is_enable", 1).eq("is_delete", 0));
+    }
 }

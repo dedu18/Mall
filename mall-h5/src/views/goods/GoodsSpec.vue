@@ -5,7 +5,7 @@
         <p>店铺热销</p>
       </div>
       <div class="item-intro-recommend-column">
-        <div class="item-recommend-column" v-for="(item, index) in goodsInfo.hot" :key="index">
+        <div class="item-recommend-column" v-for="(item, index) in goodsInfo.hotSales" :key="index">
           <div class="item-recommend-img">
             <img :src="item.img" alt="">
           </div>
@@ -25,7 +25,7 @@
               <span>商品介绍</span>
             </div>
             <div class="item-intro-img" ref="itemIntroGoods">
-              <img :src="item" alt="" v-for="(item,index) in goodsInfo.goodsDetail" :key="index">
+              <img :src="item" alt="" v-for="(item,index) in goodsInfo.goodsDetailIntroImages" :key="index">
             </div>
           </TabPane>
           <TabPane label="规格参数">
@@ -33,7 +33,7 @@
               <span>规格参数</span>
             </div>
             <div class="item-param-container">
-                <span class="item-param-box" v-for="(item,index) in goodsInfo.param" :key="index">
+                <span class="item-param-box" v-for="(item,index) in goodsInfo.globalSpecs" :key="index">
                   <span class="item-param-title">{{item.title}}: </span>
                   <span class="item-param-content">{{item.content}}</span>
                 </span>
@@ -100,11 +100,6 @@
 
   export default {
     name: 'GoodsSpec',
-    props: {
-      spuId: {
-        type: String
-      }
-    },
     data() {
       return {
         tagsColor: ['blue', 'green', 'red', 'yellow']

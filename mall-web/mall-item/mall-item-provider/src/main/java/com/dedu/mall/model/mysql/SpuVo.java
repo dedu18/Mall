@@ -24,9 +24,18 @@ public class SpuVo {
      * 所有图片
      */
     private String images;
-    private Integer saleable;
+    private Boolean saleable;
     private BigDecimal price;
     private Integer stock;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+
+    public SpuVo(SpuPo spuPo) {
+        this.spuId = spuPo.getId();
+        this.spuTitle = spuPo.getTitle();
+        this.spuSubTitle = spuPo.getSubTitle();
+        this.saleable = spuPo.getSaleable();
+        this.createTime = spuPo.getCreateTime();
+        this.updateTime = spuPo.getUpdateTime();
+    }
 }

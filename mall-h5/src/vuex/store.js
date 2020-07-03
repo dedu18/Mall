@@ -23,9 +23,9 @@ export default new Vuex.Store({
         skus: [],
         specs: []
       },
-      hot: [],
-      goodsDetail: [],
-      param: [],
+      hotSales: [],
+      goodsDetailIntroImages: [],
+      globalSpecs: [],
       remarks: [{
         goodAnalyse: '',
         remarksTags: [],
