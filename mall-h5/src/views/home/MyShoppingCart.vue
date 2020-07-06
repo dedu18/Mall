@@ -45,8 +45,6 @@ export default {
           key: 'package',
           align: 'center',
           render: (h, params) => {
-            console.log(params)
-            console.log(h)
             return h('div', params.row.packages.intro);
           }
         },
@@ -58,7 +56,6 @@ export default {
         },
         {
           title: '价格',
-          width: 68,
           key: 'price',
           align: 'center'
         }
@@ -66,13 +63,12 @@ export default {
     };
   },
   created () {
-    this.loadShoppingCart(this.userInfo.sessionId);
+
   },
   computed: {
     ...mapState(['shoppingCart', 'userInfo'])
   },
   methods: {
-    ...mapActions(['loadShoppingCart']),
     goTo () {
       this.$router.push('/order');
     }

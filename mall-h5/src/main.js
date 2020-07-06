@@ -21,7 +21,16 @@ Vue.config.devtools = true
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start();
-  next();
+
+  if (to.meta.requireAuth) {
+    if (store.state.userInfo.sessionId) {
+      next()
+    } else {
+      next({path: '/Login'})
+    }
+  } else {
+    next()
+  }
 });
 
 router.afterEach(route => {

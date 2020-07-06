@@ -116,10 +116,8 @@ export const addAddress = ({commit}, data) => {
  * @returns {Promise<any>}
  */
 export const loadShoppingCart = ({commit}, data) => {
-  return new Promise((resolve, reject) => {
-    getUserShopCartByUserId(data).then(response => {
-      commit('SET_SHOPPING_CART', response);
-    });
+  getUserShopCartByUserId(data).then(response => {
+    commit('SET_SHOPPING_CART', response);
   });
 };
 

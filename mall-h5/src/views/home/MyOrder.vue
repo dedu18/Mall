@@ -5,7 +5,7 @@
     </div>
     <Table border :columns="columns" :data="orders.records" size="large" no-data-text="你还没有订单，快点去购物吧"/>
     <div class="page-size">
-      <Page :total="orders.total" :page-size="50"/>
+      <Page :total="orders.total" :page-size="this.pageSize" @on-change="handleCurrentChange"/>
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@
 <script>
   import {mapState} from 'vuex';
   import {getAllOrderByPage} from '@/api/order';
+
   export default {
     name: 'MyOrder',
     data() {
@@ -21,6 +22,8 @@
           total: 0,
           records: []
         },
+        pageSize: 50,
+        pageNum: 1,
         columns: [
           {
             title: '订单号',
@@ -78,10 +81,6 @@
       ...mapState(['userInfo'])
     },
     methods: {
-      handleSizeChange(size) {
-        this.pageSize = size
-        this.handlePageChange()
-      },
       handleCurrentChange(currentPage) {
         this.pageNum = currentPage
         this.handlePageChange()
@@ -98,7 +97,7 @@
         });
       },
     },
-    mounted () {
+    mounted() {
       this.handlePageChange()
     }
   };

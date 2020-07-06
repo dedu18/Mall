@@ -83,27 +83,42 @@ export default new Router({
     {
       path: '/shoppingCart', // 商品详情
       name: 'ShoppingCart',
-      component: ShoppingCart
+      component: ShoppingCart,
+      meta :{
+        requireAuth: true
+      }
     },
     {
       path: '/order', // 订单页面
       name: 'Order',
-      component: Order
+      component: Order,
+      meta :{
+        requireAuth: true
+      }
     },
     {
       path: '/toPay', // 支付页面
       name: 'ToPay',
-      component: ToPay
+      component: ToPay,
+      meta :{
+        requireAuth: true
+      }
     },
     {
       path: '/pay', // 支付页面
       name: 'Pay',
-      component: Pay
+      component: Pay,
+      meta :{
+        requireAuth: true
+      }
     },
     {
       path: '/payDone', // 支付成功页面
       name: 'PayDone',
-      component: PayDone
+      component: PayDone,
+      meta :{
+        requireAuth: true
+      }
     },
     {
       path: '/freeback', // 反馈页面
@@ -118,22 +133,34 @@ export default new Router({
         {
           path: '/',
           name: 'HomeIndex',
-          component: MyOrder
+          component: MyOrder,
+          meta :{
+            requireAuth: true
+          }
         },
         {
           path: 'myAddress',
           name: 'MyAddress',
-          component: MyAddress
+          component: MyAddress,
+          meta :{
+            requireAuth: true
+          }
         },
         {
           path: 'myOrder',
           name: 'MyOrder',
-          component: MyOrder
+          component: MyOrder,
+          meta :{
+            requireAuth: true
+          }
         },
         {
           path: 'myShoppingCart',
           name: 'MyShoppingCart',
-          component: MyShoppingCart
+          component: MyShoppingCart,
+          meta :{
+            requireAuth: true
+          }
         }
       ]
     },

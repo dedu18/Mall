@@ -92,7 +92,6 @@
       };
     },
     created() {
-      this.loadAddress(this.userInfo.sessionId);
     },
     computed: {
       ...mapState(['userInfo', 'address'])

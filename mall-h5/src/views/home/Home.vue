@@ -39,7 +39,7 @@
 
 <script>
   import Search from '../search/Search';
-  import {mapState} from 'vuex';
+  import {mapState, mapActions} from 'vuex';
 
   export default {
     name: 'Home',
@@ -54,6 +54,7 @@
       };
     },
     methods: {
+      ...mapActions(['loadAddress', 'loadShoppingCart']),
       onSelect(name) {
         this.activeTitle = this.bar[name];
         this.$router.push(`/home/${name}`);
@@ -66,6 +67,8 @@
       Search
     },
     mounted() {
+      this.loadAddress(this.userInfo.sessionId);
+      this.loadShoppingCart(this.userInfo.sessionId);
       this.onSelect('myOrder');
     }
   };
