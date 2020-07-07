@@ -16,7 +16,6 @@ import javax.validation.constraints.Max;
  */
 @RestController()
 @RequestMapping("/api/sku")
-@CrossOrigin
 public class SkuController {
 
     @Autowired

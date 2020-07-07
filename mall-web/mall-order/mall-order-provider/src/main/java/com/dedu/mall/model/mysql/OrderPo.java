@@ -24,7 +24,7 @@ public class OrderPo {
     @TableField(value = "sku_id")
     private String skuId;
     @TableField(value = "buyer_id")
-    private Long buyerId;
+    private String buyerId;
     @TableField(value = "num")
     private Integer num;
     @TableField(value = "total_price")

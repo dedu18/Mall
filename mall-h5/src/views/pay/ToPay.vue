@@ -89,7 +89,6 @@
       let father = this;
       const data = {
         skuIds: father.$route.params.skuIds,
-        sessionId: father.userInfo.sessionId,
         addressId: father.$route.params.addressId,
         sourceType: 2
       }

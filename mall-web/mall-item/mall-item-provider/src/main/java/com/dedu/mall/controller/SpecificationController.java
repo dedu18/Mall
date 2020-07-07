@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
  */
 @RestController()
 @RequestMapping("/api/spec")
-@CrossOrigin
 public class SpecificationController {
 
     @Autowired

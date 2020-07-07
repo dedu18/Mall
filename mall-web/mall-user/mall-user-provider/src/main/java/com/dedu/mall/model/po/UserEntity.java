@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @TableName("tb_user")
-public class UserEntity {
+public class UserEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
     @TableField(value="username")

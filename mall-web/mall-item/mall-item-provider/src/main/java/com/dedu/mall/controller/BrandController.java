@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
  */
 @RestController()
 @RequestMapping("/api/brand")
-@CrossOrigin
 public class BrandController {
 
     @Autowired

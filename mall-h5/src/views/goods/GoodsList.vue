@@ -134,7 +134,7 @@
       ...mapGetters(['orderGoodsList'])
     },
     methods: {
-      ...mapActions(['loadGoodsList']),
+      ...mapActions(['loadGoodsListByCategoryId', 'loadGoodsListByKeyword']),
       ...mapMutations(['SET_GOODS_ORDER_BY']),
       orderBy(data, index) {
         this.icon = ['arrow-down-a', 'arrow-down-a', 'arrow-down-a'];
@@ -151,7 +151,12 @@
     },
     mounted() {
       this.searchItem = this.$route.query.searchData;
-      this.loadGoodsList(this.$route.query.categoryId);
+      var searchCategoryId = this.$route.query.categoryId;
+      if (searchCategoryId) {
+        this.loadGoodsListByCategoryId(searchCategoryId);
+      } else if (this.searchItem) {
+        this.loadGoodsListByKeyword(this.searchItem);
+      }
     },
     components: {
       Search,

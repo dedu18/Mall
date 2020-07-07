@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopCarItemVo {
-    private String sessionId;
     @NotNull
     private Long goodsId;
     private String skuId;

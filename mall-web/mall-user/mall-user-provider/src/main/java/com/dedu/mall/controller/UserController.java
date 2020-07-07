@@ -13,11 +13,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
-@CrossOrigin
+//@CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -71,7 +72,7 @@ public class UserController {
 
     /**
      * 获取用户地址信息
-     * @param sessionId
+     * @param
      * @return
      */
     @GetMapping("/address")
@@ -79,8 +80,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "string", name = "sessionId", value = "用户会话id", required = true)
     })
-    public Result queryUserAddressBySessionId(@RequestParam String sessionId) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressBySessionId(sessionId));
+    public Result queryUserAddressBySessionId() {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), userService.queryUserAddressBySessionId());
     }
 
     /**

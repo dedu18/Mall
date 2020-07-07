@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
@@ -26,8 +25,8 @@ public class CartController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "string", name = "sessionId", value = "用户会话id", required = true)
     })
-    public Result queryUserShopCartByUserId(@RequestParam String sessionId) {
-        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), cartService.queryUserShopCartBySessionId(sessionId));
+    public Result queryUserShopCartByUserId() {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), cartService.queryUserShopCartBySessionId());
     }
 
     @PostMapping("/")

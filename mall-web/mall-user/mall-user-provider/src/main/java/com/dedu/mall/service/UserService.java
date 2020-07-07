@@ -5,7 +5,7 @@ import com.dedu.mall.model.vo.*;
 import java.util.List;
 
 public interface UserService {
-    List<DeliveryAddress> queryUserAddressBySessionId(String sessionId);
+    List<DeliveryAddress> queryUserAddressBySessionId();
 
     LoginUserResultVo userLoginByUsernameAndPassword(LoginUserVo loginUserVo);
 

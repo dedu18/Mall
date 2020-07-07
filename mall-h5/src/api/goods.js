@@ -27,6 +27,18 @@ export function getGoodsListByCategoryId(id) {
 }
 
 /**
+ * 模糊匹配商品列表及广告推荐
+ * @param id
+ */
+export function getGoodsListByKeyword(keyword) {
+  return http({
+    baseURL: url,
+    url:'/api/goods/list/keyword/' + keyword,
+    method:'get'
+  })
+}
+
+/**
  * 根据Spu查询商品详情
  * @param id
  */

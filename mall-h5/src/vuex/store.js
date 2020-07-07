@@ -33,7 +33,7 @@ export default new Vuex.Store({
       }]
     },
     userInfo: { // 用户信息
-      sessionId: '',
+      login: false,
       username: '',
       nackname: ''
     },

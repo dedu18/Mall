@@ -123,6 +123,14 @@ public class GoodsSerImpl implements GoodsService {
         return result;
     }
 
+    @Override
+    public GoodsListVo queryGoodsListByKeyword(String keyword) {
+        //查询推荐商品列表
+        List<GoodsListItemVo> adList = getRecommendedGoodsList();
+        GoodsListVo result = GoodsListVo.builder().advertisingList(adList).goodsListPage(new Page()).build();
+        return result;
+    }
+
     private List<GoodsListItemVo> getRecommendedGoodsList() {
         List<GoodsListItemVo> adList = new ArrayList<>(6);
         adList.add(GoodsListItemVo.builder().img("static/img/goodsList/item-as-img-1.jpg").price(new Double("39.9")).intro("SKSK 苹果7/7plus手机壳 iPhone 7 Plus保护套全包硬").num(3140).sale(new Double("9000")).build());

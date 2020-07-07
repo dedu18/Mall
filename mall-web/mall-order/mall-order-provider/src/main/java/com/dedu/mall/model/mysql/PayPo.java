@@ -26,7 +26,7 @@ public class PayPo {
     @TableField(value = "total_pay")
     private BigDecimal totalPay;
     @TableField(value = "user_id")
-    private Long userId;
+    private String userId;
     @TableField(value = "wechat_paycode")
     private LocalDateTime wechatPaycode;
     @TableField(value = "status")

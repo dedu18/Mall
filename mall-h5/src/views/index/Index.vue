@@ -154,7 +154,9 @@
       this.loadCarouselItems();
       this.loadComputer();
       this.loadEat();
-      this.loadShoppingCart(this.userInfo.sessionId);
+      if (this.userInfo.login) {
+        this.loadShoppingCart();
+      }
     },
     mounted() {
       const father = this;

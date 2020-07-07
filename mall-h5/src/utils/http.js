@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {Message} from 'element-ui'
 
+axios.defaults.withCredentials=true;
+
 // 创建axios实例
 const http = axios.create({
   timeout: 30000

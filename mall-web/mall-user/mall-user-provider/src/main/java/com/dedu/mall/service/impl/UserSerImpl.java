@@ -1,11 +1,11 @@
 package com.dedu.mall.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dedu.mall.dao.UserAddressDao;
 import com.dedu.mall.dao.UserDao;
 import com.dedu.mall.enums.UserEnum;
 import com.dedu.mall.model.ServiceException;
+import com.dedu.mall.model.UserVo;
 import com.dedu.mall.model.po.UserAddressEntity;
 import com.dedu.mall.model.po.UserEntity;
 import com.dedu.mall.model.vo.*;
@@ -19,7 +19,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -34,10 +33,10 @@ public class UserSerImpl implements UserService {
     private UserAddressDao userAddressDao;
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private HttpServletRequest request;
 
     @Autowired
-    HttpServletRequest request;
+    private StringRedisTemplate stringRedisTemplate;
 
     // 验证单元key
     public final String SecretKey = "55455acd59994e36a410f5b173a89dbb";
@@ -47,9 +46,9 @@ public class UserSerImpl implements UserService {
     public final String Url = "http://0.vaptcha.com/verify";
 
     @Override
-    public List<DeliveryAddress> queryUserAddressBySessionId(String sessionId) {
-        UserEntity cacheUserInfo = getCacheUserInfo(sessionId);
-        List<UserAddressEntity> addressEntityList = userAddressDao.getAddressByUserId(cacheUserInfo.getId());
+    public List<DeliveryAddress> queryUserAddressBySessionId() {
+        UserVo userVo = getCacheUserInfo();
+        List<UserAddressEntity> addressEntityList = userAddressDao.getAddressByUserId(userVo.getId());
         List<DeliveryAddress> result = convertAddressEntityToDeliveryAddress(addressEntityList);
         return result;
     }
@@ -94,27 +93,38 @@ public class UserSerImpl implements UserService {
     }
 
     private LoginUserResultVo getSessionOfCheckResult(boolean isLegal, UserEntity userEntityExited) {
-        LoginUserResultVo result = LoginUserResultVo.builder().build();
         if (isLegal) {
-            String sessionId = request.getSession().getId();
-            cacheUserInfo(sessionId, userEntityExited);
-            result.setLegal(true);
-            result.setSessionId(sessionId);
-            result.setNackname(userEntityExited.getNackname());
+            cacheUserToSession(userEntityExited);
+            return buildLoginedUserResult(userEntityExited);
         }
+        return LoginUserResultVo.builder().build();
+    }
+
+    private LoginUserResultVo buildLoginedUserResult(UserEntity userEntityExited) {
+        LoginUserResultVo result = LoginUserResultVo.builder().build();
+        result.setLogin(true);
+        result.setUsername(userEntityExited.getUsername());
+        result.setNackname(userEntityExited.getNackname());
         return result;
     }
 
-    private void cacheUserInfo(String sessionId, UserEntity userEntityExited) {
-        stringRedisTemplate.opsForValue().set(sessionId, JSON.toJSONString(userEntityExited), Duration.ofMinutes(60));
+    private void cacheUserToSession(UserEntity userEntityExited) {
+        UserVo userVo = createUserVoByUserEntity(userEntityExited);
+        request.getSession().setAttribute("user", userVo);
     }
 
-    private UserEntity getCacheUserInfo(String sessionId) {
-        String userInfoString = stringRedisTemplate.opsForValue().get(sessionId);
-        if (StringUtils.isBlank(userInfoString)) {
+    private UserVo createUserVoByUserEntity(UserEntity userEntityExited) {
+        UserVo result = new UserVo();
+        BeanUtils.copyProperties(userEntityExited, result);
+        return result;
+    }
+
+    private UserVo getCacheUserInfo() {
+        UserVo userVo = (UserVo) request.getSession().getAttribute("user");
+        if (null == userVo) {
             throw new ServiceException(UserEnum.USER_LOGIN_EXPIRED_ERROR.getCode(), UserEnum.USER_LOGIN_EXPIRED_ERROR.getMsg());
         }
-        return JSONObject.parseObject(userInfoString, UserEntity.class);
+        return userVo;
     }
 
     private boolean checkUserPassword(LoginUserVo loginUser, UserEntity userEntityExited) {
@@ -188,8 +198,8 @@ public class UserSerImpl implements UserService {
 
     @Override
     public String addUserAddressBySessionId(DeliveryAddress userAddress) {
-        UserEntity cacheUserInfo = getCacheUserInfo(userAddress.getSessionId());
-        UserAddressEntity userAddressEntity = buildUserEntity(userAddress, cacheUserInfo);
+        UserVo userVo = getCacheUserInfo();
+        UserAddressEntity userAddressEntity = buildUserEntity(userAddress, userVo);
         if (StringUtils.isBlank(userAddressEntity.getId())) {
             userAddressDao.save(userAddressEntity);
         } else {
@@ -198,10 +208,10 @@ public class UserSerImpl implements UserService {
         return userAddressEntity.getId();
     }
 
-    private UserAddressEntity buildUserEntity(DeliveryAddress userAddress, UserEntity cacheUserInfo) {
+    private UserAddressEntity buildUserEntity(DeliveryAddress userAddress, UserVo userVo) {
         return UserAddressEntity.builder()
                 .id(userAddress.getAddressId())
-                .userId(cacheUserInfo.getId())
+                .userId(userVo.getId())
                 .recipientName(userAddress.getRecipientName())
                 .province(userAddress.getProvince())
                 .city(userAddress.getCity())

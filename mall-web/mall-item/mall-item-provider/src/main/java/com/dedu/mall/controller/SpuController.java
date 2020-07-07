@@ -17,7 +17,6 @@ import javax.validation.constraints.Max;
  */
 @RestController()
 @RequestMapping("/api/spu")
-@CrossOrigin
 public class SpuController {
 
     @Autowired

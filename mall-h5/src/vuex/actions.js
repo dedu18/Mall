@@ -1,5 +1,5 @@
 import {getAllNavigationPictureList} from '../api/category';
-import {getGoodsListByCategoryId, getGoodsBySpuId, getRecommendGoods} from '../api/goods';
+import {getGoodsListByCategoryId, getGoodsBySpuId, getRecommendGoods, getGoodsListByKeyword} from '../api/goods';
 import {getSeckillInfoList, getSpecialByType} from '../api/market';
 import {getUserDeliverAddress, loginUser, addUserDeliverAddress} from '../api/user';
 import {getUserShopCartByUserId} from '../api/cart';
@@ -67,12 +67,21 @@ export const loadGoodsInfo = ({commit}, data) => {
 };
 
 // 获取商品列表
-export const loadGoodsList = ({commit}, data) => {
+export const loadGoodsListByCategoryId = ({commit}, data) => {
   commit('SET_LOAD_STATUS', true);
   getGoodsListByCategoryId(data).then(response => {
     commit('SET_GOODS_LIST', response);
     commit('SET_LOAD_STATUS', false);
   });
+};
+
+// 获取搜索商品列表
+export const loadGoodsListByKeyword = ({commit}, data) => {
+  commit('SET_LOAD_STATUS', true);
+  getGoodsListByKeyword(data).then(response => {
+    commit('SET_GOODS_LIST', response);
+  });
+  commit('SET_LOAD_STATUS', false);
 };
 
 // 添加购物车
@@ -115,10 +124,14 @@ export const addAddress = ({commit}, data) => {
  * @param commit
  * @returns {Promise<any>}
  */
-export const loadShoppingCart = ({commit}, data) => {
-  getUserShopCartByUserId(data).then(response => {
+export const loadShoppingCart = ({commit}) => {
+  getUserShopCartByUserId()
+    .then(response => {
     commit('SET_SHOPPING_CART', response);
-  });
+  })
+    .catch(error => {
+      console.log(error)
+    })
 };
 
 // 添加注册用户
@@ -138,12 +151,10 @@ export const registerUser = ({commit}, data) => {
 export const login = ({commit}, data) => {
   return new Promise((resolve, reject) => {
     loginUser({username: data.username, password: data.password}).then(response => {
-      if (response && response.isLegal) {
-        data.password = '';
-        data.sessionId = response.sessionId;
-        data.nackname = response.nackname;
-        localStorage.setItem('loginInfo', JSON.stringify(data));
-        commit('SET_USER_LOGIN_INFO', data);
+      if (response && response.login) {
+        localStorage.setItem('loginInfo', JSON.stringify(response));
+        commit('SET_USER_LOGIN_INFO', response);
+        console.log(response)
         resolve(true);
       } else {
         resolve(false);

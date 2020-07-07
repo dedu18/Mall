@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/api/market/h5")
-@CrossOrigin
 public class MarketController {
 
     /**

@@ -35,13 +35,13 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'Shop',
   created () {
-    this.loadGoodsList();
+    this.loadGoodsListByCategoryId();
   },
   computed: {
     ...mapGetters(['orderGoodsList'])
   },
   methods: {
-    ...mapActions(['loadGoodsList'])
+    ...mapActions(['loadGoodsListByCategoryId'])
   },
   components: {
     ShopHeader

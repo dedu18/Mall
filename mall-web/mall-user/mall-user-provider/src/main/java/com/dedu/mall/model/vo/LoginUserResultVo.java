@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class LoginUserResultVo {
-    private boolean isLegal;
-    private String sessionId;
+    private boolean login;
     private String nackname;
+    private String username;
 }

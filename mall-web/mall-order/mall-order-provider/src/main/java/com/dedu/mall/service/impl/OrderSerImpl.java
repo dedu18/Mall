@@ -6,6 +6,7 @@ import com.dedu.mall.enums.OrderStatus;
 import com.dedu.mall.dao.OrderDao;
 import com.dedu.mall.dao.PayDao;
 import com.dedu.mall.enums.PayStatus;
+import com.dedu.mall.enums.UserEnum;
 import com.dedu.mall.feign.SkuFeignClient;
 import com.dedu.mall.feign.UserFeignClient;
 import com.dedu.mall.model.*;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -32,6 +34,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class OrderSerImpl implements OrderService {
+
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
     @Autowired
     private OrderDao orderDao;
@@ -46,8 +51,8 @@ public class OrderSerImpl implements OrderService {
     private UserFeignClient userFeignClient;
 
     @Override
-    public IPage<OrderAllInfoPo> getOrderAllInfoPageByUserId(Integer pageNum, Integer pageSize, String sessionId) {
-        Long userId = getUserIdBySession(sessionId);
+    public IPage<OrderAllInfoPo> getOrderAllInfoPageByUserId(Integer pageNum, Integer pageSize) {
+        String userId = getUserIdBySession();
         //分页查询
         List<OrderAllInfoPo> orderAllInfoPage = orderDao.getOrderAllInfoPageByUserId(userId, pageNum, pageSize);
         // 查询总数
@@ -77,8 +82,8 @@ public class OrderSerImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public OrderRspVo createOrder(OrderReqVo orderReqVo) {
-        Long userId = getUserIdBySession(orderReqVo.getSessionId());
-        Result<UserAddressVo> feignClientResult = userFeignClient.queryUserAddressByUserId(userId.toString(), orderReqVo.getAddressId().toString());
+        String userId = getUserIdBySession();
+        Result<UserAddressVo> feignClientResult = userFeignClient.queryUserAddressByUserId(userId, orderReqVo.getAddressId().toString());
         FeignClientUtil.checkSuccessOtherwiseThrowException(feignClientResult);
         List<String> skuIdList = getSkuIdList(orderReqVo.getSkuIds());
         BigDecimal totalPrice = new BigDecimal(0);
@@ -121,8 +126,12 @@ public class OrderSerImpl implements OrderService {
         return Arrays.asList(skuIds.split(","));
     }
 
-    private Long getUserIdBySession(String sessionId) {
-        return Long.parseLong("26");
+    private String getUserIdBySession() {
+        UserVo userVo = (UserVo) httpServletRequest.getSession().getAttribute("user");
+        if (null == userVo) {
+            throw new ServiceException(UserEnum.USER_LOGIN_EXPIRED_ERROR.getCode(), UserEnum.USER_LOGIN_EXPIRED_ERROR.getMsg());
+        }
+        return userVo.getId();
     }
 
     private OrderPo buildOrderPo(OrderReqVo orderReqVo, UserAddressVo userAddressVo) {

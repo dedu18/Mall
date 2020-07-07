@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 
 @RestController()
 @RequestMapping("/api/category")
-@CrossOrigin
 public class CategoryController {
 
     @Autowired

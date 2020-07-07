@@ -131,12 +131,10 @@
             closable: true
           });
         } else {
-          var sessionId = this.userInfo.sessionId;
-          if (sessionId == null || sessionId == 'undefined' || sessionId == '') {
+          if (!this.userInfo.login) {
             this.$router.push('/login');
           } else {
             const data = {
-              sessionId: sessionId,
               skuId: this.selectedSkuId,
               goodsId: 1,
               title: this.goodsInfo.title,

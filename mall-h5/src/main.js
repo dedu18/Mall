@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
   iView.LoadingBar.start();
 
   if (to.meta.requireAuth) {
-    if (store.state.userInfo.sessionId) {
+    if (store.state.userInfo.login) {
       next()
     } else {
       next({path: '/Login'})

@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
  */
 @RestController()
 @RequestMapping("/api/goods")
-@CrossOrigin
 public class GoodsController {
 
     @Autowired
@@ -34,6 +33,15 @@ public class GoodsController {
     })
     public Result queryGoodsListByCategoryId(@PathVariable Long id) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsListByCategoryId(id));
+    }
+
+    @GetMapping("/list/keyword/{keyword}")
+    @ApiOperation(value = "根据关键字查询商品列表-dedu", notes = "商品")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "类目主键id", required = true)
+    })
+    public Result queryGoodsListByKeyword(@PathVariable String keyword) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), goodsService.queryGoodsListByKeyword(keyword));
     }
 
 

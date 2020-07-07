@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.IOException;
 @EnableSwagger2
 @EnableDiscoveryClient
 @MapperScan("com.dedu.mall.dao.mapper")
+@EnableRedisHttpSession
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class MallUserProviderApplication {
 
