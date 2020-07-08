@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.Arrays;
 
 //@CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController

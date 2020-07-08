@@ -11,7 +11,7 @@ import java.util.List;
 public interface GoodsService {
     Boolean addGoods(GoodsVo goodsVo);
 
-    List<GoodsNavVo> queryGoodsNavByCategoryId(Long id);
+    List<GoodsNavVo> queryGoodsNavByCategoryId(Long id) throws Exception;
 
     GoodsListVo queryGoodsListByCategoryId(Long id);
 

@@ -32,6 +32,9 @@ public class UserSerImpl implements UserService {
     @Autowired
     private UserAddressDao userAddressDao;
 
+    /**
+     * 直接注入HttpServletRequest获取封装好的SpringSession
+     */
     @Autowired
     private HttpServletRequest request;
 

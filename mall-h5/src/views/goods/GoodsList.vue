@@ -20,7 +20,7 @@
         </Breadcrumb>
       </div>
       <!-- 商品标签导航 -->
-      <GoodsCategoryNav></GoodsCategoryNav>
+      <GoodsCategoryNav />
       <!-- 商品展示容器 -->
       <div class="goods-box">
         <!-- 侧边广告-->
@@ -93,6 +93,7 @@
           </div>
         </div>
       </div>
+      <!-- 分页-->
       <div class="goods-page">
         <Page :total="goodsListTotal" :page-size="pageSize" show-total @on-change="goodsListPageChange"></Page>
       </div>
@@ -134,7 +135,7 @@
       ...mapGetters(['orderGoodsList'])
     },
     methods: {
-      ...mapActions(['loadGoodsListByCategoryId', 'loadGoodsListByKeyword']),
+      ...mapActions(['loadGoodsNavInfoByCategoryId', 'loadGoodsListByCategoryId', 'loadGoodsListByKeyword']),
       ...mapMutations(['SET_GOODS_ORDER_BY']),
       orderBy(data, index) {
         this.icon = ['arrow-down-a', 'arrow-down-a', 'arrow-down-a'];
@@ -154,6 +155,7 @@
       var searchCategoryId = this.$route.query.categoryId;
       if (searchCategoryId) {
         this.loadGoodsListByCategoryId(searchCategoryId);
+        this.loadGoodsNavInfoByCategoryId(searchCategoryId);
       } else if (this.searchItem) {
         this.loadGoodsListByKeyword(this.searchItem);
       }

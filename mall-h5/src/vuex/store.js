@@ -53,9 +53,10 @@ export default new Vuex.Store({
     },
     computer: {}, // 电脑专栏
     eat: {}, // 爱吃专栏
-    advertisingList: [], // 广告
+    goodsNavInfo: [], //商品筛选规格列表
     goodsList: [], // 商品列表
     goodsListTotal: 0,
+    advertisingList: [], // 广告
     shoppingCart: [], // 购物车
     newShoppingCart: [], // 刚加入的购物车，作为展示
     recommend: [] // 推荐购买

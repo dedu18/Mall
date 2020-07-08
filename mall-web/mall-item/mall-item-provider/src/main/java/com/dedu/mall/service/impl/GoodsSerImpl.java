@@ -30,6 +30,9 @@ public class GoodsSerImpl implements GoodsService {
     private SpecificationValueService specValueService;
 
     @Autowired
+    private SpecificationGroupService specGroupService;
+
+    @Autowired
     private SkuService skuService;
 
     @Autowired
@@ -88,21 +91,56 @@ public class GoodsSerImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsNavVo> queryGoodsNavByCategoryId(Long id) {
+    public List<GoodsNavVo> queryGoodsNavByCategoryId(Long categoryId) throws Exception {
         List<GoodsNavVo> result = new ArrayList<>();
-        String[] g1Arr = {"华为(HUAWEI)1", "三星(SAMSUNG)", "MATE", "摩斯维(msvii)", "OPPO", "莫凡(Mofi)", "耐尔金(NILLKIN)", "洛克(ROCK)", "亿色(ESR)", "Apple", "优加"};
-        GoodsNavVo g1 = GoodsNavVo.builder().navName("品牌").navValues(CollectionUtils.arrayToList(g1Arr)).build();
-        String[] g2Arr = {"手机保护套", "苹果周边", "手机贴膜", "移动电源", "创意配件", "手机耳机", "手机支架"};
-        GoodsNavVo g2 = GoodsNavVo.builder().navName("手机配件").navValues(CollectionUtils.arrayToList(g2Arr)).build();
-        String[] g3Arr = {"软壳", "硬壳", "翻盖式", "边框", "运动臂包", "钱包式", "定制", "防水袋", "布袋", "其他"};
-        GoodsNavVo g3 = GoodsNavVo.builder().navName("款式").navValues(CollectionUtils.arrayToList(g3Arr)).build();
-        String[] g4Arr = {"塑料/PC", "硅胶", "金属", "电镀", "真皮", "树脂", "木质", "镶钻", "液态硅胶", "TPU"};
-        GoodsNavVo g4 = GoodsNavVo.builder().navName("材质").navValues(CollectionUtils.arrayToList(g4Arr)).build();
+        List<SpecificationGroupVo> specGroupVos = specGroupService.queryByCategoryId(categoryId);
+        List<SpecificationVo> specVoList = specGroupVos
+                .stream()
+                .flatMap(specGroup -> specGroup.getSpecs().stream())
+                .filter(SpecificationVo::getSearchable)
+                .collect(Collectors.toList());
+        if (null == specVoList || specVoList.isEmpty()) {
+            return result;
+        }
+        Map<String, List<String>> resultMap = new HashMap<>();
+        specVoList.forEach(spec -> {
+            if (resultMap.containsKey(spec.getGroupName())) {
+                resultMap.get(spec.getGroupName()).add(spec.getName());
+            } else {
+                List<String> goodsNavList = new LinkedList<>();
+                goodsNavList.add(spec.getName());
+                resultMap.put(spec.getGroupName(), goodsNavList);
+            }
+        });
+        result = convertSpecMapToGoodsNav(resultMap);
+        return result;
+    }
 
-        result.add(g1);
-        result.add(g2);
-        result.add(g3);
-        result.add(g4);
+    private List<GoodsNavVo> convertSpecMapToGoodsNav(Map<String, List<String>> resultMap) {
+//        String[] g1Arr = {"华为(HUAWEI)1", "三星(SAMSUNG)", "MATE", "摩斯维(msvii)", "OPPO", "莫凡(Mofi)", "耐尔金(NILLKIN)", "洛克(ROCK)", "亿色(ESR)", "Apple", "优加"};
+//        GoodsNavVo g1 = GoodsNavVo.builder().navName("品牌").navValues(CollectionUtils.arrayToList(g1Arr)).build();
+//        String[] g2Arr = {"手机保护套", "苹果周边", "手机贴膜", "移动电源", "创意配件", "手机耳机", "手机支架"};
+//        GoodsNavVo g2 = GoodsNavVo.builder().navName("手机配件").navValues(CollectionUtils.arrayToList(g2Arr)).build();
+//        String[] g3Arr = {"软壳", "硬壳", "翻盖式", "边框", "运动臂包", "钱包式", "定制", "防水袋", "布袋", "其他"};
+//        GoodsNavVo g3 = GoodsNavVo.builder().navName("款式").navValues(CollectionUtils.arrayToList(g3Arr)).build();
+//        String[] g4Arr = {"塑料/PC", "硅胶", "金属", "电镀", "真皮", "树脂", "木质", "镶钻", "液态硅胶", "TPU"};
+//        GoodsNavVo g4 = GoodsNavVo.builder().navName("材质").navValues(CollectionUtils.arrayToList(g4Arr)).build();
+//
+//        result.add(g1);
+//        result.add(g2);
+//        result.add(g3);
+//        result.add(g4);
+        List<GoodsNavVo> result = new LinkedList<>();
+        resultMap.forEach((k, v) -> {
+            if (v.size() > 10) {
+                v = v.subList(0, 10);
+            }
+            GoodsNavVo goodsNav = GoodsNavVo.builder()
+                    .navName(k)
+                    .navValues(v)
+                    .build();
+            result.add(goodsNav);
+        });
         return result;
     }
 
@@ -152,7 +190,8 @@ public class GoodsSerImpl implements GoodsService {
         result.setPages(spuVoPage.getPages());
         List<GoodsListItemVo> goodsListItemRecords = new ArrayList<>();
         for (SpuPo spuPo : spuVoPage.getRecords()) {
-            goodsListItemRecords.add(GoodsListItemVo.builder()
+            goodsListItemRecords.add(
+                    GoodsListItemVo.builder()
                     .spuId(spuPo.getId())
                     .intro(spuPo.getSubTitle())
                     .img("static/img/goodsList/item-show-4.jpg")
@@ -160,7 +199,8 @@ public class GoodsSerImpl implements GoodsService {
                     .remarks(9000)
                     .shopName("荣耀京东自营旗舰店")
                     .sale(9000.0)
-                    .build());
+                    .build()
+                    );
         }
         result.setRecords(goodsListItemRecords);
         return result;

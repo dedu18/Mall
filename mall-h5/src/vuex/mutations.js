@@ -50,6 +50,11 @@ export const REDUCE_SECKILLS_TIME = state => {
   }
 };
 
+// 设置商品筛选规格列表(搜索)
+export const SET_GOODS_NAVINFO = (state, data) => {
+  state.goodsNavInfo = data;
+};
+
 // 设置商品列表(搜索)
 export const SET_GOODS_LIST = (state, data) => {
   state.goodsList = data.goodsListPage.records;
@@ -73,7 +78,7 @@ export const ADD_SHOPPING_CART = (state, data) => {
     goods_id: data.goods_id,
     count: data.count,
     img: data.img,
-    package: data.packages,
+    packages: data.packages,
     price: data.price,
     title: data.title,
     skuId: data.skuId

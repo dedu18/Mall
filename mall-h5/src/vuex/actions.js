@@ -1,5 +1,5 @@
 import {getAllNavigationPictureList} from '../api/category';
-import {getGoodsListByCategoryId, getGoodsBySpuId, getRecommendGoods, getGoodsListByKeyword} from '../api/goods';
+import {getGoodsNavByCategoryId, getGoodsListByCategoryId, getGoodsBySpuId, getRecommendGoods, getGoodsListByKeyword} from '../api/goods';
 import {getSeckillInfoList, getSpecialByType} from '../api/market';
 import {getUserDeliverAddress, loginUser, addUserDeliverAddress} from '../api/user';
 import {getUserShopCartByUserId} from '../api/cart';
@@ -63,6 +63,13 @@ export const loadGoodsInfo = ({commit}, data) => {
   getGoodsBySpuId(data).then(response => {
     commit('SET_GOODS_INFO', response);
     commit('SET_LOAD_STATUS', false);
+  });
+};
+
+// 获取商品筛选规格列表
+export const loadGoodsNavInfoByCategoryId = ({commit}, data) => {
+  getGoodsNavByCategoryId(data).then(response => {
+    commit('SET_GOODS_NAVINFO', response);
   });
 };
 
