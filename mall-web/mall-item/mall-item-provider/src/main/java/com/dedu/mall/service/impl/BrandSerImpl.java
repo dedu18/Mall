@@ -4,13 +4,13 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.mapper.BrandMapper;
+import com.dedu.mall.dao.BrandDao;
 import com.dedu.mall.model.mysql.BrandPo;
 import com.dedu.mall.model.mysql.BrandVo;
 import com.dedu.mall.service.BrandService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +18,14 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class BrandSerImpl extends ServiceImpl<BrandMapper, BrandPo> implements BrandService {
+public class BrandSerImpl implements BrandService {
+
+    @Autowired
+    private BrandDao brandDao;
 
     @Override
     public IPage<BrandVo> getBrandPage(Integer pageNum, Integer pageSize) {
-        IPage<BrandPo> data = this.page(new Page<>(pageNum, pageSize), new QueryWrapper<BrandPo>().eq("is_delete", 0));
+        IPage<BrandPo> data = brandDao.page(new Page<>(pageNum, pageSize), new QueryWrapper<BrandPo>().eq("is_delete", 0));
         return convertBrandPoToVo(data);
     }
 
@@ -42,12 +45,12 @@ public class BrandSerImpl extends ServiceImpl<BrandMapper, BrandPo> implements B
                 .isEnable(Boolean.TRUE)
                 .isDelete(Boolean.FALSE)
                 .build();
-        return this.save(brandPo);
+        return brandDao.save(brandPo);
     }
 
     @Override
     public boolean deleteBrandById(Long id) {
-        return this.updateById(BrandPo.builder().id(id).isDelete(true).build());
+        return brandDao.updateById(BrandPo.builder().id(id).isDelete(true).build());
     }
 
     @Override
@@ -57,7 +60,7 @@ public class BrandSerImpl extends ServiceImpl<BrandMapper, BrandPo> implements B
         }
         BrandPo brandPo = new BrandPo();
         BeanUtils.copyProperties(brandVo, brandPo);
-        return this.updateById(brandPo);
+        return brandDao.updateById(brandPo);
     }
 
     /**

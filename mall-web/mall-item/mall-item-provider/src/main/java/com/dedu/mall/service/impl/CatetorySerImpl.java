@@ -1,12 +1,12 @@
 package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.mapper.CategoryMapper;
+import com.dedu.mall.dao.CategoryDao;
 import com.dedu.mall.model.h5.CategoryParentVo;
 import com.dedu.mall.model.mysql.*;
 import com.dedu.mall.service.CategoryService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> implements CategoryService {
+public class CatetorySerImpl implements CategoryService {
+
+    @Autowired
+    private CategoryDao categoryDao;
 
     @Override
     public CategoryNavVo getCategoryNavTreeByParentCategoryId(Integer parentId) {
@@ -70,7 +73,7 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
     public List<CategoryVo> getAllCategoryTreeByParentId(Integer parentId) {
         //查询所有顶级类目
         // 第一层类目
-        List<CategoryPo> catPoList = this.list(new QueryWrapper<CategoryPo>().eq("parent_id", parentId).eq("is_delete", 0));
+        List<CategoryPo> catPoList = categoryDao.list(new QueryWrapper<CategoryPo>().eq("parent_id", parentId).eq("is_delete", 0));
         List<CategoryVo> catVoList = new ArrayList<>();
         for (CategoryPo catPo :
                 catPoList) {
@@ -125,13 +128,13 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
         }
         CategoryPo categoryPo = new CategoryPo();
         BeanUtils.copyProperties(categoryVo, categoryPo);
-        return this.updateById(categoryPo);
+        return categoryDao.updateById(categoryPo);
     }
 
     @Override
     public boolean removeCategoryById(Long id) {
 //        return this.update(CategoryPo.builder().isDelete(true).build(), new QueryWrapper<CategoryPo>().eq("id", id).eq("isDelete", false));
-        return this.updateById(CategoryPo.builder().id(id).isDelete(true).build());
+        return categoryDao.updateById(CategoryPo.builder().id(id).isDelete(true).build());
     }
 
     @Override
@@ -144,11 +147,11 @@ public class CatetorySerImpl extends ServiceImpl<CategoryMapper, CategoryPo> imp
         }
         categoryPo.setCreateTime(LocalDateTime.now());
         categoryPo.setUpdateTime(LocalDateTime.now());
-        return this.save(categoryPo);
+        return categoryDao.save(categoryPo);
     }
 
     private List<CategoryPo> getAllCategoryByParentId(Long parentId) {
-        return this.list(new QueryWrapper<CategoryPo>().eq("parent_id", parentId).eq("is_enable", "1").eq("is_delete", 0));
+        return categoryDao.list(new QueryWrapper<CategoryPo>().eq("parent_id", parentId).eq("is_enable", "1").eq("is_delete", 0));
     }
 
     @Override

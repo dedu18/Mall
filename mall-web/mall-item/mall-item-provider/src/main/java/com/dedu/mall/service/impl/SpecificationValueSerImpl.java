@@ -1,12 +1,12 @@
 package com.dedu.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.mapper.SpecificationValueMapper;
+import com.dedu.mall.dao.SpecificationValueDao;
 import com.dedu.mall.model.mysql.SpecificationValuePo;
 import com.dedu.mall.model.mysql.SpecificationValueVo;
 import com.dedu.mall.service.SpecificationValueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,8 +15,10 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SpecificationValueSerImpl extends ServiceImpl<SpecificationValueMapper, SpecificationValuePo> implements SpecificationValueService {
+public class SpecificationValueSerImpl implements SpecificationValueService {
 
+    @Autowired
+    private SpecificationValueDao specificationValueDao;
 
     @Override
     public List<SpecificationValuePo> addSpecificationValueBatch(List<SpecificationValueVo> specValueVoList) {
@@ -30,7 +32,7 @@ public class SpecificationValueSerImpl extends ServiceImpl<SpecificationValueMap
             specValuePo.setUpdateTime(LocalDateTime.now());
             specPoList.add(specValuePo);
         });
-        this.saveBatch(specPoList);
+        specificationValueDao.saveBatch(specPoList);
         return specPoList;
     }
 }

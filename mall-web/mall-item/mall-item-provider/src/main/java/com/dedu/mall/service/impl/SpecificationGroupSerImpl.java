@@ -1,8 +1,7 @@
 package com.dedu.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dedu.mall.dao.mapper.SpecificationGroupMapper;
+import com.dedu.mall.dao.SpecificationGroupDao;
 import com.dedu.mall.model.mysql.SpecificationGroupPo;
 import com.dedu.mall.model.mysql.SpecificationGroupVo;
 import com.dedu.mall.model.mysql.SpecificationPo;
@@ -24,7 +23,10 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class SpecificationGroupSerImpl extends ServiceImpl<SpecificationGroupMapper, SpecificationGroupPo> implements SpecificationGroupService {
+public class SpecificationGroupSerImpl implements SpecificationGroupService {
+
+    @Autowired
+    private SpecificationGroupDao specificationGroupDao;
 
     @Autowired
     private SpecificationService specService;
@@ -32,7 +34,7 @@ public class SpecificationGroupSerImpl extends ServiceImpl<SpecificationGroupMap
     @Override
     public List<SpecificationGroupVo> queryByCategoryId(Long id) throws Exception {
         // 根据类目Id获取分组信息
-        List<SpecificationGroupPo> specGroupList = this.list(new QueryWrapper<SpecificationGroupPo>().eq("category_id", id).eq("is_enable", Boolean.TRUE).eq("is_delete", Boolean.FALSE));
+        List<SpecificationGroupPo> specGroupList = specificationGroupDao.list(new QueryWrapper<SpecificationGroupPo>().eq("category_id", id).eq("is_enable", Boolean.TRUE).eq("is_delete", Boolean.FALSE));
         // 根据分组Id获取规格属性
         Map<Long, List<SpecificationPo>> specCacheMap = new ConcurrentHashMap<>();
         if (!CollectionUtils.isEmpty(specGroupList)) {
@@ -79,7 +81,7 @@ public class SpecificationGroupSerImpl extends ServiceImpl<SpecificationGroupMap
     public Boolean addSepcificationGroup(SpecificationGroupVo specGroupVo) {
         SpecificationGroupPo sepcGroupPo = new SpecificationGroupPo();
         BeanUtils.copyProperties(specGroupVo, sepcGroupPo);
-        this.saveOrUpdate(sepcGroupPo);
+        specificationGroupDao.saveOrUpdate(sepcGroupPo);
         if (!CollectionUtils.isEmpty(specGroupVo.getSpecs())) {
             specGroupVo.getSpecs().stream().forEach(t->{
                 t.setGroupId(sepcGroupPo.getId());
@@ -98,7 +100,7 @@ public class SpecificationGroupSerImpl extends ServiceImpl<SpecificationGroupMap
         }
         SpecificationGroupPo sepcGroupPo = new SpecificationGroupPo();
         BeanUtils.copyProperties(specGroupVo, sepcGroupPo);
-        this.updateById(sepcGroupPo);
+        specificationGroupDao.updateById(sepcGroupPo);
         if (!CollectionUtils.isEmpty(specGroupVo.getSpecs())) {
             specGroupVo.getSpecs().stream().forEach(t->{
                 t.setGroupId(sepcGroupPo.getId());
@@ -114,7 +116,7 @@ public class SpecificationGroupSerImpl extends ServiceImpl<SpecificationGroupMap
     @Override
     @Transactional
     public Boolean removeSpecGroupById(Long id) {
-        this.updateById(SpecificationGroupPo.builder().id(id).isDelete(true).build());
+        specificationGroupDao.updateById(SpecificationGroupPo.builder().id(id).isDelete(true).build());
         specService.removeAllSpecificationByGroupId(id);
         return Boolean.TRUE;
     }
