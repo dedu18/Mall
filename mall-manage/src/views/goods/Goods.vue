@@ -1,13 +1,10 @@
 <template>
   <div>
-    <m-breadcrumb />
+    <m-breadcrumb/>
     <!-- 查询面板 -->
     <el-row>
       <el-card class="box-card">
-        <el-form style="display: flex; " size="mini" ref="searchdata" :model="searchdata" label-width="90px">
-          <el-form-item label="商品货号：">
-            <el-input v-model="searchdata.name"></el-input>
-          </el-form-item>
+        <el-form style="display: flex; flex-direction: row; justify-content: space-around;" size="mini" ref="searchdata" :model="searchdata" label-width="90px">
           <el-form-item label="商品货号：">
             <el-input v-model="searchdata.name"></el-input>
           </el-form-item>
@@ -31,9 +28,11 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" @click="">立即查询</el-button>
-            <el-button icon="el-icon-magic-stick">重置</el-button>
-            <el-button type="success" icon="el-icon-plus" @click="handleAdd">添加新商品</el-button>
+            <div style="display: flex; flex-direction: row;">
+              <el-button type="primary" icon="el-icon-search" @click="">立即查询</el-button>
+              <el-button icon="el-icon-magic-stick" @click="resetFilterData">重置</el-button>
+              <el-button type="success" icon="el-icon-plus" @click="handleAdd">添加新商品</el-button>
+            </div>
           </el-form-item>
         </el-form>
       </el-card>
@@ -45,7 +44,8 @@
         <el-table
           :data="tableDataList"
           border
-          style="width: 100%">
+          :header-cell-style="thStyle"
+          :cell-style="cellStyle">
           <el-table-column
             prop="spuId"
             label="编号"
@@ -57,29 +57,19 @@
             width="180">
           </el-table-column>
           <el-table-column
-            label="商品图片">
-            <template slot-scope="scope">
-              <img :src="scope.row.image" alt="" style="width: 100px;height:150px">
-            </template>
+            prop="categotyNames"
+            label="所属类目">
           </el-table-column>
           <el-table-column
-            prop="price"
-            label="价格">
-          </el-table-column>
-          <el-table-column
-            prop="status"
+            prop="saleable"
             label="商品状态">
             <template slot-scope="scope">
-              <div v-if="1 === scope.row.saleable"> <el-button type="success">已上架</el-button></div>
-              <div v-else-if="0 === scope.row.saleable"> <el-button type="info">已下架</el-button></div>
-              <div v-else-if="2 === scope.row.saleable"> <el-button type="warning">在审核</el-button></div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="letter"
-            label="库存管理">
-            <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" circle></el-button>
+              <div v-if="scope.row.saleable">
+                <el-button type="success">已上架</el-button>
+              </div>
+              <div v-else>
+                <el-button type="info">未上架</el-button>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -92,8 +82,10 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row.spuId)">编辑</el-button>
-              <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row.id)">删除</el-button>
+              <el-button size="mini" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row.spuId)">编辑
+              </el-button>
+              <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row.id)">删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -117,65 +109,74 @@
   import {getAllGoods as getAllSpus} from '@/api/spu';
 
   export default {
-  name: "goods",
-  data() {
-    return {
-      total: 0,
-      currentPage: 1,
-      pageNum: 1,
-      pageSize: 10,
-      tableDataList: [],
-      searchdata:{},
-    };
-  },
-  methods: {
-    submit() {
-
+    name: "goods",
+    data() {
+      return {
+        total: 0,
+        currentPage: 1,
+        pageNum: 1,
+        pageSize: 10,
+        tableDataList: [],
+        searchdata: {},
+      };
     },
-    handleAdd() {
-      this.$router.push({
+    methods: {
+      thStyle() {
+        return 'text-align:center'
+      },
+      cellStyle() {
+        return 'text-align:center'
+      },
+      submit() {
+
+      },
+      resetFilterData() {
+        this.searchdata = {}
+      },
+      handleAdd() {
+        this.$router.push({
           path: '/goodsedit',
           query: {
             ptype: 1
           }
-      })
+        })
+      },
+      handleEdit(index, spuId) {
+        // this.$router.push({path:'/pms/updateProduct',query:{id:row.id}});
+        this.$router.push({
+          path: '/goodsedit',
+          query: {
+            ptype: 0,
+            spuId: spuId
+          }
+        });
+      },
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
+      },
+      handleSizeChange(size) {
+        this.pageSize = size
+        this.handlePageChange()
+      },
+      handleCurrentChange(currentPage) {
+        this.pageNum = currentPage
+        this.handlePageChange()
+      },
+      handlePageChange: function () {
+        // 分页查询SPU
+        getAllSpus({
+          pageSize: this.pageSize,
+          pageNum: this.pageNum
+        }).then(response => {
+          this.total = response.total
+          this.tableDataList = response.records
+        });
+      }
     },
-    handleEdit(index, spuId) {
-      // this.$router.push({path:'/pms/updateProduct',query:{id:row.id}});
-      this.$router.push({
-        path: '/goodsedit',
-        query: {
-          ptype: 0,
-          spuId: spuId
-        }
-      });
-    },
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
-    },
-    handleSizeChange(size) {
-      this.pageSize = size
+    mounted() {
       this.handlePageChange()
-    },
-    handleCurrentChange(currentPage) {
-      this.pageNum = currentPage
-      this.handlePageChange()
-    },
-    handlePageChange: function () {
-      // 分页查询SPU
-      getAllSpus({
-        pageSize: this.pageSize,
-        pageNum: this.pageNum
-      }).then(response => {
-        this.total = response.total
-        this.tableDataList = response.records
-      });
     }
-  },
-  mounted () {
-    this.handlePageChange()
   }
-}
 </script>
 
 <style scoped>

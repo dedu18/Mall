@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface SpuMapper extends BaseMapper<SpuPo> {
 
-    @Select("SELECT spu.id as spuId, spu.title as spuTitle, spu.sub_title as spuSubtitle, spu.saleable as saleable, spu.create_time as createTime, spu.update_time as updateTime, sku.images as images, sku.price as price, stock.stock as stock  FROM tb_spu spu, tb_sku sku, tb_stock stock WHERE sku.spu_id = spu.id AND stock.sku_id = sku.id")
+    @Select("SELECT spu.id AS spuId, spu.title AS spuTitle, spu.sub_title AS spuSubtitle, spu.saleable AS saleable, spu.categoty_names AS categotyNames, spu.create_time AS createTime, spu.update_time AS updateTime FROM tb_spu spu WHERE spu.is_enable = 1 AND spu.is_delete = 0")
     List<SpuVo> selectSpuPage(Page<SpuVo> pagination);
 
-    @Select("SELECT COUNT(1) FROM tb_spu spu, tb_sku sku, tb_stock stock WHERE sku.spu_id = spu.id AND stock.sku_id = sku.id")
+    @Select("SELECT COUNT(1) FROM tb_spu spu WHERE spu.is_enable = 1")
     Integer selectSpuCount();
 }

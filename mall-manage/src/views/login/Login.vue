@@ -27,8 +27,8 @@
     data() {
       return {
         ruleForm: {
-          username: "admin",
-          password: "admin"
+          username: "dedu",
+          password: "dedu"
         },
         rules: {
           username: [

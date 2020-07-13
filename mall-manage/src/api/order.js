@@ -3,7 +3,7 @@ const url = "http://localhost:9004"
 export function getAllOrderByPage(params) {
   return http({
     baseURL: url,
-    url:'/api/order/list',
+    url:'/api/order/manage/list',
     method:'get',
     params:params
   })

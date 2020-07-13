@@ -23,14 +23,12 @@
               <div slot="header" class="clearfix">
                 <span>语言详情</span>
               </div>
-              Vue.js
-              <el-progress :percentage="60"></el-progress>
-              JavaScript
+              Java
+              <el-progress :percentage="80"></el-progress>
+              Python
               <el-progress :percentage="50" color="#8e71c7"></el-progress>
-              CSS3
-              <el-progress :percentage="60" color="#67c23a"></el-progress>
-              HTML5
-              <el-progress :percentage="70" color="#f56c6c"></el-progress>
+              Vue
+              <el-progress :percentage="50" color="#67c23a"></el-progress>
             </el-card>
           </el-col>
         </el-row>
@@ -76,7 +74,7 @@
       </el-col>
       <el-col :span="16">
         <el-collapse v-model="activeNames" @change="handleChange">
-          <el-collapse-item title="vue.js" name="1">
+          <el-collapse-item title="介绍" name="1">
             <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
             <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
           </el-collapse-item>

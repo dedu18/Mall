@@ -66,4 +66,18 @@ public class OrderController {
     public Result payOrder(@RequestBody OrderPayReqVo orderPayReqVo) {
         return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.payOrder(orderPayReqVo));
     }
+
+
+    @GetMapping("/manage/list")
+    @ApiOperation(value = "分页查询订单-dedu", notes = "订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页数"),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "每页大小")
+    })
+    public Result getOrderPageByManage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                               @Max(100) @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        return Result.build(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc(), orderService.getOrderAllInfoPageByManage(pageNum, pageSize));
+    }
+
+
 }

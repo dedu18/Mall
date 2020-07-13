@@ -34,16 +34,6 @@ public class SpuSerImpl implements SpuService {
         IPage<SpuVo> result = new Page<>();
         List<SpuVo> data = spuDao.selectSpuPage(new Page<>(pageNum, pageSize));
         Integer count = spuDao.selectSpuCount();
-        if (!CollectionUtils.isEmpty(data)) {
-            data.stream().forEach(t->{
-                //,分隔   获取首长图片
-                String images = t.getImages();
-                if (!StringUtils.isEmpty(images)) {
-                    String[] splitimages = images.split("\\,");
-                    t.setImage(splitimages[0] == null?"": splitimages[0]);
-                }
-            });
-        }
         result.setTotal(count);
         result.setRecords(data);
         result.setCurrent(pageNum);

@@ -18,14 +18,12 @@ public class MallCartApplicationTests {
     }
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         String input = "¸ÃÕË»§²»´æÔÚ";
         System.out.println("转换前得结果："+input);
         try {
             String output = new String(input.getBytes("iso-8859-1"),"gbk");
             System.out.println("转换后得结果："+output);
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

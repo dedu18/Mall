@@ -25,7 +25,7 @@ public class SpuController {
     /**
      * 分页查询Spu
      */
-    @GetMapping("list")
+    @GetMapping("/management/list")
     @ApiOperation(value = "分页查询SPU-dedu", notes = "SPU")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页数"),

@@ -44,8 +44,8 @@
       },
       methods: {
         handleCheckChange(data, checked, indeterminate) {
-          // console.log(data, checked, indeterminate);
           console.log(111);
+          this.$emit('handleCheckChange', data, checked, indeterminate);
         },
         handleNodeClick(data) {
           this.category.id = data.id

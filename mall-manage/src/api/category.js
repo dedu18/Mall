@@ -23,7 +23,7 @@ export function getAllCategoryList(params) {
 export function modifyCategoryById(data) {
   return http({
     baseURL: url,
-    url:'/api/category',
+    url:'/api/category/management/',
     method:'put',
     data:data
   })
@@ -32,7 +32,7 @@ export function modifyCategoryById(data) {
 export function deleteCategoryById(id) {
   return http({
     baseURL: url,
-    url:'/api/category/' + id,
+    url:'/api/category/management/' + id,
     method:'delete'
   })
 }
@@ -40,7 +40,7 @@ export function deleteCategoryById(id) {
 export function addCategory(datas) {
   return http({
     baseURL: url,
-    url:'/api/category/',
+    url:'/api/category/management/',
     method:'post',
     data:datas
   })

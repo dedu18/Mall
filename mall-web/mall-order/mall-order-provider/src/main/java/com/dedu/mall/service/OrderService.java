@@ -18,4 +18,6 @@ public interface OrderService {
     Integer queryOrderStatusByOrderId(String orderId);
 
     Object payOrder(OrderPayReqVo orderPayReqVo);
+
+    IPage<OrderAllInfoPo> getOrderAllInfoPageByManage(Integer pageNum, Integer pageSize);
 }

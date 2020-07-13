@@ -160,4 +160,14 @@ public class OrderSerImpl implements OrderService {
     public Object payOrder(OrderPayReqVo orderPayReqVo) {
         return null;
     }
+
+    @Override
+    public IPage<OrderAllInfoPo> getOrderAllInfoPageByManage(Integer pageNum, Integer pageSize) {
+        //分页查询
+        List<OrderAllInfoPo> orderAllInfoPage = orderDao.getOrderAllInfoPage(pageNum, pageSize);
+        // 查询总数
+        Integer orderAllInfoCount = orderDao.getOrderAllInfoCount();
+        // 返回值封装
+        return convertOrderPoToVo(orderAllInfoCount, pageNum, pageSize, orderAllInfoPage);
+    }
 }

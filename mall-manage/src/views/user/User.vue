@@ -22,38 +22,41 @@
 </template>
 
 <script>
-    export default {
-      name: "User",
-      data () {
-        return {
-          username: localStorage.getItem('ms_username')
+  export default {
+    name: "User",
+    data() {
+      return {
+        username: localStorage.getItem('ms_username')
+      }
+    },
+    methods: {
+      handleCommand(command) {
+        if (command == 'loginout') {
+          localStorage.removeItem('ms_username')
+          this.$router.push('/')
         }
-      },
-      methods:{
-        handleCommand(command) {
-          if(command == 'loginout') {
-            localStorage.removeItem('ms_username')
-            this.$router.push('/')
-          }
-        }
-      },
-    }
+      }
+    },
+  }
 </script>
 
 <style scoped>
-  .header-user-icon{
+  .header-user-icon {
     display: flex;
     height: 70px;
     align-items: center;
   }
-  .user-avator{
+
+  .user-avator {
     margin-left: 10px;
   }
-  .el-dropdown-link{
+
+  .el-dropdown-link {
     color: white;
     cursor: pointer;
   }
-  .user-avator img{
+
+  .user-avator img {
     display: block;
     width: 40px;
     height: 40px;

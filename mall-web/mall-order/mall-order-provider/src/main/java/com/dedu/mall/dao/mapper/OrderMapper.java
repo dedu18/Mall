@@ -28,4 +28,11 @@ public interface OrderMapper extends BaseMapper<OrderPo> {
 
     @Select("SELECT status FROM tb_order WHERE id = #{orderId}")
     Integer getOrderStatusByOrderId(String orderId);
+
+    @Select("SELECT o.id AS id, o.buyer_id AS buyerId, o.total_price AS totalPrice, o.create_time AS createTime, o.update_time AS updateTime, o.status AS status, p.total_pay AS totalPay, p.pay_type AS payType FROM tb_order o LEFT JOIN tb_pay p ON o.id = p.order_id LIMIT #{pageNum}, #{pageSize}")
+    List<OrderAllInfoPo> getOrderAllInfoPage(@Param(value = "pageNum") Integer pageNum, @Param(value = "pageSize") Integer pageSize);
+
+    @Select("SELECT COUNT(*) FROM tb_order o LEFT JOIN tb_pay p ON o.id = p.order_id")
+    Integer getOrderAllInfoCount();
+
 }

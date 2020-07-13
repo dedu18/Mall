@@ -16,17 +16,8 @@ public class SpuVo {
     private Long spuId;
     private String spuTitle;
     private String spuSubTitle;
-    /**
-     * 展示图片
-     */
-    private String image;
-    /**
-     * 所有图片
-     */
-    private String images;
     private Boolean saleable;
-    private BigDecimal price;
-    private Integer stock;
+    private String categotyNames;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
