@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <m-header></m-header>
-        <div style="display: flex;">
+        <div style="display: flex; flex-direction: row;">
           <div class="left-container">
             <m-sidebar></m-sidebar>
           </div>
@@ -41,7 +41,6 @@ export default {
 }
 .left-container{
   width: 10%;
-  /*height: 100%;*/
   background-color: #374255;
   bottom: 0px;
   min-height: 1000px;

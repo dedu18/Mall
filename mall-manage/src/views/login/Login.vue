@@ -6,7 +6,7 @@
           <el-input placeholder="username" v-model="ruleForm.username"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input placeholder="password" v-model="ruleForm.password"></el-input>
+          <el-input placeholder="password" type="password" v-model="ruleForm.password"></el-input>
         </el-form-item>
         <div class="login-btn">
           <el-form-item>

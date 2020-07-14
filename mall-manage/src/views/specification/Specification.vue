@@ -4,25 +4,24 @@
     <div>
       <div class="left">
         <el-card class="left-box-card">
-          <!--<el-tree style="background-color: rgb(240,240,240)"-->
-          <!--class="tree"-->
-          <!--:props="props"-->
-          <!--:load="loadNode"-->
-          <!--lazy-->
-          <!--@check-change="handleCheckChange"-->
-          <!--@node-click="handleNodeClick">-->
-          <!--</el-tree>-->
-          <m-categorytree v-on:handleCheckChange="handleCheckChange" v-on:node-click="handleNodeClick"/>
+          <el-tree style="background-color: rgb(240,240,240)"
+                   class="tree"
+                   :props="props"
+                   :load="loadNode"
+                   lazy
+                   @check-change="handleCheckChange"
+                   @node-click="handleNodeClick">
+          </el-tree>
         </el-card>
       </div>
 
       <div class="right">
         <el-card class="right-box-card">
           <!--<div v-if="this.selectedcategory.id != '' || !this.selectedcategory.isParent">-->
-          <div v-if="this.selectedcategory.id != ''">
+          <div v-if="this.selectedcategory.id != '' && !this.selectedcategory.isParent">
             <h3>规格设置-{{this.selectedcategory.name}}</h3>
             <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onAddSpecGroup">添加规则参数</el-button>
-            <div v-for="item in items" :key="item.id">
+            <div v-for="item in items" :key="item.id" style="margin-top: 5px;">
               <el-card class="box-card">
                 <div slot="header" class="clearfix">
                   <span>{{item.name}}</span>
@@ -32,16 +31,16 @@
                   <el-button style="float: right; padding: 3px 0" type="text" @click="onEditSpecGroup(item)">编辑操作
                   </el-button>
                 </div>
-                <div v-for="itdl in item.specs" :key="itdl" style="font-size: 5px">
+                <div v-for="spec in item.specs" :key="spec.id" style="font-size: 5px">
                   <!--<el-row><el-col :span="12">{{ itdl.name  }}</el-col><el-col :span="12">{{itdl.value}}</el-col></el-row>-->
                   <el-collapse accordion>
                     <el-collapse-item>
                       <template slot="title">
-                        {{ itdl.name }}<i class="header-icon el-icon-info"></i>
+                        {{ spec.name }}<i class="header-icon el-icon-info"></i>
                       </template>
                       <div>
-                        <div v-if="'' != itdl.value">
-                          <el-tag type="success">{{itdl.value}}</el-tag>
+                        <div v-if="'' != spec.value">
+                          <el-tag type="success">{{spec.value}}</el-tag>
                         </div>
                       </div>
                     </el-collapse-item>
@@ -104,13 +103,12 @@
 </template>
 
 <script>
-  import CategoryTree from '../../components/CategoryTree'
   import {getAllCategoryTree as getCategoryTree} from '@/api/category';
   import {
-    getSpecGroupByCatId as getSpecGroup,
     addSpecGroup,
-    modifySpecGroup,
-    deleteSpecGroupById as deleteSpecGroup
+    deleteSpecGroupById as deleteSpecGroup,
+    getSpecGroupByCatId as getSpecGroup,
+    modifySpecGroup
   } from '@/api/specification.js';
 
   export default {
@@ -129,7 +127,8 @@
         spec: {
           name: '',
           unit: '',
-          global: true
+          global: true,
+          searchable: true
         },
         specGroup: [],
         props: {
@@ -144,6 +143,7 @@
           name: '',
           isParent: false
         },
+        items: []
       };
     },
     methods: {
@@ -151,7 +151,8 @@
         this.specDetail.specs.push({
           name: this.spec.name,
           unit: this.spec.unit,
-          global: this.spec.global
+          global: this.spec.global,
+          searchable: this.spec.searchable
         })
       },
       onRemoveSpec(tag) {
@@ -213,19 +214,16 @@
         }
       },
       handleCheckChange(data, checked, indeterminate) {
-        console.log(222)
       },
       handleNodeClick(data) {
         this.selectedcategory.name = data.name
         this.selectedcategory.id = data.id
         this.selectedcategory.isParent = data.isParent
-        // if (!this.selectedcategory.isParent) {
         getSpecGroup(
           this.selectedcategory.id
         ).then(response => {
           this.items = response
         })
-        // }
       },
       loadNode(node, resolve) {
         // // 每次点击都是一个node
@@ -250,10 +248,7 @@
           });
         }
       }
-    },
-    components: {
-      "m-categorytree": CategoryTree
-    },
+    }
   }
 </script>
 

@@ -112,15 +112,7 @@
         currentPage: 1,
         pageNum: 0,
         pageSize: 10,
-        tableData:[{
-          id:1,
-          createTime:"2019-09-20 11:40:00",
-          buyerId:"陈达棍",
-          totalPrice:"￥2699",
-          status:3,
-          payType:1,
-          updateTime:'2019-09-20 11:40:00'
-        }],
+        tableData:[],
         logisticsVisible: false,
         logisticsList :[
 
