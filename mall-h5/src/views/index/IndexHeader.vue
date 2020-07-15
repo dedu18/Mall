@@ -114,6 +114,7 @@
 <script>
   import store from '@/vuex/store';
   import {mapState, mapActions} from 'vuex';
+  import {getCityInfo} from '@/api/city';
 
   export default {
     name: 'IndexHeader',
@@ -148,13 +149,15 @@
       myInfo() {
         this.$router.push('/home');
       },
-      goToIndex() {
-        this.$router.push('/');
-      },
       signOutFun() {
         this.signOut();
         this.$router.push('/').catch(err => err);
       }
+    },
+    mounted() {
+      getCityInfo().then(response => {
+        this.city = response;
+      });
     },
     store
   };

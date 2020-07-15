@@ -1,4 +1,4 @@
-package com.dedu.mall;
+package com.dedu.mall.dao;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dedu.mall.dao.mapper.CategoryBrandRelationMapper;

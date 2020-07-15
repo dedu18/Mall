@@ -1,6 +1,6 @@
 package com.dedu.mall.service.impl;
 
-import com.dedu.mall.CategoryBrandRelationDao;
+import com.dedu.mall.dao.CategoryBrandRelationDao;
 import com.dedu.mall.model.mysql.BrandPo;
 import com.dedu.mall.model.mysql.BrandVo;
 import com.dedu.mall.service.CategoryBrandRelationService;
